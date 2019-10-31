@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1StgQ9Ga7vUnZAobqMtaV3vL81Z" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="fr.virtutuile.view.Main" />
+      <module name="VirtuTuile" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="" />
+      <created>1572388286655</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572388286655</updated>
+      <workItem from="1572388288496" duration="18750000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -18,11 +18,16 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
     public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mainWindow.controller.onMouseMoved(mainWindow.controller.convertPoint(e.getX(), e.getY()));
+            }
+        });
+
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                System.out.println(me);
-                Point point = mainWindow.controller.convertPoint(me.getX(), me.getY());
-                mainWindow.controller.onMousePressed(point);
+                mainWindow.controller.onMousePressed(mainWindow.controller.convertPoint(me.getX(), me.getY()));
 
             }
 
