@@ -32,20 +32,8 @@ public class MainWindow extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         System.out.println(key);
-        if (key == KeyEvent.VK_LEFT) {
-            controller.camPos.x -= controller.speed;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            controller.camPos.x += controller.speed;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            controller.camPos.y -= controller.speed;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            controller.camPos.y += controller.speed;
+        if (key == KeyEvent.VK_DELETE) {
+            System.out.println("Coucou mec");
         }
         drawingPanel.notifyCreatedSurface();
     }
