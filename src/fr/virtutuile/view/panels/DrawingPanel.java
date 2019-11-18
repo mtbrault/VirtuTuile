@@ -6,9 +6,7 @@ import fr.virtutuile.drawer.SurfacesDrawer;
 import fr.virtutuile.view.frames.MainWindow;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 import javax.swing.JPanel;
 
@@ -18,13 +16,17 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
     public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        addMouseMotionListener(new MouseAdapter() {
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                mainWindow.controller.onMouseMoved(mainWindow.controller.convertPoint(e.getX(), e.getY()));
+            }
+
             @Override
             public void mouseMoved(MouseEvent e) {
                 mainWindow.controller.onMouseMoved(mainWindow.controller.convertPoint(e.getX(), e.getY()));
             }
         });
-
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 mainWindow.controller.onMousePressed(mainWindow.controller.convertPoint(me.getX(), me.getY()));
@@ -33,14 +35,12 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Clicked");
                 Point point = mainWindow.controller.convertPoint(e.getX(), e.getY());
                 mainWindow.controller.onClick(point);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                System.out.println("Released");
                 Point point = mainWindow.controller.convertPoint(e.getX(), e.getY());
                 mainWindow.controller.onMouseReleased(point);
             }

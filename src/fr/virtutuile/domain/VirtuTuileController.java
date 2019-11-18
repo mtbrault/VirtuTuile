@@ -13,19 +13,32 @@ public class VirtuTuileController {
     private Surface tmpSurface;
     private Point mousePosition;
     private List<SurfacesControllerObserver> observers;
-    private float zoom = 0 ;
+    private float zoom = 0;
+    public Point camPos;
+    public Point initCamPos;
+    public int speed = 3;
     private int polygonLastId = 0;
+    private State state = State.UNKNOWN;
 
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
         points = new ArrayList<Point>();
         observers = new LinkedList<SurfacesControllerObserver>();
         mousePosition = new Point(0, 0);
+        camPos = new Point(0, 0);
     }
 
     public void addSurface(Surface surface) {
         surfaces.add(surface);
         notifyObserverForSurfaces();
+    }
+
+    public void setState(State newState) {
+        state = newState;
+    }
+
+    public State getState() {
+        return state;
     }
 
     public void addMaterial(Material material) {
@@ -42,7 +55,7 @@ public class VirtuTuileController {
         Point point3 = points.get(1);
         Point point2 = new Point(point3.x, point1.y);
         Point point4 = new Point(point1.x, point3.y);
-        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));;
+        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
         Surface surface = new Surface(surfacePoints);
         surfaces.add(surface);
         notifyObserverForSurfaces();
@@ -50,6 +63,10 @@ public class VirtuTuileController {
 
     public float getZoom() {
         return zoom;
+    }
+
+    public Point getCamPos() {
+        return camPos;
     }
 
     public void addPoint(Point point) {
@@ -61,55 +78,71 @@ public class VirtuTuileController {
     }
 
     public void addTmpSurface() {
-        Point point1 = points.get(0);
+        Point point1 = new Point(points.get(0));
         Point point2 = new Point(mousePosition.x, point1.y);
-        Point point3 = mousePosition;
+        Point point3 = new Point(mousePosition);
         Point point4 = new Point(point1.x, mousePosition.y);
-        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));;
+        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
         tmpSurface = new Surface(surfacePoints);
         surfaces.add(tmpSurface);
         notifyObserverForSurfaces();
     }
 
     public void onClick(Point point) {
-        boolean isSelection = false;
-        for (Surface surface : surfaces) {
-            if (surface.isInside(point)) {
-                isSelection = true;
-                surface.setSelected(true);
-            } else {
-                surface.setSelected(false);
+        if (state == State.SELECTION) {
+            for (Surface surface : surfaces) {
+                if (surface != tmpSurface && surface.isInside(new Point(point).add(camPos))) {
+                    surface.setSelected(true);
+                } else {
+                    surface.setSelected(false);
+                }
             }
-        }
-        if (isSelection) {
             notifyObserverForSurfaces();
-            return;
-        }
-        points.add(point);
-        if (points.size() == 2) {
-            surfaces.remove(tmpSurface);
-            addRectangleSurface();
-            points.clear();
-        } else {
-            addTmpSurface();
+        } else if (state == State.CREATE_RECTANGULAR_SURFACE) {
+            points.add(point);
+            if (points.size() == 2) {
+                surfaces.remove(tmpSurface);
+                addRectangleSurface();
+                points.clear();
+            } else {
+                addTmpSurface();
+            }
         }
     }
 
     public void onMousePressed(Point point) {
-
+        if (state == State.MOVE) {
+            points.add(point);
+            initCamPos = new Point(camPos);
+            System.out.println("Pressed");
+        }
     }
     public void onMouseReleased(Point point) {
-
+        if (state == State.MOVE) {
+            points.clear();
+        }
     }
 
     public void onMouseMoved(Point point) {
         mousePosition.setPos(point.x, point.y);
-        if (points.size() == 1) {
-            List<Point> points = tmpSurface.getPoints();
-            Point point2 = points.get(1);
-            point2.x = mousePosition.x;
-            Point point4 = points.get(3);
-            point4.y = mousePosition.y;
+        if (state == State.CREATE_RECTANGULAR_SURFACE) {
+            if (points.size() == 1) {
+                List<Point> surfacePoints = tmpSurface.getPoints();
+
+                Point point2 = surfacePoints.get(1);
+                point2.x = mousePosition.x + camPos.x;
+
+                Point point3 = surfacePoints.get(2);
+                point3.setPos(mousePosition.x + camPos.x, mousePosition.y + camPos.y);
+
+                Point point4 = surfacePoints.get(3);
+                point4.y = mousePosition.y + camPos.y;
+                notifyObserverForSurfaces();
+            }
+        } else if (state == State.MOVE && points.size() > 0) {
+            Point pressedPoint = points.get(0);
+            camPos.x =  initCamPos.x + (pressedPoint.x - point.x);
+            camPos.y =  initCamPos.y + (pressedPoint.y - point.y);
             notifyObserverForSurfaces();
         }
     }

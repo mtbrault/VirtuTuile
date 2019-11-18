@@ -24,8 +24,8 @@ public class SurfacesDrawer {
         List<Integer> yPoly = new ArrayList<Integer>();
         List<Point> points = surface.getPoints();
         for (Point point : points) {
-            xPoly.add(point.x);
-            yPoly.add(point.y);
+            xPoly.add(point.x - controller.camPos.x);
+            yPoly.add(point.y - controller.camPos.y);
         }
         for (int i = 0; i < points.size() - 1; i += 1) {
             double dis1 = Math.sqrt((xPoly.get(i + 1)-xPoly.get(i))*(xPoly.get(i + 1)-xPoly.get(i)) + (yPoly.get(i + 1)-yPoly.get(i))*(yPoly.get(i + 1)-yPoly.get(i)));

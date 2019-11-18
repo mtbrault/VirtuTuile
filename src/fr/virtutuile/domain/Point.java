@@ -19,6 +19,16 @@ public class Point {
         this.y = new Integer(0);
     }
 
+    public Point add(Point point) {
+        x += point.x;
+        y += point.y;
+        return this;
+    }
+    public Point less(Point point) {
+        x -= point.x;
+        y -= point.y;
+        return this;
+    }
     public void setPos(Integer x, Integer y) {
         this.x = x;
         this.y = y;

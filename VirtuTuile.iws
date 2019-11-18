@@ -2,14 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/VirtuTuile.iws" beforeDir="false" afterPath="$PROJECT_DIR$/VirtuTuile.iws" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Point.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/State.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/State.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/frames/MainWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/frames/MainWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/grid.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/grid.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/save.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/save.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/zoom-.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/ressources/zoom-.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/State.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/frames/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/frames/MainWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/grid.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/grid.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/save.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/save.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/zoom-.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/ressources/zoom-.png" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +48,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RunDashboard">
@@ -64,7 +82,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1572388286655</updated>
-      <workItem from="1572388288496" duration="18750000" />
+      <workItem from="1572388288496" duration="40232000" />
+      <workItem from="1573345241233" duration="14242000" />
+      <workItem from="1573686943857" duration="2764000" />
+      <workItem from="1573690071933" duration="2933000" />
+      <workItem from="1574105330154" duration="525000" />
     </task>
     <servers />
   </component>
@@ -76,7 +98,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

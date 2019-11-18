@@ -7,8 +7,10 @@ import fr.virtutuile.view.panels.*;
 import javax.swing.*;
 import javax.tools.Tool;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements KeyListener {
 
     private JPanel mainPanel;
 
@@ -22,8 +24,38 @@ public class MainWindow extends JFrame {
 
     public VirtuTuileController controller;
     public Point mousePoint;
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 
-    public MainWindow() {
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        System.out.println(key);
+        if (key == KeyEvent.VK_LEFT) {
+            controller.camPos.x -= controller.speed;
+        }
+
+        if (key == KeyEvent.VK_RIGHT) {
+            controller.camPos.x += controller.speed;
+        }
+
+        if (key == KeyEvent.VK_UP) {
+            controller.camPos.y -= controller.speed;
+        }
+
+        if (key == KeyEvent.VK_DOWN) {
+            controller.camPos.y += controller.speed;
+        }
+        drawingPanel.notifyCreatedSurface();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+    public MainWindow () {
+        addKeyListener(this);
+        setFocusable(true);
         controller = new VirtuTuileController();
         mousePoint = new Point();
         mainPanel = new JPanel(new BorderLayout());
