@@ -115,10 +115,26 @@ public class VirtuTuileController {
             points.add(point);
             initCamPos = new Point(camPos);
             System.out.println("Pressed");
+        } else if (state == State.MOVE_SURFACE) {
+            points.add(point);
+            for (Surface surface : surfaces) {
+                if (surface.isInside(point)) {
+                    surface.setSelected(true);
+                    for (Point surfacePoint : surface.getPoints()) {
+                        surfacePoint.initX = surfacePoint.x;
+                        surfacePoint.initY =  surfacePoint.y;
+                    }
+                } else {
+                    surface.setSelected(false);
+                }
+            }
+            notifyObserverForSurfaces();
         }
     }
     public void onMouseReleased(Point point) {
         if (state == State.MOVE) {
+            points.clear();
+        } else if (state == State.MOVE_SURFACE) {
             points.clear();
         }
     }
@@ -144,6 +160,17 @@ public class VirtuTuileController {
             camPos.x =  initCamPos.x + (pressedPoint.x - point.x);
             camPos.y =  initCamPos.y + (pressedPoint.y - point.y);
             notifyObserverForSurfaces();
+        } else if (state == State.MOVE_SURFACE && points.size() > 0) {
+            Point pressedPoint = points.get(0);
+            for (Surface surface : surfaces) {
+                if (surface.isSelected()) {
+                    for (Point surfacePoint : surface.getPoints()) {
+                        surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
+                        surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+                    }
+                    notifyObserverForSurfaces();
+                }
+            }
         }
     }
 

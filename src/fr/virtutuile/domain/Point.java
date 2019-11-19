@@ -3,6 +3,8 @@ package fr.virtutuile.domain;
 public class Point {
     public Integer x;
     public Integer y;
+    public Integer initX;
+    public Integer initY;
 
     public Point(Integer x, Integer y) {
         this.x = new Integer(x);

@@ -106,7 +106,7 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/arrow.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
-            button.addActionListener(handleClick(State.MOVE));
+            button.addActionListener(handleClick(State.MOVE_SURFACE));
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
