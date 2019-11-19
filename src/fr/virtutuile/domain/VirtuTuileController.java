@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Iterator;
 
 public class VirtuTuileController {
     private List<Surface> surfaces;
@@ -58,6 +59,15 @@ public class VirtuTuileController {
         List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
         Surface surface = new Surface(surfacePoints);
         surfaces.add(surface);
+        notifyObserverForSurfaces();
+    }
+
+    public void deleteSurface() {
+        for (Iterator<Surface> iter = surfaces.listIterator(); iter.hasNext();) {
+            Surface surface = iter.next();
+            if (surface.isSelected())
+                iter.remove();
+        }
         notifyObserverForSurfaces();
     }
 

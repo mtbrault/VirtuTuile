@@ -31,17 +31,9 @@ public class MainWindow extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_RIGHT) {
-            System.out.println(key);
-        }
-
-        if (key == KeyEvent.VK_UP) {
-
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-
+        System.out.println(key);
+        if (key == KeyEvent.VK_DELETE) {
+            System.out.println("Coucou mec");
         }
         drawingPanel.notifyCreatedSurface();
     }
