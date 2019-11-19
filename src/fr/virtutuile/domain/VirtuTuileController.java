@@ -10,6 +10,7 @@ import java.util.Iterator;
 public class VirtuTuileController {
     private List<Surface> surfaces;
     private List<Material> materials;
+    private Tile selectedTile;
     private List<Point> points;
     private Surface tmpSurface;
     private Point mousePosition;
@@ -21,7 +22,13 @@ public class VirtuTuileController {
     public int speed = 3;
     private int polygonLastId = 0;
     private State state = State.UNKNOWN;
+    private void setSelectedTile(Tile tile) {
+        selectedTile = tile;
+    }
 
+    public Tile getSelectedTile() {
+        return selectedTile;
+    }
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
         points = new ArrayList<Point>();
@@ -60,7 +67,22 @@ public class VirtuTuileController {
         Point point3 = points.get(1);
         Point point2 = new Point(point3.x, point1.y);
         Point point4 = new Point(point1.x, point3.y);
-        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
+        List<Point> tmpSurfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
+        List<Point> surfacePoints = new ArrayList<Point>();
+        int minX = point1.x;
+        int minY = point1.y;
+        int maxX = point1.x;
+        int maxY = point1.y;
+        for (Point point : tmpSurfacePoints) {
+            minX = Math.min(minX, point.x);
+            minY = Math.min(minY, point.y);
+            maxX = Math.max(maxX, point.x);
+            maxY = Math.max(maxY, point.y);
+        }
+        surfacePoints.add(new Point(minX, minY));
+        surfacePoints.add(new Point(maxX, minY));
+        surfacePoints.add(new Point(maxX, maxY));
+        surfacePoints.add(new Point(minX, maxY));
         Surface surface = new Surface(surfacePoints);
         surface.setMaterial(new Material());
         surface.setPattern(new Pattern());
@@ -163,6 +185,16 @@ public class VirtuTuileController {
 
     public void onMouseMoved(Point point) {
         mousePosition.setPos(point.x, point.y);
+        for (Surface surface : surfaces) {
+            for(Tile tile : surface.getTiles()) {
+                if (tile.isInside(point)) {
+                    setSelectedTile(tile);
+                    tile.setSelected(true);
+                } else {
+                    tile.setSelected(false);
+                }
+            }
+        }
         if (state == State.CREATE_RECTANGULAR_SURFACE) {
             if (points.size() == 1) {
                 List<Point> surfacePoints = tmpSurface.getPoints();
@@ -175,13 +207,11 @@ public class VirtuTuileController {
 
                 Point point4 = surfacePoints.get(3);
                 point4.y = mousePosition.y + camPos.y;
-                notifyObserverForSurfaces();
             }
         } else if (state == State.MOVE && points.size() > 0) {
             Point pressedPoint = points.get(0);
             camPos.x =  initCamPos.x + (pressedPoint.x - point.x);
             camPos.y =  initCamPos.y + (pressedPoint.y - point.y);
-            notifyObserverForSurfaces();
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
             for (Surface surface : surfaces) {
@@ -191,10 +221,10 @@ public class VirtuTuileController {
                         surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
                     }
                     surface.onMoved();
-                    notifyObserverForSurfaces();
                 }
             }
         }
+        notifyObserverForSurfaces();
     }
 
     public List<Surface> getSurfaces() {

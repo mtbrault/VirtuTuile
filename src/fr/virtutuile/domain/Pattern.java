@@ -15,7 +15,7 @@ public class Pattern {
         int nbXTiles = Math.abs(point1.x - point2.x) / material.getWidth() + 1;
         int nbYTiles = Math.abs(point1.y - point4.y) / material.getHeight() + 1;
         int minPointX = Math.min(point1.x, point2.x);
-        int minPointY = Math.min(point1.y, point2.y);
+        int minPointY = Math.min(point1.y, point4.y);
         for (int y = 0; y < nbYTiles; y++) {
             for (int x = 0; x < nbXTiles; x++) {
                 ArrayList points = new ArrayList<Point>();

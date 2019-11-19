@@ -46,7 +46,6 @@ public class SurfacesDrawer {
             g2.setStroke(new BasicStroke(1));
         }
         g.drawPolygon(polygon);
-        g2.setStroke(new BasicStroke(1));
         if (surface.getTiles().size() != 0) {
             for (Tile tile : surface.getTiles()) {
                 List<Integer> xTilePoly = new ArrayList<Integer>();
@@ -57,6 +56,11 @@ public class SurfacesDrawer {
                     yTilePoly.add(point.y - controller.camPos.y);
                 }
                 Polygon polygonTile = new Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
+                if (tile.isSelected()) {
+                    g2.setStroke(new BasicStroke(2));
+                } else {
+                    g2.setStroke(new BasicStroke(1));
+                }
                 g.drawPolygon(polygonTile);
             }
         }
