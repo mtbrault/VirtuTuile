@@ -1,5 +1,6 @@
 package fr.virtutuile.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Surface extends Polygon {
@@ -11,6 +12,7 @@ public class Surface extends Polygon {
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
+        tiles = new ArrayList<>();
     }
 
     public int getNbTiles() {
@@ -31,11 +33,14 @@ public class Surface extends Polygon {
 
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
+        this.tiles = pattern.build(material, this);
     }
 
     public void setMaterial(Material material) {
         this.material = material;
     }
 
-
+    public void onMoved() {
+        tiles = pattern.build(material, this);
+    }
 }

@@ -2,6 +2,7 @@ package fr.virtutuile.drawer;
 
 import fr.virtutuile.domain.Point;
 import fr.virtutuile.domain.Surface;
+import fr.virtutuile.domain.Tile;
 import fr.virtutuile.domain.VirtuTuileController;
 
 import java.awt.*;
@@ -39,6 +40,21 @@ public class SurfacesDrawer {
             g2.setStroke(new BasicStroke(1));
         }
         g.drawPolygon(polygon);
+        g2.setStroke(new BasicStroke(1));
+        if (surface.getTiles().size() != 0) {
+            for (Tile tile : surface.getTiles()) {
+                List<Integer> xTilePoly = new ArrayList<Integer>();
+                List<Integer> yTilePoly = new ArrayList<Integer>();
+                List<Point> TilePoints = tile.getPoints();
+                for (Point point : TilePoints) {
+                    xTilePoly.add(point.x - controller.camPos.x);
+                    yTilePoly.add(point.y - controller.camPos.y);
+                }
+                Polygon polygonTile = new Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
+                g.drawPolygon(polygonTile);
+            }
+        }
+
     }
 
     public void draw(Graphics g) {

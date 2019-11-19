@@ -25,8 +25,11 @@ public class VirtuTuileController {
         surfaces = new ArrayList<Surface>();
         points = new ArrayList<Point>();
         observers = new LinkedList<SurfacesControllerObserver>();
+        materials = new ArrayList<Material>();
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
+
+        materials.add(new Material());
     }
 
     public void addSurface(Surface surface) {
@@ -58,6 +61,8 @@ public class VirtuTuileController {
         Point point4 = new Point(point1.x, point3.y);
         List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
         Surface surface = new Surface(surfacePoints);
+        surface.setMaterial(new Material());
+        surface.setPattern(new Pattern());
         surfaces.add(surface);
         notifyObserverForSurfaces();
     }
@@ -178,6 +183,7 @@ public class VirtuTuileController {
                         surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
                         surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
                     }
+                    surface.onMoved();
                     notifyObserverForSurfaces();
                 }
             }
