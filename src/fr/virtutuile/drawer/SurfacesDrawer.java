@@ -6,6 +6,7 @@ import fr.virtutuile.domain.Tile;
 import fr.virtutuile.domain.VirtuTuileController;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,11 @@ public class SurfacesDrawer {
         Color color = new Color(surface.getColor().red, surface.getColor().green, surface.getColor().blue, surface.getColor().alpha);
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(color);
+
+        AffineTransform trans = new AffineTransform();
+
+        trans.scale(controller.getZoom(), controller.getZoom());
+        g2.transform(trans);
         List<Integer> xPoly = new ArrayList<Integer>();
         List<Integer> yPoly = new ArrayList<Integer>();
         List<Point> points = surface.getPoints();

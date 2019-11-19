@@ -14,7 +14,8 @@ public class VirtuTuileController {
     private Surface tmpSurface;
     private Point mousePosition;
     private List<SurfacesControllerObserver> observers;
-    private float zoom = 0;
+    private float zoom = 1;
+    private float previousZoom = 1;
     public Point camPos;
     public Point initCamPos;
     public int speed = 3;
@@ -104,25 +105,7 @@ public class VirtuTuileController {
     }
 
     public void onClick(Point point) {
-        if (state == State.SELECTION) {
-            for (Surface surface : surfaces) {
-                if (surface != tmpSurface && surface.isInside(new Point(point).add(camPos))) {
-                    surface.setSelected(true);
-                } else {
-                    surface.setSelected(false);
-                }
-            }
-            notifyObserverForSurfaces();
-        } else if (state == State.CREATE_RECTANGULAR_SURFACE) {
-            points.add(point);
-            if (points.size() == 2) {
-                surfaces.remove(tmpSurface);
-                addRectangleSurface();
-                points.clear();
-            } else {
-                addTmpSurface();
-            }
-        }
+
     }
 
     public void onMousePressed(Point point) {
@@ -144,6 +127,30 @@ public class VirtuTuileController {
                 }
             }
             notifyObserverForSurfaces();
+        }
+        else if (state == State.SELECTION) {
+            boolean findOne = false;
+            for (Surface surface : surfaces) {
+                if (surface != tmpSurface && surface.isInside(new Point(point).add(camPos))) {
+                    surface.setSelected(!surface.isSelected());
+                    findOne = true;
+                }
+            }
+            if (findOne == false) {
+                for (Surface surface : surfaces) {
+                    surface.setSelected(false);
+                }
+            }
+            notifyObserverForSurfaces();
+        } else if (state == State.CREATE_RECTANGULAR_SURFACE) {
+            points.add(point);
+            if (points.size() == 2) {
+                surfaces.remove(tmpSurface);
+                addRectangleSurface();
+                points.clear();
+            } else {
+                addTmpSurface();
+            }
         }
     }
     public void onMouseReleased(Point point) {
@@ -192,6 +199,16 @@ public class VirtuTuileController {
 
     public List<Surface> getSurfaces() {
         return surfaces;
+    }
+
+    public void zoomUp() {
+        zoom *= 1.1;
+        notifyObserverForSurfaces();
+    }
+
+    public void zoomDown() {
+        zoom /= 1.1;
+        notifyObserverForSurfaces();
     }
 
     public void mouseUp() {
