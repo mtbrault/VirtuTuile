@@ -83,7 +83,7 @@ public class ToolBarPanel extends JPanel {
             System.out.println(err);
         }
         try {
-            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/zoom+.png"));
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/trash.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
             button.addActionListener(new ActionListener() {
                 @Override

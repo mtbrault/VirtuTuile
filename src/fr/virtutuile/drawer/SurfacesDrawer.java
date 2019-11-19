@@ -34,7 +34,7 @@ public class SurfacesDrawer {
             xPoly.add(point.x - controller.camPos.x);
             yPoly.add(point.y - controller.camPos.y);
         }
-        for (int i = 0; i < points.size() - 1; i += 1) {
+        for (int i = 0; i < points.size() - 2; i += 1) {
             double dis1 = Math.sqrt((xPoly.get(i + 1)-xPoly.get(i))*(xPoly.get(i + 1)-xPoly.get(i)) + (yPoly.get(i + 1)-yPoly.get(i))*(yPoly.get(i + 1)-yPoly.get(i)));
             g.drawString(String.valueOf(dis1), (xPoly.get(i) + xPoly.get(i + 1)) / 2, (yPoly.get(i) + yPoly.get(i + 1)) / 2);
         }
