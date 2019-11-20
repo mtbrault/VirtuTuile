@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.Robot;
 
 public class VirtuTuileController {
     private List<Surface> surfaces;
@@ -17,8 +18,10 @@ public class VirtuTuileController {
     public Point camPos;
     public Point initCamPos;
     public int speed = 3;
+    private Point canvasPosition;
     private int polygonLastId = 0;
     private State state = State.UNKNOWN;
+    private boolean gridSwitch = false;
 
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
@@ -49,6 +52,9 @@ public class VirtuTuileController {
         this.zoom = zoom;
     }
 
+    public void setCanvasPosition(Point p) {
+        this.canvasPosition = p;
+    }
 
     public void addRectangleSurface() {
         Point point1 = points.get(0);
@@ -124,6 +130,30 @@ public class VirtuTuileController {
     }
 
     public void onMouseMoved(Point point) {
+        System.out.println("Move " + point.x + "/" + point.y);
+        try {
+            boolean moved = false;
+            Robot robot = new Robot();
+            if (point.x % 100 < 5) {
+                point.x -= point.x % 100;
+                moved = true;
+            } else if (point.x % 100 >= 95) {
+                point.x += 100 - point.x % 100;
+                moved = true;
+            }
+            if (point.y % 100 < 5) {
+                point.y -= point.y % 100;
+                moved = true;
+            } else if (point.y % 100 >= 95) {
+                point.y += 100 - point.y % 100;
+                moved = true;
+            }
+            if (moved)
+                robot.mouseMove(point.x + this.canvasPosition.x, point.y + this.canvasPosition.y);
+            //System.out.println("Moving " + point.x + "/" + point.y + "+" + this.canvasPosition.x + "/" + this.canvasPosition.y);
+        } catch (AWTException e) {
+            System.out.println("Error");
+        }
         mousePosition.setPos(point.x, point.y);
         if (state == State.CREATE_RECTANGULAR_SURFACE) {
             if (points.size() == 1) {

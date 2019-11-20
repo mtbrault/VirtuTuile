@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="VirtuTuile">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/VirtuTuile_jar/VirtuTuile.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

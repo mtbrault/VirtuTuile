@@ -1,5 +1,6 @@
 package fr.virtutuile.view.frames;
 
+import fr.virtutuile.domain.Point;
 import fr.virtutuile.domain.VirtuTuileController;
 import fr.virtutuile.view.menu.TopMenu;
 import fr.virtutuile.view.panels.*;
@@ -7,6 +8,8 @@ import fr.virtutuile.view.panels.*;
 import javax.swing.*;
 import javax.tools.Tool;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -23,6 +26,7 @@ public class MainWindow extends JFrame implements KeyListener {
     private ToolBarPanel toolBarPanel;
 
     public VirtuTuileController controller;
+
     public Point mousePoint;
     @Override
     public void keyTyped(KeyEvent e) {
@@ -66,6 +70,18 @@ public class MainWindow extends JFrame implements KeyListener {
         toolBarPanel = new ToolBarPanel(this);
         sideBarPanel = new SideBarPanel(this);
         footerPanel = new FooterPanel(this);
+        addComponentListener( new ComponentListener() {
+            public void componentMoved( ComponentEvent e ) {
+                System.out.println("Screen " + drawingPanel.getLocation().x + "/" + drawingPanel.getLocation().y +
+                        "+" + getLocation().x + "/" + getLocation().y);
+                Point pos = new Point(drawingPanel.getLocationOnScreen().x,
+                        drawingPanel.getLocationOnScreen().y);
+                controller.setCanvasPosition(pos);
+            }
+            public void componentResized( ComponentEvent e ) {}
+            public void componentShown( ComponentEvent e ) {}
+            public void componentHidden( ComponentEvent e ) {}
+        } );
         initWindow();
     }
 
@@ -78,6 +94,7 @@ public class MainWindow extends JFrame implements KeyListener {
     }
 
     private void buildGui() {
+
         rightPanel.add(sideBarPanel, BorderLayout.CENTER);
 
         centerPanel.add(drawingPanel, BorderLayout.CENTER);

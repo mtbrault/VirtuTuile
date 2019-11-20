@@ -2,6 +2,7 @@ package fr.virtutuile.view.panels;
 
 import fr.virtutuile.domain.Point;
 import fr.virtutuile.domain.SurfacesControllerObserver;
+import fr.virtutuile.drawer.GridDrawer;
 import fr.virtutuile.drawer.SurfacesDrawer;
 import fr.virtutuile.view.frames.MainWindow;
 
@@ -58,6 +59,10 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         SurfacesDrawer surfacesDrawer = new SurfacesDrawer(mainWindow.controller);
+        if (mainWindow.controller) {
+            GridDrawer gridDrawer = new GridDrawer(mainWindow.controller);
+            gridDrawer.draw(g);
+        }
         surfacesDrawer.draw(g);
     }
 
