@@ -28,13 +28,14 @@ public class SurfacesDrawer {
         List<Integer> yPoly = new ArrayList<Integer>();
         List<Point> points = surface.getPoints();
         for (Point point : points) {
-            Point dest = controller.coordToGraphic(point.x, point.y);
-            xPoly.add(dest.x);
-            yPoly.add(dest.y);
+            Point graphicPoint = controller.coordToGraphic(point.x, point.y);
+            xPoly.add(graphicPoint.x);
+            yPoly.add(graphicPoint.y);
         }
         for (int i = 0; i < points.size() - 2; i += 1) {
-            double dis1 = Math.sqrt((points.get(i + 1).x - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
-            g.drawString(String.valueOf(dis1), (points.get(i).x + points.get(i + 1).x) / 2, (points.get(i).y + points.get(i + 1).y) / 2);
+            double dis1 = Math.sqrt((points.get(i + 1).x  - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
+            Point graphicPoint = controller.coordToGraphic(((points.get(i).x  + points.get(i + 1).x)  / 2), (points.get(i).y + points.get(i + 1).y) / 2);
+            g.drawString(String.valueOf(dis1), graphicPoint.x, graphicPoint.y);
         }
         Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         if (surface.isSelected()) {
@@ -50,9 +51,9 @@ public class SurfacesDrawer {
                 List<Integer> yTilePoly = new ArrayList<Integer>();
                 List<Point> TilePoints = tile.getPoints();
                 for (Point point : TilePoints) {
-                    Point dest = controller.coordToGraphic(point.x, point.y);
-                    xTilePoly.add(dest.x);
-                    yTilePoly.add(dest.y);
+                    Point graphicPoint = controller.coordToGraphic(point.x, point.y);
+                    xTilePoly.add(graphicPoint.x);
+                    yTilePoly.add(graphicPoint.y);
                 }
                 Polygon polygonTile = new Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
                 if (tile.isSelected()) {
@@ -60,7 +61,7 @@ public class SurfacesDrawer {
                 } else {
                     g2.setStroke(new BasicStroke(1));
                 }
-                g.drawPolygon(polygonTile);
+               g.drawPolygon(polygonTile);
             }
         }
 

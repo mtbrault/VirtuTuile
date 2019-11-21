@@ -19,6 +19,7 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                System.out.println(e.getX()+ " " + e.getY() );
                 mainWindow.controller.onMouseMoved(mainWindow.controller.GraphicToCoord(e.getX(), e.getY()));
             }
 
@@ -48,7 +49,6 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                System.out.println("coucou");
             }
         });
         addMouseWheelListener(new MouseWheelListener() {
@@ -59,11 +59,11 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
                 double zoomUpgrade = 0.05;
 
                 if (notches > zoomSensibilty) {
-                    mainWindow.controller.zoom(zoomUpgrade);
+                    mainWindow.controller.zoomIn();
 
                 }
                 else if (notches < -zoomSensibilty) {
-                    mainWindow.controller.zoom(-zoomUpgrade);
+                    mainWindow.controller.zoomOut();
                 }
 
             }

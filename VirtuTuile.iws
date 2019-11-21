@@ -3,14 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/VirtuTuile.iws" beforeDir="false" afterPath="$PROJECT_DIR$/VirtuTuile.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Pattern.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Pattern.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Tile.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Pattern.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
