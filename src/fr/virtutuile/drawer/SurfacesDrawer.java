@@ -7,6 +7,7 @@ import fr.virtutuile.domain.VirtuTuileController;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,20 +24,17 @@ public class SurfacesDrawer {
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(color);
 
-        AffineTransform trans = new AffineTransform();
-
-        trans.scale(controller.getZoom(), controller.getZoom());
-        g2.transform(trans);
         List<Integer> xPoly = new ArrayList<Integer>();
         List<Integer> yPoly = new ArrayList<Integer>();
         List<Point> points = surface.getPoints();
         for (Point point : points) {
-            xPoly.add(point.x - controller.camPos.x);
-            yPoly.add(point.y - controller.camPos.y);
+            Point dest = controller.coordToGraphic(point.x, point.y);
+            xPoly.add(dest.x);
+            yPoly.add(dest.y);
         }
         for (int i = 0; i < points.size() - 2; i += 1) {
-            double dis1 = Math.sqrt((xPoly.get(i + 1)-xPoly.get(i))*(xPoly.get(i + 1)-xPoly.get(i)) + (yPoly.get(i + 1)-yPoly.get(i))*(yPoly.get(i + 1)-yPoly.get(i)));
-            g.drawString(String.valueOf(dis1), (xPoly.get(i) + xPoly.get(i + 1)) / 2, (yPoly.get(i) + yPoly.get(i + 1)) / 2);
+            double dis1 = Math.sqrt((points.get(i + 1).x - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
+            g.drawString(String.valueOf(dis1), (points.get(i).x + points.get(i + 1).x) / 2, (points.get(i).y + points.get(i + 1).y) / 2);
         }
         Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         if (surface.isSelected()) {
@@ -52,8 +50,9 @@ public class SurfacesDrawer {
                 List<Integer> yTilePoly = new ArrayList<Integer>();
                 List<Point> TilePoints = tile.getPoints();
                 for (Point point : TilePoints) {
-                    xTilePoly.add(point.x - controller.camPos.x);
-                    yTilePoly.add(point.y - controller.camPos.y);
+                    Point dest = controller.coordToGraphic(point.x, point.y);
+                    xTilePoly.add(dest.x);
+                    yTilePoly.add(dest.y);
                 }
                 Polygon polygonTile = new Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
                 if (tile.isSelected()) {
