@@ -63,7 +63,22 @@ public class VirtuTuileController {
         Point point3 = points.get(1);
         Point point2 = new Point(point3.x, point1.y);
         Point point4 = new Point(point1.x, point3.y);
-        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));
+        List<Point> tmpSurfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));
+        List<Point> surfacePoints = new ArrayList<Point>();
+        int minX = point1.x;
+        int minY = point1.y;
+        int maxX = point1.x;
+        int maxY = point1.y;
+        for (Point point : tmpSurfacePoints) {
+            minX = Math.min(minX, point.x);
+            minY = Math.min(minY, point.y);
+            maxX = Math.max(maxX, point.x);
+            maxY = Math.max(maxY, point.y);
+        }
+        surfacePoints.add(new Point(minX, minY));
+        surfacePoints.add(new Point(maxX, minY));
+        surfacePoints.add(new Point(maxX, maxY));
+        surfacePoints.add(new Point(minX, maxY));
         Surface surface = new Surface(surfacePoints);
         surface.setMaterial(new Material());
         surface.setPattern(new Pattern());
@@ -206,8 +221,26 @@ public class VirtuTuileController {
         }
     }
 
+    private void setSelectedTile(Tile tile) {
+        selectedTile = tile;
+    }
+
+    public Tile getSelectedTile() {
+        return selectedTile;
+    }
+
     public void onMouseMoved(Point point) {
         mousePosition.setPos(point.x, point.y);
+        for (Surface surface : surfaces) {
+            for(Tile tile : surface.getTiles()) {
+                if (tile.isInside(point)) {
+                    setSelectedTile(tile);
+                    tile.setSelected(true);
+                } else {
+                    tile.setSelected(false);
+                }
+            }
+        }
         if (state == State.CREATE_RECTANGULAR_SURFACE) {
             if (points.size() == 1) {
                 List<Point> surfacePoints = tmpSurface.getPoints();
@@ -220,13 +253,11 @@ public class VirtuTuileController {
 
                 Point point4 = surfacePoints.get(3);
                 point4.y = mousePosition.y;
-                notifyObserverForSurfaces();
             }
         } else if (state == State.MOVE && points.size() > 0) {
             Point pressedPoint = points.get(0);
             camPos.x =  (int)(zoom * (pressedPoint.x - mousePosition.x)) + camPos.x;
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
-            notifyObserverForSurfaces();
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
             for (Surface surface : surfaces) {
@@ -236,10 +267,10 @@ public class VirtuTuileController {
                         surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
                     }
                     surface.onMoved();
-                    notifyObserverForSurfaces();
                 }
             }
         }
+        notifyObserverForSurfaces();
     }
 
     public List<Surface> getSurfaces() {
@@ -300,9 +331,6 @@ public class VirtuTuileController {
 
     public Point GraphicToCoord(int x, int y) {
         Point dest = new Point(x, y);
-        //int distX = camPos.x + (int)((x - camPos.x) / zoom);
-        //int distY = camPos.y + (int)((y - camPos.y) / zoom);
-        //dest.setPos(distX, distY);
         dest.x = (int)Math.floor(dest.x / zoom);
         dest.y = (int)Math.floor(dest.y / zoom);
         dest.add(camPos);
@@ -312,11 +340,8 @@ public class VirtuTuileController {
     public  Point coordToGraphic(int x, int y) {
         Point dest = new Point(x, y);
         dest.less(camPos);
-        //int distX = camPos.x + (int)((dest.x) * zoom);
-        //int distY = camPos.y + (int)((dest.y) * zoom);
         dest.x = (int)Math.floor(dest.x * zoom);
         dest.y = (int)Math.floor(dest.y * zoom);
-        //dest.setPos(distX, distY);
         return dest;
     }
 }
