@@ -207,8 +207,8 @@ public class VirtuTuileController {
         if (zoom <= 0 && zoomFact < 0)
             return ;
         zoom += zoomFact;
-        camPos.x = (mousePosition.x - camPos.x) / 2;
-        camPos.y = (mousePosition.y - camPos.y) / 2;
+        //camPos.x = (mousePosition.x - camPos.x) / 2;
+        //camPos.y = (mousePosition.y - camPos.y) / 2;
         System.out.println("Pos X : " + camPos.x);
         System.out.println("Pos Y : " + camPos.y);
         mousePositionZoom.setPos(mousePosition.x, mousePosition.y);
@@ -237,6 +237,7 @@ public class VirtuTuileController {
 
     public void move() {
 
+
     }
 
     public void registerObserver(SurfacesControllerObserver newListener) {
@@ -256,22 +257,18 @@ public class VirtuTuileController {
     public Point GraphicToCoord(int x, int y) {
         Point dest = new Point(x, y);
 
-
-        //int distX = camPos.x + (int)((x - camPos.x) / zoom);
-        //int distY = camPos.y + (int)((y - camPos.y) / zoom);
-        //dest.setPos(distX, distY);
-        dest.add(camPos);
+        int distX = mousePositionZoom.x + (int)((x - mousePositionZoom.x) / zoom);
+        int distY = mousePositionZoom.y + (int)((y - mousePositionZoom.y) / zoom);
+        dest.setPos(distX, distY);
         return dest;
     }
 
     public  Point coordToGraphic(int x, int y) {
         Point dest = new Point(x, y);
 
-
-        //int distX = camPos.x + (int)((x - camPos.x) * zoom);
-        //int distY = camPos.y + (int)((y - camPos.y) * zoom);
-        //dest.setPos(distX, distY);
-        //dest.add(camPos);
+        int distX = mousePositionZoom.x + (int)((x - mousePositionZoom.x) * zoom);
+        int distY = mousePositionZoom.y + (int)((y - mousePositionZoom.y) * zoom);
+        dest.setPos(distX, distY);
         return dest;
     }
 }

@@ -33,8 +33,10 @@ public class SurfacesDrawer {
             yPoly.add(dest.y);
         }
         for (int i = 0; i < points.size() - 2; i += 1) {
+            Point   affPlace = controller.coordToGraphic((points.get(i).x + points.get(i + 1).x) / 2, (points.get(i).y + points.get(i + 1).y) / 2);
+
             double dis1 = Math.sqrt((points.get(i + 1).x - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
-            g.drawString(String.valueOf(dis1), (points.get(i).x + points.get(i + 1).x) / 2, (points.get(i).y + points.get(i + 1).y) / 2);
+            g.drawString(String.valueOf(dis1), affPlace.x, affPlace.y);
         }
         Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         if (surface.isSelected()) {
