@@ -25,15 +25,8 @@ public class VirtuTuileController {
     private Point canvasPosition;
     private int polygonLastId = 0;
     private State state = State.UNKNOWN;
-<<<<<<< HEAD
     private boolean gridSwitch = false;
     private boolean isBeingDragged = false;
-
-    private void setSelectedTile(Tile tile) {
-        selectedTile = tile;
-    }
-=======
->>>>>>> 8485b2c195d8a1a33886312eb3af051846cf4a62
 
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
@@ -247,7 +240,6 @@ public class VirtuTuileController {
         }
     }
 
-<<<<<<< HEAD
     public Point gridAttractMouse(Point before) {
         Point after = new Point(before);
         if (before.x % 100 < 4)
@@ -291,14 +283,14 @@ public class VirtuTuileController {
             }
         }
         return after;
-=======
+    }
+
     private void setSelectedTile(Tile tile) {
         selectedTile = tile;
     }
 
     public Tile getSelectedTile() {
         return selectedTile;
->>>>>>> 8485b2c195d8a1a33886312eb3af051846cf4a62
     }
 
     public void onMouseMoved(Point point) {
