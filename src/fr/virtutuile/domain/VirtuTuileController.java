@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Iterator;
 
 public class VirtuTuileController {
-    private List<Surface> surfaces;
-    private List<Material> materials;
+    private ArrayList<Surface> surfaces;
+    private ArrayList<Material> materials;
     private Tile selectedTile;
     private List<Point> points;
     private Surface tmpSurface;
@@ -175,11 +175,55 @@ public class VirtuTuileController {
             }
         }
     }
+    public boolean handleSurfaceStackable(Surface selectedSurface, ArrayList<Surface> otherSurfaces) {
+        List<Point> selectedSurfacePoints = selectedSurface.getPoints();
+        for (Surface surface : otherSurfaces) {
+            if (surface != selectedSurface) {
+                if (selectedSurface.isSurfaceStacked(surface)) {
+                    int dist1 = Math.abs(selectedSurfacePoints.get(0).x - surface.getPoints().get(1).x);
+                    int dist2 = Math.abs(selectedSurfacePoints.get(1).x - surface.getPoints().get(0).x);
+                    int dist3 = Math.abs(selectedSurfacePoints.get(0).y - surface.getPoints().get(2).y);
+                    int dist4 = Math.abs(selectedSurfacePoints.get(2).y - surface.getPoints().get(0).y);
+                    int minXDist = dist1 < dist2 ? dist1 : dist2 * -1;
+                    int minYDist = dist3 < dist4 ? dist3 : dist4 * -1;
+                    int minDist = Math.abs(minXDist) < Math.abs(minYDist) ? minXDist : minYDist;
+                    if (minDist != 0) {
+                        if (minDist == minXDist)
+                            selectedSurface.move(new Point(minDist,0));
+                        else
+                            selectedSurface.move(new Point(0,minDist));
+                        selectedSurface.onMoved();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void onMouseReleased(Point point) {
         if (state == State.MOVE) {
             points.clear();
         } else if (state == State.MOVE_SURFACE) {
             points.clear();
+            for (Surface surface : surfaces) {
+                if (surface.isSelected()) {
+                    handleSurfaceStackable(surface, surfaces);
+                    notifyObserverForSurfaces();
+                }
+            }
+        }
+    }
+
+    public void combineSelectedSurfaces() {
+        for (Surface firstSurface : surfaces) {
+            for (Surface secondSurface : surfaces) {
+                if (firstSurface != secondSurface) {
+                    if (firstSurface.isSurfaceStacked(secondSurface)) {
+                        firstSurface.getIntersectionsPointWithSurface(secondSurface);
+                    }
+                }
+            }
         }
     }
 

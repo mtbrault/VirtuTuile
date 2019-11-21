@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Polygon {
-    private List<Point> points;
+    protected List<Point> points;
     private PolygonType type;
     private float area;
     private Color color;
@@ -61,6 +61,8 @@ public class Polygon {
         this.points = points;
     }
     public void move(Point newPoint) {
-
+        for (Point point : points) {
+            point.add(newPoint);
+        }
     }
 }

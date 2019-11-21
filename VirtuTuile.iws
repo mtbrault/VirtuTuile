@@ -3,14 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/VirtuTuile.iws" beforeDir="false" afterPath="$PROJECT_DIR$/VirtuTuile.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Pattern.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Pattern.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Polygon.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Polygon.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Surface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/Surface.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/drawer/SurfacesDrawer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Pattern.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Pattern.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Polygon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/Surface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/Surface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/drawer/SurfacesDrawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/ToolBarPanel.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +76,7 @@
       <workItem from="1573686943857" duration="2764000" />
       <workItem from="1573690071933" duration="2933000" />
       <workItem from="1574105330154" duration="7283000" />
-      <workItem from="1574178373555" duration="18669000" />
+      <workItem from="1574178373555" duration="35796000" />
     </task>
     <servers />
   </component>
