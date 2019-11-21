@@ -9,14 +9,15 @@ import java.awt.Robot;
 import java.util.Iterator;
 
 public class VirtuTuileController {
-    private List<Surface> surfaces;
-    private List<Material> materials;
+    private ArrayList<Surface> surfaces;
+    private ArrayList<Material> materials;
     private Tile selectedTile;
     private List<Point> points;
     private Surface tmpSurface;
-    private Point mousePosition;
+    public Point mousePosition;
     private List<SurfacesControllerObserver> observers;
-    private float zoom = 1;
+    private double zoom = 1;
+    public Point mousePositionZoom;
     private float previousZoom = 1;
     public Point camPos;
     public Point initCamPos;
@@ -24,16 +25,16 @@ public class VirtuTuileController {
     private Point canvasPosition;
     private int polygonLastId = 0;
     private State state = State.UNKNOWN;
+<<<<<<< HEAD
     private boolean gridSwitch = false;
     private boolean isBeingDragged = false;
 
     private void setSelectedTile(Tile tile) {
         selectedTile = tile;
     }
+=======
+>>>>>>> 8485b2c195d8a1a33886312eb3af051846cf4a62
 
-    public Tile getSelectedTile() {
-        return selectedTile;
-    }
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
         points = new ArrayList<Point>();
@@ -41,6 +42,7 @@ public class VirtuTuileController {
         materials = new ArrayList<Material>();
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
+        mousePositionZoom = new Point(0, 0);
 
         materials.add(new Material());
     }
@@ -79,7 +81,7 @@ public class VirtuTuileController {
         Point point3 = points.get(1);
         Point point2 = new Point(point3.x, point1.y);
         Point point4 = new Point(point1.x, point3.y);
-        List<Point> tmpSurfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
+        List<Point> tmpSurfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));
         List<Point> surfacePoints = new ArrayList<Point>();
         int minX = point1.x;
         int minY = point1.y;
@@ -111,7 +113,7 @@ public class VirtuTuileController {
         notifyObserverForSurfaces();
     }
 
-    public float getZoom() {
+    public double getZoom() {
         return zoom;
     }
 
@@ -137,7 +139,7 @@ public class VirtuTuileController {
         Point point2 = new Point(mousePosition.x, point1.y);
         Point point3 = new Point(mousePosition);
         Point point4 = new Point(point1.x, mousePosition.y);
-        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1.add(camPos), point2.add(camPos), point3.add(camPos), point4.add(camPos)));
+        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2, point3, point4));
         tmpSurface = new Surface(surfacePoints);
         surfaces.add(tmpSurface);
         notifyObserverForSurfaces();
@@ -150,8 +152,6 @@ public class VirtuTuileController {
     public void onMousePressed(Point point) {
         if (state == State.MOVE) {
             points.add(point);
-            initCamPos = new Point(camPos);
-            System.out.println("Pressed");
         } else if (state == State.MOVE_SURFACE) {
             points.add(point);
             for (Surface surface : surfaces) {
@@ -172,7 +172,7 @@ public class VirtuTuileController {
         else if (state == State.SELECTION) {
             boolean findOne = false;
             for (Surface surface : surfaces) {
-                if (surface != tmpSurface && surface.isInside(new Point(point).add(camPos))) {
+                if (surface != tmpSurface && surface.isInside(new Point(point))) {
                     surface.setSelected(!surface.isSelected());
                     findOne = true;
                 }
@@ -194,15 +194,60 @@ public class VirtuTuileController {
             }
         }
     }
+    public boolean handleSurfaceStackable(Surface selectedSurface, ArrayList<Surface> otherSurfaces) {
+        List<Point> selectedSurfacePoints = selectedSurface.getPoints();
+        for (Surface surface : otherSurfaces) {
+            if (surface != selectedSurface) {
+                if (selectedSurface.isSurfaceStacked(surface)) {
+                    int dist1 = Math.abs(selectedSurfacePoints.get(0).x - surface.getPoints().get(1).x);
+                    int dist2 = Math.abs(selectedSurfacePoints.get(1).x - surface.getPoints().get(0).x);
+                    int dist3 = Math.abs(selectedSurfacePoints.get(0).y - surface.getPoints().get(2).y);
+                    int dist4 = Math.abs(selectedSurfacePoints.get(2).y - surface.getPoints().get(0).y);
+                    int minXDist = dist1 < dist2 ? dist1 : dist2 * -1;
+                    int minYDist = dist3 < dist4 ? dist3 : dist4 * -1;
+                    int minDist = Math.abs(minXDist) < Math.abs(minYDist) ? minXDist : minYDist;
+                    if (minDist != 0) {
+                        if (minDist == minXDist)
+                            selectedSurface.move(new Point(minDist,0));
+                        else
+                            selectedSurface.move(new Point(0,minDist));
+                        selectedSurface.onMoved();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void onMouseReleased(Point point) {
         if (state == State.MOVE) {
             points.clear();
         } else if (state == State.MOVE_SURFACE) {
             isBeingDragged = false;
             points.clear();
+            for (Surface surface : surfaces) {
+                if (surface.isSelected()) {
+                    handleSurfaceStackable(surface, surfaces);
+                    notifyObserverForSurfaces();
+                }
+            }
         }
     }
 
+    public void combineSelectedSurfaces() {
+        for (Surface firstSurface : surfaces) {
+            for (Surface secondSurface : surfaces) {
+                if (firstSurface != secondSurface) {
+                    if (firstSurface.isSurfaceStacked(secondSurface)) {
+                        firstSurface.getIntersectionsPointWithSurface(secondSurface);
+                    }
+                }
+            }
+        }
+    }
+
+<<<<<<< HEAD
     public Point gridAttractMouse(Point before) {
         Point after = new Point(before);
         if (before.x % 100 < 4)
@@ -246,6 +291,14 @@ public class VirtuTuileController {
             }
         }
         return after;
+=======
+    private void setSelectedTile(Tile tile) {
+        selectedTile = tile;
+    }
+
+    public Tile getSelectedTile() {
+        return selectedTile;
+>>>>>>> 8485b2c195d8a1a33886312eb3af051846cf4a62
     }
 
     public void onMouseMoved(Point point) {
@@ -267,18 +320,18 @@ public class VirtuTuileController {
                 List<Point> surfacePoints = tmpSurface.getPoints();
 
                 Point point2 = surfacePoints.get(1);
-                point2.x = mousePosition.x + camPos.x;
+                point2.x = mousePosition.x;
 
                 Point point3 = surfacePoints.get(2);
-                point3.setPos(mousePosition.x + camPos.x, mousePosition.y + camPos.y);
+                point3.setPos(mousePosition.x, mousePosition.y);
 
                 Point point4 = surfacePoints.get(3);
-                point4.y = mousePosition.y + camPos.y;
+                point4.y = mousePosition.y;
             }
         } else if (state == State.MOVE && points.size() > 0) {
             Point pressedPoint = points.get(0);
-            camPos.x =  initCamPos.x + (pressedPoint.x - point.x);
-            camPos.y =  initCamPos.y + (pressedPoint.y - point.y);
+            camPos.x =  (int)(zoom * (pressedPoint.x - mousePosition.x)) + camPos.x;
+            camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
             for (Point surfacePoint : tmpSurface.getPoints()) {
@@ -294,16 +347,19 @@ public class VirtuTuileController {
         return surfaces;
     }
 
-    public void zoomUp() {
-        zoom *= 1.1;
+    public void zoomIn() {
+        zoom = zoom * 0.9f;
+        camPos.x = (int)((mousePosition.x - camPos.x) * -0.1f + camPos.x);
+        camPos.y = (int)((mousePosition.y - camPos.y) * -0.1f + camPos.y);
         notifyObserverForSurfaces();
     }
 
-    public void zoomDown() {
-        zoom /= 1.1;
+    public void zoomOut() {
+        zoom = zoom * 1.1f;
+        camPos.x = (int)((mousePosition.x - camPos.x) * 0.1f + camPos.x);
+        camPos.y = (int)((mousePosition.y - camPos.y) * 0.1f + camPos.y);
         notifyObserverForSurfaces();
     }
-
     public void mouseUp() {
 
     }
@@ -326,6 +382,7 @@ public class VirtuTuileController {
 
     public void move() {
 
+
     }
 
     public void registerObserver(SurfacesControllerObserver newListener) {
@@ -342,7 +399,19 @@ public class VirtuTuileController {
         }
     }
 
-    public  Point convertPoint(int x, int y) {
-        return new Point(x, y);
+    public Point GraphicToCoord(int x, int y) {
+        Point dest = new Point(x, y);
+        dest.x = (int)Math.floor(dest.x / zoom);
+        dest.y = (int)Math.floor(dest.y / zoom);
+        dest.add(camPos);
+        return dest;
+    }
+
+    public  Point coordToGraphic(int x, int y) {
+        Point dest = new Point(x, y);
+        dest.less(camPos);
+        dest.x = (int)Math.floor(dest.x * zoom);
+        dest.y = (int)Math.floor(dest.y * zoom);
+        return dest;
     }
 }

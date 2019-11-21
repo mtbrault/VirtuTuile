@@ -40,7 +40,37 @@ public class Surface extends Polygon {
         this.material = material;
     }
 
+    public ArrayList<Point> getIntersectionsPointWithSurface(Surface surface) {
+        ArrayList<Point> intersectionPoints = new ArrayList<Point>();
+        for (Point point : surface.getPoints()) {
+            if (isInside(point)) {
+                System.out.println("intersection");
+                intersectionPoints.add(new Point(point));
+            }
+        }
+        for (Point point : points) {
+            if (surface.isInside(point)) {
+                System.out.println("intersection");
+                intersectionPoints.add(new Point(point));
+            }
+        }
+        return intersectionPoints;
+    }
     public void onMoved() {
         tiles = pattern.build(material, this);
+    }
+
+    public boolean isSurfaceStacked(Surface surface) {
+        for (Point point : points) {
+            if (surface.isInside(point)) {
+                return true;
+            }
+        }
+        for (Point point : surface.getPoints()) {
+            if (isInside(point)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -58,7 +58,7 @@ public class ToolBarPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         JPanel toolbarLeft = new JPanel();
-        toolbarLeft.setLayout(new GridLayout(1, 9));
+        toolbarLeft.setLayout(new GridLayout(1, 10));
         add(toolbarLeft);
 
         try {
@@ -98,6 +98,7 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/zoom-.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(handleClick(State.MOVE));
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -139,6 +140,16 @@ public class ToolBarPanel extends JPanel {
         } catch (IOException err) {
             System.out.println(err);
         }
+
+        JButton button = new JButton("Combine selected surfaces");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainWindow.controller.combineSelectedSurfaces();
+            }
+        });
+        toolbarLeft.add(button);
+
         JPanel toolbarRight = new JPanel();
         toolbarRight.setLayout(new GridLayout(1, 8, 0, 0));
         add(toolbarRight);
