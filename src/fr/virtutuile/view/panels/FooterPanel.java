@@ -8,7 +8,10 @@ import javax.swing.*;
 
 public class FooterPanel extends JPanel {
 
-    public FooterPanel(MainWindow outer) {
+    private final   MainWindow mainWindow;
+
+    public FooterPanel(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
         buildUp();
     }
 
@@ -19,7 +22,7 @@ public class FooterPanel extends JPanel {
         setPreferredSize(footerDimension);
         setBackground(Color.white);
         setBorder(BorderFactory.createLineBorder(Color.black));
-        JLabel lblNewLabel_2 = new JLabel("Zoom : ");
+        JLabel lblNewLabel_2 = new JLabel("Zoom : " + (mainWindow.controller.getZoom() * 100));
         add(lblNewLabel_2);
     }
 }

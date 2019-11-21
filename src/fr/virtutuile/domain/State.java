@@ -4,5 +4,7 @@ public enum State {
     UNKNOWN,
     CREATE_RECTANGULAR_SURFACE,
     SELECTION,
-    MOVE
+    MOVE_SURFACE,
+    MOVE,
+    GRID
 }

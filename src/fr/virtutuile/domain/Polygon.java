@@ -54,11 +54,7 @@ public class Polygon {
         if (isOnLine(points.get(0), points.get(points.size() - 1), p3)) {
             nbSegment++;
         }
-        if (nbSegment % 2 == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return (nbSegment % 2 == 1);
     }
 
     public void setPoints(List<Point> points) {

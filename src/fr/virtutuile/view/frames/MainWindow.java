@@ -36,21 +36,6 @@ public class MainWindow extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         System.out.println(key);
-        if (key == KeyEvent.VK_LEFT) {
-            controller.camPos.x -= controller.speed;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            controller.camPos.x += controller.speed;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            controller.camPos.y -= controller.speed;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            controller.camPos.y += controller.speed;
-        }
         drawingPanel.notifyCreatedSurface();
     }
 
@@ -72,8 +57,6 @@ public class MainWindow extends JFrame implements KeyListener {
         footerPanel = new FooterPanel(this);
         addComponentListener( new ComponentListener() {
             public void componentMoved( ComponentEvent e ) {
-                System.out.println("Screen " + drawingPanel.getLocation().x + "/" + drawingPanel.getLocation().y +
-                        "+" + getLocation().x + "/" + getLocation().y);
                 Point pos = new Point(drawingPanel.getLocationOnScreen().x,
                         drawingPanel.getLocationOnScreen().y);
                 controller.setCanvasPosition(pos);

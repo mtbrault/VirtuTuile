@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
-    private final MainWindow mainWindow;
+    private final   MainWindow mainWindow;
 
     public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -27,6 +27,7 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
             public void mouseMoved(MouseEvent e) {
                 mainWindow.controller.onMouseMoved(mainWindow.controller.convertPoint(e.getX(), e.getY()));
             }
+
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -45,6 +46,27 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
                 Point point = mainWindow.controller.convertPoint(e.getX(), e.getY());
                 mainWindow.controller.onMouseReleased(point);
             }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                System.out.println("coucou");
+            }
+        });
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int notches = e.getWheelRotation();
+                int zoomSensibilty = 0;
+
+                if (notches > zoomSensibilty) {
+                    mainWindow.controller.zoomUp();
+
+                }
+                else if (notches < -zoomSensibilty) {
+                    mainWindow.controller.zoomDown();
+                }
+
+            }
         });
         mainWindow.controller.registerObserver(this);
         buildUp();
@@ -58,9 +80,11 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Point pos = new Point(getLocationOnScreen().x, getLocationOnScreen().y);
+        mainWindow.controller.setCanvasPosition(pos);
         SurfacesDrawer surfacesDrawer = new SurfacesDrawer(mainWindow.controller);
-        if (mainWindow.controller) {
-            GridDrawer gridDrawer = new GridDrawer(mainWindow.controller);
+        if (mainWindow.controller.getGridSwitch()) {
+            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height);
             gridDrawer.draw(g);
         }
         surfacesDrawer.draw(g);

@@ -37,6 +37,7 @@ public class ToolBarPanel extends JPanel {
         return dimg;
     }
 
+
     private ActionListener handleClick(State state) {
         return new ActionListener() {
             @Override
@@ -82,8 +83,14 @@ public class ToolBarPanel extends JPanel {
             System.out.println(err);
         }
         try {
-            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/zoom+.png"));
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/trash.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.deleteSurface();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -106,7 +113,7 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/arrow.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
-            button.addActionListener(handleClick(State.MOVE));
+            button.addActionListener(handleClick(State.MOVE_SURFACE));
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -114,6 +121,12 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/grid.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.switchGrid();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -128,7 +141,6 @@ public class ToolBarPanel extends JPanel {
         }
         JPanel toolbarRight = new JPanel();
         toolbarRight.setLayout(new GridLayout(1, 8, 0, 0));
-        toolbarRight.setBackground(Color.yellow);
         add(toolbarRight);
 
         JPanel blankSpaceRight1 = new JPanel();
