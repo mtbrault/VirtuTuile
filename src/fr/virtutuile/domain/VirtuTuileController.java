@@ -236,6 +236,7 @@ public class VirtuTuileController {
 
     public void move() {
 
+
     }
 
     public void registerObserver(SurfacesControllerObserver newListener) {
@@ -254,27 +255,23 @@ public class VirtuTuileController {
 
     public Point GraphicToCoord(int x, int y) {
         Point dest = new Point(x, y);
-
         //int distX = camPos.x + (int)((x - camPos.x) / zoom);
         //int distY = camPos.y + (int)((y - camPos.y) / zoom);
         //dest.setPos(distX, distY);
         dest.x = (int)Math.floor(dest.x / zoom);
         dest.y = (int)Math.floor(dest.y / zoom);
         dest.add(camPos);
-
         return dest;
     }
 
     public  Point coordToGraphic(int x, int y) {
         Point dest = new Point(x, y);
-
         dest.less(camPos);
         //int distX = camPos.x + (int)((dest.x) * zoom);
         //int distY = camPos.y + (int)((dest.y) * zoom);
         dest.x = (int)Math.floor(dest.x * zoom);
         dest.y = (int)Math.floor(dest.y * zoom);
         //dest.setPos(distX, distY);
-
         return dest;
     }
 }
