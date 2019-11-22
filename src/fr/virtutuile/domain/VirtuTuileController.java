@@ -13,7 +13,8 @@ public class VirtuTuileController {
     private ArrayList<Material> materials;
     private Tile selectedTile;
     private List<Point> points;
-    private Surface tmpSurface;
+    private Surface tmpSurface = null;
+    private Surface movingSurface = null;
     public Point mousePosition;
     private List<SurfacesControllerObserver> observers;
     private double zoom = 1;
@@ -36,7 +37,6 @@ public class VirtuTuileController {
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
         mousePositionZoom = new Point(0, 0);
-
         materials.add(new Material());
     }
 
@@ -150,7 +150,7 @@ public class VirtuTuileController {
             for (Surface surface : surfaces) {
                 if (surface.isInside(point)) {
                     surface.setSelected(true);
-                    tmpSurface = surface;
+                    movingSurface = surface;
                     for (Point surfacePoint : surface.getPoints()) {
                         surfacePoint.initX = surfacePoint.x;
                         surfacePoint.initY =  surfacePoint.y;
@@ -218,6 +218,7 @@ public class VirtuTuileController {
             points.clear();
         } else if (state == State.MOVE_SURFACE) {
             isBeingDragged = false;
+            movingSurface = null;
             points.clear();
             for (Surface surface : surfaces) {
                 if (surface.isSelected()) {
@@ -256,7 +257,7 @@ public class VirtuTuileController {
     public Point gridAttractSurface(Point before) {
         Point after = new Point(before);
         Point vector = new Point(0, 0);
-        for (Point surfacePoint : tmpSurface.getPoints()) {
+        for (Point surfacePoint : movingSurface.getPoints()) {
             if (surfacePoint.x % 100 < 4 && vector.x >= 0)
                 vector.x -= surfacePoint.x % 100;
             else if (surfacePoint.x % 100 >= 96 && vector.x <= 0)
@@ -326,11 +327,11 @@ public class VirtuTuileController {
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
-            for (Point surfacePoint : tmpSurface.getPoints()) {
+            for (Point surfacePoint : movingSurface.getPoints()) {
                 surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
                 surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
             }
-            tmpSurface.onMoved();
+            movingSurface.onMoved();
         }
         notifyObserverForSurfaces();
     }
