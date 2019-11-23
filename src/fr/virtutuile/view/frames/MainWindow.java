@@ -35,7 +35,6 @@ public class MainWindow extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        System.out.println(key);
         drawingPanel.notifyCreatedSurface();
     }
 
