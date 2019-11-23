@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/FooterPanel.class" beforeDir="false" />
+    <list default="true" id="294426a3-1f70-4b55-bf5a-3dd240365101" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,26 +10,14 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Enum" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1StgQ9Ga7vUnZAobqMtaV3vL81Z" />
+  <component name="ProjectId" id="1StfYRZsOdfqdIPgDffKBqr94eZ" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -44,8 +32,17 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="fr.virtutuile.view.Main" />
+      <module name="VirtuTuile" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
       <module name="VirtuTuile" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -57,17 +54,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e0ce0135-4534-457c-994e-af472d826b77" name="Default Changelist" comment="" />
-      <created>1572388286655</created>
+      <changelist id="294426a3-1f70-4b55-bf5a-3dd240365101" name="Default Changelist" comment="" />
+      <created>1572387859832</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1572388286655</updated>
-      <workItem from="1572388288496" duration="40232000" />
-      <workItem from="1573345241233" duration="14242000" />
-      <workItem from="1573686943857" duration="2764000" />
-      <workItem from="1573690071933" duration="2933000" />
-      <workItem from="1574105330154" duration="7283000" />
-      <workItem from="1574178373555" duration="35796000" />
+      <updated>1572387859832</updated>
+      <workItem from="1572387861131" duration="226000" />
+      <workItem from="1572388194899" duration="35000" />
     </task>
     <servers />
   </component>
