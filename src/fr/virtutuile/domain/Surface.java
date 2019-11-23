@@ -9,6 +9,8 @@ public class Surface extends Polygon {
     private boolean selected;
     private Pattern pattern;
     private Material material;
+    private int height;
+    private int width;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
 
     public Surface(List<Point> points) {
@@ -27,6 +29,24 @@ public class Surface extends Polygon {
     public int getNbTiles() {
         return tiles.size();
     }
+
+    public int getHeight() {
+        return Math.abs(points.get(0).y - points.get(3).y);
+    }
+
+    public void setHeight(int height) {
+        this.points.get(3).y = this.points.get(0).y + height;
+        this.points.get(2).y = this.points.get(0).y + height;
+    }
+
+    public void setWidth(int width) {
+        this.points.get(0).y = this.points.get(0).x + width;
+        this.points.get(1).y = this.points.get(0).x + width;
+    }
+    public int getWidth() {
+        return Math.abs(points.get(0).x - points.get(1).x);
+    }
+
 
     public List<Tile> getTiles() {
         return tiles;
