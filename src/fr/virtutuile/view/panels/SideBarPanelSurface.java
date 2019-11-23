@@ -6,12 +6,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import fr.virtutuile.domain.Surface;
+import fr.virtutuile.domain.VirtuTuileController;
+
 import javax.swing.SwingConstants;
 
 public class SideBarPanelSurface extends JPanel {
@@ -19,7 +23,7 @@ public class SideBarPanelSurface extends JPanel {
     private JTextField textField_2;
     private JTextField textField;
 
-    public SideBarPanelSurface(Surface surface, int nbSurface) {
+    public SideBarPanelSurface(Surface surface, int nbSurface, VirtuTuileController controller) {
         JPanel panel_6 = new JPanel();
         add(panel_6);
         panel_6.setBackground(Color.WHITE);
@@ -50,9 +54,16 @@ public class SideBarPanelSurface extends JPanel {
 
         textField = new JTextField("" + surface.getWidth());
         textField.setColumns(10);
-        textField.addActionListener((e) -> {
-            surface.setWidth(Integer.parseInt(textField.getText()));
-        });
+        textField.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        surface.setWidth(Integer.parseInt(textField.getText()));
+                        surface.onMoved();
+                        controller.notifyObserverForSurfaces();
+                    }
+                }
+        );
 
         GridBagConstraints gbc_textField = new GridBagConstraints();
         gbc_textField.insets = new Insets(0, 0, 5, 0);
@@ -72,8 +83,14 @@ public class SideBarPanelSurface extends JPanel {
 
         textField_1 = new JTextField("" + surface.getHeight());
         textField_1.setColumns(10);
-        textField_1.addActionListener((e) -> {
-            surface.setHeight(Integer.parseInt(textField.getText()));
+        textField_1.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        surface.setHeight(Integer.parseInt(textField_1.getText()));
+                        surface.onMoved();
+                        controller.notifyObserverForSurfaces();
+                    }
         });
         GridBagConstraints gbc_textField_1 = new GridBagConstraints();
         gbc_textField_1.insets = new Insets(0, 0, 5, 0);

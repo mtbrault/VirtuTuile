@@ -40,8 +40,8 @@ public class Surface extends Polygon {
     }
 
     public void setWidth(int width) {
-        this.points.get(0).y = this.points.get(0).x + width;
-        this.points.get(1).y = this.points.get(0).x + width;
+        this.points.get(1).x = this.points.get(0).x + width;
+        this.points.get(2).x = this.points.get(0).x + width;
     }
     public int getWidth() {
         return Math.abs(points.get(0).x - points.get(1).x);

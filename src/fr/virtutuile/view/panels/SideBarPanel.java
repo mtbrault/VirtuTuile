@@ -73,7 +73,7 @@ public class SideBarPanel extends JPanel implements SurfacesControllerObserver {
         panel_2.updateUI();
         for (Surface surface : mainWindow.controller.getSurfaces()) {
             nbSurface++;
-            panel_2.add(new SideBarPanelSurface(surface, nbSurface));
+            panel_2.add(new SideBarPanelSurface(surface, nbSurface, mainWindow.controller));
         }
         panel_2.repaint();
 
