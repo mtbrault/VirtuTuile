@@ -9,10 +9,19 @@ public class Surface extends Polygon {
     private boolean selected;
     private Pattern pattern;
     private Material material;
+    private SurfaceType surfaceType = SurfaceType.REGULAR;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
         tiles = new ArrayList<>();
+    }
+
+    public void setIrregular() {
+        surfaceType = SurfaceType.IRREGULAR;
+    }
+
+    public SurfaceType getSurfaceType() {
+        return surfaceType;
     }
 
     public int getNbTiles() {
@@ -44,13 +53,11 @@ public class Surface extends Polygon {
         ArrayList<Point> intersectionPoints = new ArrayList<Point>();
         for (Point point : surface.getPoints()) {
             if (isInside(point)) {
-                System.out.println("intersection");
                 intersectionPoints.add(new Point(point));
             }
         }
         for (Point point : points) {
             if (surface.isInside(point)) {
-                System.out.println("intersection");
                 intersectionPoints.add(new Point(point));
             }
         }
@@ -60,6 +67,27 @@ public class Surface extends Polygon {
         tiles = pattern.build(material, this);
     }
 
+    public SurfacePosition getPositionSurface(Surface surface) {
+        List<Point> surfacePoints = surface.getPoints();
+        int dist1 = Math.abs(points.get(0).x - surfacePoints.get(1).x);
+        int dist2 = Math.abs(points.get(1).x - surfacePoints.get(0).x);
+        int dist3 = Math.abs(points.get(0).y - surfacePoints.get(2).y);
+        int dist4 = Math.abs(points.get(2).y - surfacePoints.get(0).y);
+        System.out.println("dist1:" + dist1 + "dist2: " + dist2 + "dist3: " + dist3 + "dist4: " + dist4);
+        if (dist1 == 0) {
+            return SurfacePosition.LEFT;
+        }
+        if (dist2 == 0) {
+            return SurfacePosition.RIGHT;
+        }
+        if (dist3 == 0) {
+            return SurfacePosition.TOP;
+        }
+        if (dist4 == 0) {
+            return SurfacePosition.BOTTOM;
+        }
+        return SurfacePosition.NONE;
+    }
     public boolean isSurfaceStacked(Surface surface) {
         for (Point point : points) {
             if (surface.isInside(point)) {

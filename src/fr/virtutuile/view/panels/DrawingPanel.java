@@ -20,7 +20,6 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                System.out.println(e.getX()+ " " + e.getY() );
                 mainWindow.controller.onMouseMoved(mainWindow.controller.GraphicToCoord(e.getX(), e.getY()));
             }
 

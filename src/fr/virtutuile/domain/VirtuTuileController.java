@@ -106,6 +106,11 @@ public class VirtuTuileController {
         notifyObserverForSurfaces();
     }
 
+    public void deleteSurface(Surface surfaceToDelete) {
+        surfaces.remove(surfaceToDelete);
+        notifyObserverForSurfaces();
+    }
+
     public double getZoom() {
         return zoom;
     }
@@ -230,10 +235,47 @@ public class VirtuTuileController {
 
     public void combineSelectedSurfaces() {
         for (Surface firstSurface : surfaces) {
-            for (Surface secondSurface : surfaces) {
-                if (firstSurface != secondSurface) {
-                    if (firstSurface.isSurfaceStacked(secondSurface)) {
-                        firstSurface.getIntersectionsPointWithSurface(secondSurface);
+            if (firstSurface.isSelected() && firstSurface.getSurfaceType() == SurfaceType.REGULAR) {
+                for (Surface secondSurface : surfaces) {
+                    if (firstSurface != secondSurface && secondSurface.isSelected() && secondSurface.getSurfaceType() == SurfaceType.REGULAR) {
+                        SurfacePosition position = firstSurface.getPositionSurface(secondSurface);
+                         if (position == SurfacePosition.LEFT) {
+                             firstSurface.getPoints().add(secondSurface.getPoints().get(2));
+                             firstSurface.getPoints().add(secondSurface.getPoints().get(3));
+                             firstSurface.getPoints().add(secondSurface.getPoints().get(0));
+                             firstSurface.getPoints().add(secondSurface.getPoints().get(1));
+                             firstSurface.setIrregular();
+                             firstSurface.getTiles().clear();
+                             deleteSurface(secondSurface);
+                         }
+                        if (position == SurfacePosition.RIGHT) {
+                            secondSurface.getPoints().add(firstSurface.getPoints().get(2));
+                            secondSurface.getPoints().add(firstSurface.getPoints().get(3));
+                            secondSurface.getPoints().add(firstSurface.getPoints().get(0));
+                            secondSurface.getPoints().add(firstSurface.getPoints().get(1));
+                            secondSurface.setIrregular();
+                            secondSurface.getTiles().clear();
+                            deleteSurface(firstSurface);
+                        }
+                        if (position == SurfacePosition.TOP) {
+                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(2));
+                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(1));
+                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(0));
+                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(3));
+                            firstSurface.setIrregular();
+                            firstSurface.getTiles().clear();
+                            deleteSurface(secondSurface);
+                        }
+                        if (position == SurfacePosition.BOTTOM) {
+                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(2));
+                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(1));
+                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(0));
+                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(3));
+                            secondSurface.setIrregular();
+                            secondSurface.getTiles().clear();
+                            deleteSurface(firstSurface);
+                        }
+                        return;
                     }
                 }
             }
@@ -326,9 +368,11 @@ public class VirtuTuileController {
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
-            for (Point surfacePoint : tmpSurface.getPoints()) {
-                surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
-                surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+            if (tmpSurface != null && tmpSurface.isInside(mousePosition)) {
+                for (Point surfacePoint : tmpSurface.getPoints()) {
+                    surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
+                    surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+                }
             }
             tmpSurface.onMoved();
         }
