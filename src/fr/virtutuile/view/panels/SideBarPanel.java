@@ -34,15 +34,12 @@ public class SideBarPanel extends JPanel implements SurfacesControllerObserver {
         setPreferredSize(new Dimension(350, 900));
         setBorder(BorderFactory.createLineBorder(Color.black));
 
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.white);
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
-        panel.setPreferredSize(new Dimension(350, 200));
+        JPanel panel = new SelectedTilePanel(mainWindow.controller);
         add(panel);
 
-        JLabel lblNewLabel_1 = new JLabel("Découpage de la première tuile");
+        JLabel lblNewLabel_1 = new JLabel("Découpage de la tuile");
         lblNewLabel_1.setVerticalAlignment(SwingConstants.BOTTOM);
-        panel.add(lblNewLabel_1);
+        panel.add(lblNewLabel_1);;
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(Color.white);
