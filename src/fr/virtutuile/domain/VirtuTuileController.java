@@ -69,6 +69,10 @@ public class VirtuTuileController {
         this.canvasPosition = p;
     }
 
+    public  ArrayList<Material> getMaterials() {
+        return this.materials;
+    }
+
     public void addRectangleSurface() {
         Point point1 = points.get(0);
         Point point3 = points.get(1);
@@ -91,7 +95,7 @@ public class VirtuTuileController {
         surfacePoints.add(new Point(maxX, maxY));
         surfacePoints.add(new Point(minX, maxY));
         Surface surface = new Surface(surfacePoints);
-        surface.setMaterial(new Material());
+        surface.setMaterial(materials.get(0));
         surface.setPattern(new Pattern());
         surfaces.add(surface);
         notifyObserverForSurfaces();
@@ -332,6 +336,12 @@ public class VirtuTuileController {
 
     private void setSelectedTile(Tile tile) {
         selectedTile = tile;
+    }
+
+    public void rebuildAllSurface() {
+        for (Surface surface : surfaces) {
+            surface.onMoved();
+        }
     }
 
     public Tile getSelectedTile() {

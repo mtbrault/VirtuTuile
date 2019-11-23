@@ -1,5 +1,6 @@
 package fr.virtutuile.view.panels;
 
+import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.State;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.Point;
@@ -150,55 +151,14 @@ public class ToolBarPanel extends JPanel {
         });
         toolbarLeft.add(button);
 
-        JPanel toolbarRight = new JPanel();
-        toolbarRight.setLayout(new GridLayout(1, 8, 0, 0));
-        add(toolbarRight);
-
-        JPanel blankSpaceRight1 = new JPanel();
-        blankSpaceRight1.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight1);
-
-        JPanel blankSpaceRight2 = new JPanel();
-        blankSpaceRight2.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight2);
-
-        JPanel blankSpaceRight3 = new JPanel();
-        blankSpaceRight3.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight3);
-
-        JPanel blankSpaceRight5 = new JPanel();
-        blankSpaceRight5.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight5);
-
-        JPanel blankSpaceRight4 = new JPanel();
-        blankSpaceRight4.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight4);
-
-        JPanel blankSpaceRight6 = new JPanel();
-        blankSpaceRight6.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight6);
-
-        JPanel blankSpaceRight7 = new JPanel();
-        blankSpaceRight7.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight7);
-
-        JPanel blankSpaceRight8 = new JPanel();
-        blankSpaceRight8.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight8);
-
-        JPanel rightTool1 = new JPanel();
-        rightTool1.setBackground(Color.white);
-        rightTool1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool1);
-
-        JPanel rightTool2 = new JPanel();
-        rightTool2.setBackground(Color.white);
-        rightTool2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool2);
-
-        JPanel rightTool3 = new JPanel();
-        rightTool3.setBackground(Color.white);
-        rightTool3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool3);
+        JButton buttonAddMaterial = new JButton("Ajouter un materiau");
+        buttonAddMaterial.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainWindow.controller.addMaterial(new Material());
+                mainWindow.controller.notifyObserverForSurfaces();
+            }
+        });
+        toolbarLeft.add(buttonAddMaterial);
     }
 }
