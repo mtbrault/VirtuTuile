@@ -93,7 +93,6 @@ public class Surface extends Polygon {
         int dist2 = Math.abs(points.get(1).x - surfacePoints.get(0).x);
         int dist3 = Math.abs(points.get(0).y - surfacePoints.get(2).y);
         int dist4 = Math.abs(points.get(2).y - surfacePoints.get(0).y);
-        System.out.println("dist1:" + dist1 + "dist2: " + dist2 + "dist3: " + dist3 + "dist4: " + dist4);
         if (dist1 == 0) {
             return SurfacePosition.LEFT;
         }

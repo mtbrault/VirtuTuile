@@ -285,7 +285,6 @@ public class VirtuTuileController {
 
     public Point gridAttractMouse(Point before) {
         Point after = new Point(before);
-        System.out.println(after.x + "/" + after.y);
         if (before.x % 100 < 4)
             after.x -= after.x % 100;
         else if (before.x % 100 >= 96)
@@ -447,12 +446,9 @@ public class VirtuTuileController {
 
     public  Point coordToGraphic(int x, int y) {
         Point dest = new Point(x, y);
-        System.out.println("IN: " + dest.x + ";" + dest.y);
-        System.out.println("Zoom is " + zoom);
         dest.less(camPos);
         dest.x = (int)Math.round(dest.x * zoom);
         dest.y = (int)Math.round(dest.y * zoom);
-        System.out.println("OUT: " + dest.x + ";" + dest.y);
         return dest;
     }
 }
