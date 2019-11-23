@@ -285,6 +285,7 @@ public class VirtuTuileController {
 
     public Point gridAttractMouse(Point before) {
         Point after = new Point(before);
+        System.out.println(after.x + "/" + after.y);
         if (before.x % 100 < 4)
             after.x -= after.x % 100;
         else if (before.x % 100 >= 96)
@@ -300,14 +301,15 @@ public class VirtuTuileController {
         Point after = new Point(before);
         Point vector = new Point(0, 0);
         for (Point surfacePoint : movingSurface.getPoints()) {
-            if (surfacePoint.x % 100 < 4 && vector.x >= 0)
-                vector.x -= surfacePoint.x % 100;
-            else if (surfacePoint.x % 100 >= 96 && vector.x <= 0)
-                vector.x += 100 - surfacePoint.x % 100;
-            if (surfacePoint.y % 100 < 4 && vector.y >= 0)
-                vector.y -= surfacePoint.y % 100;
-            else if (surfacePoint.y % 100 >= 96 && vector.y <= 0)
-                vector.y += 100 - surfacePoint.y % 100;
+            Point compare = coordToGraphic(surfacePoint.x, surfacePoint.y);
+            if (compare.x % 100 < 4 && vector.x >= 0)
+                vector.x -= compare.x % 100;
+            else if (compare.x % 100 >= 96 && vector.x <= 0)
+                vector.x += 100 - compare.x % 100;
+            if (compare.y % 100 < 4 && vector.y >= 0)
+                vector.y -= compare.y % 100;
+            else if (compare.y % 100 >= 96 && vector.y <= 0)
+                vector.y += 100 - compare.y % 100;
         }
         after.x += vector.x;
         after.y += vector.y;
@@ -315,7 +317,8 @@ public class VirtuTuileController {
     }
 
     public Point gridMagnet(Point before) {
-        Point after = isBeingDragged ? gridAttractSurface(before) : gridAttractMouse(before);
+        Point after = isBeingDragged && movingSurface.isInside(graphicToCoord(before.x, before.y)) ?
+                gridAttractSurface(before) : gridAttractMouse(before);
         if (!before.x.equals(after.x) || !before.y.equals(after.y)) {
             try {
                     Robot robot = new Robot();
@@ -325,7 +328,7 @@ public class VirtuTuileController {
                 System.out.println("Error initialazing the mouse Robot for the magnetic grid.");
             }
         }
-        return after;
+        return graphicToCoord(after.x, after.y);
     }
 
     private void setSelectedTile(Tile tile) {
@@ -338,7 +341,7 @@ public class VirtuTuileController {
 
     public void onMouseMoved(Point point) {
         if (gridSwitch)
-            point = gridMagnet(point);
+            point = gridMagnet(coordToGraphic(point.x, point.y));
         mousePosition.setPos(point.x, point.y);
         for (Surface surface : surfaces) {
             for(Tile tile : surface.getTiles()) {
@@ -434,19 +437,22 @@ public class VirtuTuileController {
         }
     }
 
-    public Point GraphicToCoord(int x, int y) {
+    public Point graphicToCoord(int x, int y) {
         Point dest = new Point(x, y);
-        dest.x = (int)Math.floor(dest.x / zoom);
-        dest.y = (int)Math.floor(dest.y / zoom);
+        dest.x = (int)Math.round(dest.x / zoom);
+        dest.y = (int)Math.round(dest.y / zoom);
         dest.add(camPos);
         return dest;
     }
 
     public  Point coordToGraphic(int x, int y) {
         Point dest = new Point(x, y);
+        System.out.println("IN: " + dest.x + ";" + dest.y);
+        System.out.println("Zoom is " + zoom);
         dest.less(camPos);
-        dest.x = (int)Math.floor(dest.x * zoom);
-        dest.y = (int)Math.floor(dest.y * zoom);
+        dest.x = (int)Math.round(dest.x * zoom);
+        dest.y = (int)Math.round(dest.y * zoom);
+        System.out.println("OUT: " + dest.x + ";" + dest.y);
         return dest;
     }
 }

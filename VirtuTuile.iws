@@ -9,12 +9,7 @@
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/domain/VirtuTuileController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/DrawingPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/VirtuTuile/fr/virtutuile/view/panels/ToolBarPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/domain/VirtuTuileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/frames/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/frames/MainWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/virtutuile/view/panels/DrawingPanel.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
