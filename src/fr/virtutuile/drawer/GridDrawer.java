@@ -1,7 +1,5 @@
 package fr.virtutuile.drawer;
-import fr.virtutuile.domain.VirtuTuileController;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 
