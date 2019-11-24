@@ -361,11 +361,13 @@ public class VirtuTuileController {
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
-            for (Point surfacePoint : movingSurface.getPoints()) {
-                surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
-                surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+            if (movingSurface != null) {
+                for (Point surfacePoint : movingSurface.getPoints()) {
+                    surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
+                    surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+                }
+                movingSurface.onMoved();
             }
-            movingSurface.onMoved();
         }
         notifyObserverForSurfaces();
     }

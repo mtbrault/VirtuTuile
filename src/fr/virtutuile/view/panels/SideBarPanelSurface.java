@@ -117,6 +117,15 @@ public class SideBarPanelSurface extends JPanel {
         gbc_textField_2.gridy = 3;
         panel_6.add(textField_2, gbc_textField_2);
         textField_2.setColumns(10);
+        textField_2.setText("" + surface.getJointSize());
+        textField_2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                surface.setJointSize(Integer.parseInt(textField_2.getText()));
+                surface.onMoved();
+                controller.notifyObserverForSurfaces();
+            }
+        });
         JPanel panel_3 = new JPanel();
         panel_3.setLayout(new GridLayout(0, 1, 0, 0));
         panel_3.setBackground(Color.black);

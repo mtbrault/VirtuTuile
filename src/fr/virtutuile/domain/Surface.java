@@ -9,13 +9,20 @@ public class Surface extends Polygon {
     private boolean selected;
     private Pattern pattern;
     private Material material;
-    private int height;
-    private int width;
+    private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
         tiles = new ArrayList<>();
+    }
+
+    public int getJointSize() {
+        return jointSize;
+    }
+
+    public void setJointSize(int newJointSize) {
+         jointSize = newJointSize;
     }
 
     public void setIrregular() {
@@ -24,10 +31,6 @@ public class Surface extends Polygon {
 
     public SurfaceType getSurfaceType() {
         return surfaceType;
-    }
-
-    public int getNbTiles() {
-        return tiles.size();
     }
 
     public int getHeight() {
