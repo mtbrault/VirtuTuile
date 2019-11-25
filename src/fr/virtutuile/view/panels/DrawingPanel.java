@@ -56,7 +56,6 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = e.getWheelRotation();
                 int zoomSensibilty = 0;
-                double zoomUpgrade = 0.05;
 
                 if (notches > zoomSensibilty) {
                     mainWindow.controller.zoomIn();

@@ -9,9 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
@@ -133,11 +131,11 @@ public class SideBarPanelSurface extends JPanel {
         	public void actionPerformed(ActionEvent arg0) {
         	}
         });
-        GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-        gbc_btnNewButton.gridx = 1;
-        gbc_btnNewButton.gridy = 4;
-        blockPanel.add(btnMaterial, gbc_btnNewButton);
-      
+        GridBagConstraints gridBtnMaterial = new GridBagConstraints();
+        gridBtnMaterial.gridx = 1;
+        gridBtnMaterial.gridy = 4;
+        blockPanel.add(btnMaterial, gridBtnMaterial);
+
         
         
         JLabel labelMotif = new JLabel("Motifs");
@@ -153,10 +151,10 @@ public class SideBarPanelSurface extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        GridBagConstraints gbc_btnNewButton2 = new GridBagConstraints();
-        gbc_btnNewButton2.gridx = 1;
-        gbc_btnNewButton2.gridy = 5;
-        blockPanel.add(btnMotif, gbc_btnNewButton2);
+        GridBagConstraints gridBtnMotif = new GridBagConstraints();
+        gridBtnMotif.gridx = 1;
+        gridBtnMotif.gridy = 5;
+        blockPanel.add(btnMotif, gridBtnMotif);
    
     }
 }

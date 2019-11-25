@@ -6,7 +6,6 @@ import fr.virtutuile.view.menu.TopMenu;
 import fr.virtutuile.view.panels.*;
 
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;

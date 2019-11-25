@@ -1,14 +1,12 @@
 package fr.virtutuile.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Polygon {
     protected List<Point> points;
     private PolygonType type;
-    private float area;
     private Color color;
-    private List<String> labels;
+
     private boolean isOnLine(Point p1, Point p2, Point p3) {
         if (p3.x < Math.max(p1.x, p2.x) && p3.y < Math.max(p1.y, p2.y) && p3.y > Math.min(p1.y, p2.y)) {
             return true;
@@ -26,14 +24,6 @@ public class Polygon {
 
     public List<Point> getPoints() {
         return points;
-    }
-
-    public float getArea() {
-        return area;
-    }
-
-    public PolygonType getType() {
-        return type;
     }
 
     public Color getColor() {
@@ -57,9 +47,6 @@ public class Polygon {
         return (nbSegment % 2 == 1);
     }
 
-    public void setPoints(List<Point> points) {
-        this.points = points;
-    }
     public void move(Point newPoint) {
         for (Point point : points) {
             point.add(newPoint);

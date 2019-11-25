@@ -19,12 +19,8 @@ public class VirtuTuileController {
     private List<SurfacesControllerObserver> observers;
     private double zoom = 1;
     public Point mousePositionZoom;
-    private float previousZoom = 1;
     public Point camPos;
-    public Point initCamPos;
-    public int speed = 3;
     private Point canvasPosition;
-    private int polygonLastId = 0;
     private State state = State.UNKNOWN;
     private boolean gridSwitch = false;
     private boolean isBeingDragged = false;
@@ -59,10 +55,6 @@ public class VirtuTuileController {
 
     public void addMaterial(Material material) {
         materials.add(material);
-    }
-
-    public void setZoom(float zoom) {
-        this.zoom = zoom;
     }
 
     public void setCanvasPosition(Point p) {
@@ -119,21 +111,9 @@ public class VirtuTuileController {
         return zoom;
     }
 
-    public Point getCamPos() {
-        return camPos;
-    }
-
-    public void addPoint(Point point) {
-        points.add(point);
-    }
-
     public void switchGrid() {
         gridSwitch = !gridSwitch;
         notifyObserverForSurfaces();
-    }
-
-    public List<Point> getPoints() {
-        return this.points;
     }
 
     public void addTmpSurface() {
@@ -319,6 +299,13 @@ public class VirtuTuileController {
         return (after);
     }
 
+    public void changeSurfaceMaterial(Surface surface) {
+        int index = materials.indexOf(surface.getMaterial());
+        if (index == materials.size())
+            surface.setMaterial(materials.get(0));
+        else
+            surface.setMaterial(materials.get(index + 1));
+    }
     public Point gridMagnet(Point before) {
         Point after = isBeingDragged && movingSurface.isInside(graphicToCoord(before.x, before.y)) ?
                 gridAttractSurface(before) : gridAttractMouse(before);
@@ -381,11 +368,13 @@ public class VirtuTuileController {
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
             Point pressedPoint = points.get(0);
-            for (Point surfacePoint : movingSurface.getPoints()) {
-                surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
-                surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+            if (movingSurface != null) {
+                for (Point surfacePoint : movingSurface.getPoints()) {
+                    surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
+                    surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+                }
+                movingSurface.onMoved();
             }
-            movingSurface.onMoved();
         }
         notifyObserverForSurfaces();
     }
@@ -395,49 +384,21 @@ public class VirtuTuileController {
     }
 
     public void zoomIn() {
+        zoom = zoom * 1.1f;
+        camPos.x = (int)((mousePosition.x - camPos.x) * 0.1f + camPos.x);
+        camPos.y = (int)((mousePosition.y - camPos.y) * 0.1f + camPos.y);
+        notifyObserverForSurfaces();
+    }
+
+    public void zoomOut() {
         zoom = zoom * 0.9f;
         camPos.x = (int)((mousePosition.x - camPos.x) * -0.1f + camPos.x);
         camPos.y = (int)((mousePosition.y - camPos.y) * -0.1f + camPos.y);
         notifyObserverForSurfaces();
     }
 
-    public void zoomOut() {
-        zoom = zoom * 1.1f;
-        camPos.x = (int)((mousePosition.x - camPos.x) * 0.1f + camPos.x);
-        camPos.y = (int)((mousePosition.y - camPos.y) * 0.1f + camPos.y);
-        notifyObserverForSurfaces();
-    }
-    public void mouseUp() {
-
-    }
-
-    public void mouseDown() {
-
-    }
-
-    public void save() {
-
-    }
-
-    public void deletedSelected() {
-
-    }
-
-    public void deleteZone(List<Point> points) {
-
-    }
-
-    public void move() {
-
-
-    }
-
     public void registerObserver(SurfacesControllerObserver newListener) {
         observers.add(newListener);
-    }
-
-    public void unregisterObserver(SurfacesControllerObserver listener) {
-        observers.remove(listener);
     }
 
     public void notifyObserverForSurfaces() {
