@@ -299,6 +299,13 @@ public class VirtuTuileController {
         return (after);
     }
 
+    public void changeSurfaceMaterial(Surface surface) {
+        int index = materials.indexOf(surface.getMaterial());
+        if (index == materials.size())
+            surface.setMaterial(materials.get(0));
+        else
+            surface.setMaterial(materials.get(index + 1));
+    }
     public Point gridMagnet(Point before) {
         Point after = isBeingDragged && movingSurface.isInside(graphicToCoord(before.x, before.y)) ?
                 gridAttractSurface(before) : gridAttractMouse(before);

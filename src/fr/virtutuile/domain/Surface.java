@@ -79,7 +79,9 @@ public class Surface extends Polygon {
     public void setMaterial(Material material) {
         this.material = material;
     }
-
+    public Material getMaterial() {
+        return this.material;
+    }
     public ArrayList<Point> getIntersectionsPointWithSurface(Surface surface) {
         ArrayList<Point> intersectionPoints = new ArrayList<Point>();
         for (Point point : surface.getPoints()) {
