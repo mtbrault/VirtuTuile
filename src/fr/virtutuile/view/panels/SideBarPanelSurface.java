@@ -9,14 +9,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
-
-import javax.swing.SwingConstants;
 
 public class SideBarPanelSurface extends JPanel {
     private JTextField textField_1;
@@ -126,9 +122,14 @@ public class SideBarPanelSurface extends JPanel {
                 controller.notifyObserverForSurfaces();
             }
         });
-        JPanel panel_3 = new JPanel();
-        panel_3.setLayout(new GridLayout(0, 1, 0, 0));
-        panel_3.setBackground(Color.black);
-        add(panel_3);
+
+        JButton buttonChangeMotif = new JButton("Changer de motif");
+        buttonChangeMotif.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        panel_6.add(buttonChangeMotif);
     }
 }

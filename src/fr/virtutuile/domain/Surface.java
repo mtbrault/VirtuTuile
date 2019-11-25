@@ -22,6 +22,9 @@ public class Surface extends Polygon {
         return jointSize;
     }
 
+    public void changePattern() {
+        patternId = (patternId + 1) % 2 + 1;
+    }
     public int getPatternId() {
         return patternId;
     }
