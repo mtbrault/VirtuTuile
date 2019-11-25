@@ -13,6 +13,7 @@ public class Surface extends Polygon {
     private Material material;
     private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
+    private int patternId = 1;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
@@ -21,6 +22,13 @@ public class Surface extends Polygon {
 
     public int getJointSize() {
         return jointSize;
+    }
+
+    public void changePattern() {
+        this.patternId = (this.patternId + 1) % 2;
+    }
+    public int getPatternId() {
+        return patternId;
     }
 
     public void setJointSize(int newJointSize) {
@@ -86,7 +94,9 @@ public class Surface extends Polygon {
     public void setMaterial(Material material) {
         this.material = material;
     }
-
+    public Material getMaterial() {
+        return this.material;
+    }
     public ArrayList<Point> getIntersectionsPointWithSurface(Surface surface) {
         ArrayList<Point> intersectionPoints = new ArrayList<Point>();
         for (Point point : surface.getPoints()) {

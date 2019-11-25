@@ -4,18 +4,13 @@ public class Material {
 
     private int width;
     private int height;
-    private Color color;
+    private String color;
 
-    public Material(int width, int height, Color color)  {
-        this.width = width;
-        this.height = height;
-        this.color = color;
-    }
 
     public Material() {
         this.width = 10;
         this.height = 20;
-        this.color = new Color();
+        this.color = "#FFFFFF";
     }
 
     public int getWidth() {
@@ -34,11 +29,11 @@ public class Material {
         this.height = height;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 }
