@@ -117,6 +117,15 @@ public class SideBarPanelSurface extends JPanel {
         gbc_textField_2.gridy = 3;
         blockPanel.add(textField_2, gbc_textField_2);
         textField_2.setColumns(10);
+        textField_2.setText("" + surface.getJointSize());
+        textField_2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                surface.setJointSize(Integer.parseInt(textField_2.getText()));
+                surface.onMoved();
+                controller.notifyObserverForSurfaces();
+            }
+        });
         
         JLabel labelMaterial = new JLabel("Matériaux");
         GridBagConstraints gridMaterial = new GridBagConstraints();
@@ -129,6 +138,9 @@ public class SideBarPanelSurface extends JPanel {
         JButton btnMaterial = new JButton("Changer");
         btnMaterial.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
+        	    controller.changeSurfaceMaterial(surface);
+        	    controller.rebuildAllSurface();
+                controller.notifyObserverForSurfaces();
         	}
         });
         GridBagConstraints gridBtnMaterial = new GridBagConstraints();
@@ -149,6 +161,9 @@ public class SideBarPanelSurface extends JPanel {
         JButton btnMotif = new JButton("Changer");
         btnMotif.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        	    surface.changePattern();
+                controller.rebuildAllSurface();
+                controller.notifyObserverForSurfaces();
         	}
         });
         GridBagConstraints gridBtnMotif = new GridBagConstraints();

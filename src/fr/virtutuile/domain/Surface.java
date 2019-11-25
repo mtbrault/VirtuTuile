@@ -23,7 +23,7 @@ public class Surface extends Polygon {
     }
 
     public void changePattern() {
-        patternId = (patternId + 1) % 2 + 1;
+        this.patternId = (this.patternId + 1) % 2;
     }
     public int getPatternId() {
         return patternId;

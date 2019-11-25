@@ -301,7 +301,7 @@ public class VirtuTuileController {
 
     public void changeSurfaceMaterial(Surface surface) {
         int index = materials.indexOf(surface.getMaterial());
-        if (index == materials.size())
+        if (index == materials.size() - 1)
             surface.setMaterial(materials.get(0));
         else
             surface.setMaterial(materials.get(index + 1));
