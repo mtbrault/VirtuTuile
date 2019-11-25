@@ -17,6 +17,23 @@ public class SurfacesDrawer {
         this.controller = controller;
     }
 
+    public void drawHoles(Graphics2D g2, List<fr.virtutuile.domain.Polygon> list) {
+        for (fr.virtutuile.domain.Polygon hole : list) {
+            List<Integer> xPoly = new ArrayList<Integer>();
+            List<Integer> yPoly = new ArrayList<Integer>();
+            List<Point> points = hole.getPoints();
+            for (Point point : points) {
+                Point graphicPoint = controller.coordToGraphic(point.x, point.y);
+                xPoly.add(graphicPoint.x);
+                yPoly.add(graphicPoint.y);
+            }
+            Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
+            g2.setColor(new Color(217, 217, 217));
+            g2.fill(polygon);
+            g2.draw(polygon);
+        }
+    }
+
     public void drawPolygon(Graphics g, Surface surface) {
         Color color = new Color(surface.getColor().red, surface.getColor().green, surface.getColor().blue, surface.getColor().alpha);
         Graphics2D g2 = (Graphics2D) g;
@@ -62,7 +79,7 @@ public class SurfacesDrawer {
                g.drawPolygon(polygonTile);
             }
         }
-
+        drawHoles(g2, surface.getHoles());
     }
 
     public void draw(Graphics g) {

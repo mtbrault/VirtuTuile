@@ -1,11 +1,13 @@
 package fr.virtutuile.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Surface extends Polygon {
 
     private List<Tile> tiles;
+    private List<Polygon> holes = new ArrayList<>();
     private boolean selected;
     private Pattern pattern;
     private Material material;
@@ -35,6 +37,19 @@ public class Surface extends Polygon {
 
     public int getHeight() {
         return Math.abs(points.get(0).y - points.get(3).y);
+    }
+
+    public void digHole(List<Point> list) {
+        for (Point points : list) {
+            if (!isInside(points))
+                return;
+        }
+        Polygon poly = new Polygon(new ArrayList<Point>(list), PolygonType.HOLE);
+        holes.add(poly);
+    }
+
+    public List<Polygon> getHoles() {
+        return (holes);
     }
 
     public void setHeight(int height) {

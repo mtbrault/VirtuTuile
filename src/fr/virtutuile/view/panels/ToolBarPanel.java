@@ -162,12 +162,7 @@ public class ToolBarPanel extends JPanel {
         toolbarLeft.add(buttonAddMaterial);
 
         JButton buttonCutSurface = new JButton("Couper une surface");
-        buttonAddMaterial.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                button.addActionListener(handleClick(State.CUT_SURFACE));
-            }
-        });
+        buttonCutSurface.addActionListener(handleClick(State.CUT_SURFACE));
         toolbarLeft.add(buttonCutSurface);
     }
 }

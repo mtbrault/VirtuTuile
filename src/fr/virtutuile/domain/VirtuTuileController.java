@@ -1,6 +1,7 @@
 package fr.virtutuile.domain;
 
 import java.awt.*;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -15,6 +16,7 @@ public class VirtuTuileController {
     private List<Point> points;
     private Surface tmpSurface = null;
     private Surface movingSurface = null;
+    private Surface cutSurface = null;
     public Point mousePosition;
     private List<SurfacesControllerObserver> observers;
     private double zoom = 1;
@@ -63,6 +65,14 @@ public class VirtuTuileController {
 
     public  ArrayList<Material> getMaterials() {
         return this.materials;
+    }
+
+    public void addRectangleHole(Surface surface) {
+        Point pointA = points.get(0);
+        Point pointC = points.get(1);
+        Point pointB = new Point(pointC.x, pointA.y);
+        Point pointD = new Point(pointA.x, pointC.y);
+        surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
     }
 
     public void addRectangleSurface() {
@@ -144,6 +154,12 @@ public class VirtuTuileController {
                         surfacePoint.initX = surfacePoint.x;
                         surfacePoint.initY =  surfacePoint.y;
                     }
+                    for (Polygon hole : surface.getHoles()) {
+                        for (Point surfacePoint : hole.getPoints()) {
+                            surfacePoint.initX = surfacePoint.x;
+                            surfacePoint.initY = surfacePoint.y;
+                        }
+                    }
                     isBeingDragged = true;
                 } else {
                     surface.setSelected(false);
@@ -174,8 +190,30 @@ public class VirtuTuileController {
             } else {
                 addTmpSurface();
             }
+        } else if (state == State.CUT_SURFACE) {
+            cutSurface = isInsideAnySurface(mousePosition);
+            if (cutSurface == null) {
+                points.clear();
+                surfaces.remove(tmpSurface);
+                System.out.println("Hollowing tool has to be used on a surface.");
+                return;
+            }
+            points.add(point);
+            if (points.size() == 2) {
+                surfaces.remove(tmpSurface);
+                if (isInsideAnySurface(mousePosition) == cutSurface) {
+                    addRectangleHole(cutSurface);
+                } else {
+                    System.out.println("Hollowing tool has to be used on a surface.");
+                }
+                cutSurface = null;
+                points.clear();
+            } else {
+                addTmpSurface();
+            }
         }
     }
+
     public boolean handleSurfaceStackable(Surface selectedSurface, ArrayList<Surface> otherSurfaces) {
         List<Point> selectedSurfacePoints = selectedSurface.getPoints();
         for (Surface surface : otherSurfaces) {
@@ -267,6 +305,14 @@ public class VirtuTuileController {
         }
     }
 
+    public Surface isInsideAnySurface(Point p) {
+        for (Surface tmp : surfaces) {
+            if (tmp.isInside(p))
+                return (tmp);
+        }
+        return (null);
+    }
+
     public Point gridAttractMouse(Point before) {
         Point after = new Point(before);
         if (before.x % 100 < 4)
@@ -342,7 +388,7 @@ public class VirtuTuileController {
                 }
             }
         }
-        if (state == State.CREATE_RECTANGULAR_SURFACE) {
+        if (state == State.CREATE_RECTANGULAR_SURFACE || state == State.CUT_SURFACE) {
             if (points.size() == 1) {
                 List<Point> surfacePoints = tmpSurface.getPoints();
 
@@ -365,6 +411,16 @@ public class VirtuTuileController {
                 for (Point surfacePoint : movingSurface.getPoints()) {
                     surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
                     surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
+                }
+                for (Polygon hole : movingSurface.getHoles()) {
+                    if (hole == null)
+                        continue;
+                    for (Point p : hole.getPoints()) {
+                        if (p == null)
+                            continue;
+                        p.x = p.initX - (pressedPoint.x - point.x);
+                        p.y = p.initY - (pressedPoint.y - point.y);
+                    }
                 }
                 movingSurface.onMoved();
             }
