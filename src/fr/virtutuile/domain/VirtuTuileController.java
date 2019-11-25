@@ -136,11 +136,7 @@ public class VirtuTuileController {
         surfaces.add(tmpSurface);
         notifyObserverForSurfaces();
     }
-
-    public void onClick(Point point) {
-
-    }
-
+    
     public void onMousePressed(Point point) {
         if (state == State.MOVE) {
             points.add(point);
