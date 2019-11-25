@@ -36,15 +36,9 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
             }
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                Point point = mainWindow.controller.graphicToCoord(e.getX(), e.getY());
-                mainWindow.controller.onClick(point);
-            }
-
-            @Override
             public void mouseReleased(MouseEvent e) {
                 Point point = mainWindow.controller.graphicToCoord(e.getX(), e.getY());
-                mainWindow.controller.onMouseReleased(point);
+                mainWindow.controller.onMouseReleased();
             }
 
             @Override
