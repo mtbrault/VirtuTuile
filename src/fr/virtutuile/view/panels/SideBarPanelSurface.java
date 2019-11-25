@@ -21,6 +21,7 @@ import javax.swing.JButton;
 public class SideBarPanelSurface extends JPanel {
     private JTextField textField_1;
     private JTextField textField_2;
+    private JTextField textFieldColor;
     private JTextField textField;
 
     public SideBarPanelSurface(Surface surface, int nbSurface, VirtuTuileController controller) {
@@ -126,7 +127,7 @@ public class SideBarPanelSurface extends JPanel {
                 controller.notifyObserverForSurfaces();
             }
         });
-        
+
         JLabel labelMaterial = new JLabel("Matériaux");
         GridBagConstraints gridMaterial = new GridBagConstraints();
         gridMaterial.anchor = GridBagConstraints.WEST;
@@ -150,26 +151,52 @@ public class SideBarPanelSurface extends JPanel {
 
         
         
-        JLabel labelMotif = new JLabel("Motifs");
+     JLabel labelMotif = new JLabel("Motifs");
         GridBagConstraints gridMotif = new GridBagConstraints();
         gridMotif.anchor = GridBagConstraints.WEST;
         gridMotif.insets = new Insets(0, 0, 0, 5);
         gridMotif.gridx = 0;
         gridMotif.gridy = 5;
         blockPanel.add(labelMotif, gridMotif);
-        
+
         JButton btnMotif = new JButton("Changer");
         btnMotif.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	    surface.changePattern();
+            public void actionPerformed(ActionEvent e) {
+                surface.changePattern();
                 controller.rebuildAllSurface();
                 controller.notifyObserverForSurfaces();
-        	}
+            }
         });
         GridBagConstraints gridBtnMotif = new GridBagConstraints();
         gridBtnMotif.gridx = 1;
         gridBtnMotif.gridy = 5;
         blockPanel.add(btnMotif, gridBtnMotif);
-   
+
+        textFieldColor = new JTextField();
+        textFieldColor.setColumns(10);
+        textFieldColor.setText(surface.getColor());
+        textFieldColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                surface.setColor(textFieldColor.getText());
+                controller.notifyObserverForSurfaces();
+            }
+        });
+        JLabel labelColor = new JLabel("Color");
+        GridBagConstraints gridColor = new GridBagConstraints();
+        gridColor.anchor = GridBagConstraints.WEST;
+        gridColor.insets = new Insets(0, 0, 0, 5);
+        gridColor.gridx = 0;
+        gridColor.gridy = 6;
+        blockPanel.add(labelColor, gridColor);
+
+
+        GridBagConstraints gridTextColor = new GridBagConstraints();
+        gridTextColor.fill = GridBagConstraints.HORIZONTAL;
+
+        gridTextColor.gridx = 1;
+        gridTextColor.gridy = 6;
+        blockPanel.add(textFieldColor, gridTextColor);
+
     }
 }

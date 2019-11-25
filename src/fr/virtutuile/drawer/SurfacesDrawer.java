@@ -18,9 +18,7 @@ public class SurfacesDrawer {
     }
 
     public void drawPolygon(Graphics g, Surface surface) {
-        Color color = new Color(surface.getColor().red, surface.getColor().green, surface.getColor().blue, surface.getColor().alpha);
         Graphics2D g2 = (Graphics2D) g;
-        g.setColor(color);
 
         List<Integer> xPoly = new ArrayList<Integer>();
         List<Integer> yPoly = new ArrayList<Integer>();
@@ -42,6 +40,9 @@ public class SurfacesDrawer {
         } else {
             g2.setStroke(new BasicStroke(1));
         }
+        g2.setColor(Color.decode(surface.getColor()));
+        g2.fill(polygon);
+        g2.setColor(Color.BLACK);
         g.drawPolygon(polygon);
         if (surface.getTiles().size() != 0) {
             for (Tile tile : surface.getTiles()) {
@@ -59,7 +60,10 @@ public class SurfacesDrawer {
                 } else {
                     g2.setStroke(new BasicStroke(1));
                 }
-               g.drawPolygon(polygonTile);
+                g2.setColor(Color.decode(surface.getMaterial().getColor()));
+                g2.fill(polygonTile);
+                g2.setColor(Color.BLACK);
+                g.drawPolygon(polygonTile);
             }
         }
 

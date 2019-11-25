@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 public class MaterialPanel extends JPanel {
     private JTextField textField_1;
     private JTextField textField;
+    private JTextField textFieldColor;
 
     MaterialPanel(Material material, VirtuTuileController controller) {
         JPanel panel_6 = new JPanel();
@@ -88,5 +89,33 @@ public class MaterialPanel extends JPanel {
         gbc_textField_1.gridy = 2;
         panel_6.add(textField_1, gbc_textField_1);
         textField_1.setColumns(10);
+
+        JLabel labelColor = new JLabel("Color");
+        labelColor.setHorizontalAlignment(SwingConstants.LEFT);
+        GridBagConstraints colorGrid = new GridBagConstraints();
+        colorGrid.insets = new Insets(0, 0, 5, 5);
+        colorGrid.anchor = GridBagConstraints.WEST;
+        colorGrid.gridx = 0;
+        colorGrid.gridy = 3;
+        panel_6.add(labelColor, colorGrid);
+
+        textFieldColor = new JTextField();
+        textFieldColor.setColumns(10);
+        textFieldColor.setText(material.getColor());
+        textFieldColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                material.setColor(textFieldColor.getText());
+                controller.notifyObserverForSurfaces();
+            }
+        });
+
+        GridBagConstraints gridColor = new GridBagConstraints();
+        gridColor.insets = new Insets(0, 0, 5, 0);
+        gridColor.fill = GridBagConstraints.HORIZONTAL;
+        gridColor.gridx = 1;
+        gridColor.gridy = 3;
+        panel_6.add(textFieldColor, gridColor);
+        textFieldColor.setColumns(10);
     }
 }

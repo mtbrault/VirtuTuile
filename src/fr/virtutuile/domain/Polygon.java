@@ -5,7 +5,8 @@ import java.util.List;
 public class Polygon {
     protected List<Point> points;
     private PolygonType type;
-    private Color color;
+    private String color = "#FFFFFF";
+
 
     private boolean isOnLine(Point p1, Point p2, Point p3) {
         if (p3.x < Math.max(p1.x, p2.x) && p3.y < Math.max(p1.y, p2.y) && p3.y > Math.min(p1.y, p2.y)) {
@@ -19,18 +20,17 @@ public class Polygon {
     public Polygon(List<Point> points, PolygonType type) {
         this.points = points;
         this.type = type;
-        this.color = new Color();
     }
 
     public List<Point> getPoints() {
         return points;
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
