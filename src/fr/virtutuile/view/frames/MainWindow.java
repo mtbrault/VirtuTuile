@@ -1,14 +1,18 @@
 package fr.virtutuile.view.frames;
 
+import fr.virtutuile.domain.Point;
 import fr.virtutuile.domain.VirtuTuileController;
 import fr.virtutuile.view.menu.TopMenu;
 import fr.virtutuile.view.panels.*;
 
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements KeyListener {
 
     private JPanel mainPanel;
 
@@ -21,9 +25,24 @@ public class MainWindow extends JFrame {
     private ToolBarPanel toolBarPanel;
 
     public VirtuTuileController controller;
-    public Point mousePoint;
 
-    public MainWindow() {
+    public Point mousePoint;
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+        drawingPanel.notifyCreatedSurface();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+    public MainWindow () {
+        addKeyListener(this);
+        setFocusable(true);
         controller = new VirtuTuileController();
         mousePoint = new Point();
         mainPanel = new JPanel(new BorderLayout());
@@ -34,6 +53,16 @@ public class MainWindow extends JFrame {
         toolBarPanel = new ToolBarPanel(this);
         sideBarPanel = new SideBarPanel(this);
         footerPanel = new FooterPanel(this);
+        addComponentListener( new ComponentListener() {
+            public void componentMoved( ComponentEvent e ) {
+                Point pos = new Point(drawingPanel.getLocationOnScreen().x,
+                        drawingPanel.getLocationOnScreen().y);
+                controller.setCanvasPosition(pos);
+            }
+            public void componentResized( ComponentEvent e ) {}
+            public void componentShown( ComponentEvent e ) {}
+            public void componentHidden( ComponentEvent e ) {}
+        } );
         initWindow();
     }
 
@@ -46,6 +75,7 @@ public class MainWindow extends JFrame {
     }
 
     private void buildGui() {
+
         rightPanel.add(sideBarPanel, BorderLayout.CENTER);
 
         centerPanel.add(drawingPanel, BorderLayout.CENTER);

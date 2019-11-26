@@ -1,6 +1,5 @@
 package fr.virtutuile.view.listeners.action;
 
-import fr.virtutuile.domain.Polygon;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
 
@@ -20,8 +19,5 @@ public class ToolBarAction extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         controller.addSurface(surface);
-        System.out.println("Valeur des surfaces Avant : " + controller.getSurfaces().size());
-        System.out.println("done");
-        System.out.println("Valeur des surfaces Après : " + controller.getSurfaces().size());
     }
 }

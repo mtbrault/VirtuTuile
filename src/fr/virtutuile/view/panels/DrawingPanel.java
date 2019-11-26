@@ -2,42 +2,63 @@ package fr.virtutuile.view.panels;
 
 import fr.virtutuile.domain.Point;
 import fr.virtutuile.domain.SurfacesControllerObserver;
+import fr.virtutuile.drawer.GridDrawer;
 import fr.virtutuile.drawer.SurfacesDrawer;
 import fr.virtutuile.view.frames.MainWindow;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 import javax.swing.JPanel;
 
 public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
-    private final MainWindow mainWindow;
+    private final   MainWindow mainWindow;
 
     public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent me) {
-                System.out.println(me);
-                Point point = mainWindow.controller.convertPoint(me.getX(), me.getY());
-                mainWindow.controller.onMousePressed(point);
-
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
             }
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                System.out.println("Clicked");
-                Point point = mainWindow.controller.convertPoint(e.getX(), e.getY());
-                mainWindow.controller.onClick(point);
+            public void mouseMoved(MouseEvent e) {
+                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
+            }
+
+        });
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()));
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                System.out.println("Released");
-                Point point = mainWindow.controller.convertPoint(e.getX(), e.getY());
-                mainWindow.controller.onMouseReleased(point);
+                Point point = mainWindow.controller.graphicToCoord(e.getX(), e.getY());
+                mainWindow.controller.onMouseReleased();
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+            }
+        });
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int notches = e.getWheelRotation();
+                int zoomSensibilty = 0;
+
+                if (notches > zoomSensibilty) {
+                    mainWindow.controller.zoomIn();
+
+                }
+                else if (notches < -zoomSensibilty) {
+                    mainWindow.controller.zoomOut();
+                }
+
             }
         });
         mainWindow.controller.registerObserver(this);
@@ -52,7 +73,13 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Point pos = new Point(getLocationOnScreen().x, getLocationOnScreen().y);
+        mainWindow.controller.setCanvasPosition(pos);
         SurfacesDrawer surfacesDrawer = new SurfacesDrawer(mainWindow.controller);
+        if (mainWindow.controller.getGridSwitch()) {
+            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height);
+            gridDrawer.draw(g);
+        }
         surfacesDrawer.draw(g);
     }
 

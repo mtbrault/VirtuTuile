@@ -1,21 +1,37 @@
 package fr.virtutuile.domain;
 
 public class Point {
-    public float x;
-    public float y;
+    public Integer x;
+    public Integer y;
+    public Integer initX;
+    public Integer initY;
 
-    public Point(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public Point(Integer x, Integer y) {
+        this.x = new Integer(x);
+        this.y = new Integer(y);
     }
 
+    public Point(Point point) {
+        this.x = new Integer(point.x);
+        this.y = new Integer(point.y);
+    }
 
     public Point() {
-        this.x = 0;
-        this.y = 0;
+        this.x = new Integer(0);
+        this.y = new Integer(0);
     }
 
-    public void setPos(float x, float y) {
+    public Point add(Point point) {
+        x += point.x;
+        y += point.y;
+        return this;
+    }
+    public Point less(Point point) {
+        x -= point.x;
+        y -= point.y;
+        return this;
+    }
+    public void setPos(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
