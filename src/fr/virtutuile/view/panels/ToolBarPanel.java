@@ -97,7 +97,7 @@ public class ToolBarPanel extends JPanel {
             System.out.println(err);
         }
         try {
-            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/zoom-.png"));
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/move.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
             button.addActionListener(handleClick(State.MOVE));
             toolbarLeft.add(button);
@@ -141,17 +141,22 @@ public class ToolBarPanel extends JPanel {
         } catch (IOException err) {
             System.out.println(err);
         }
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/bind.png"));
+            JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.combineSelectedSurfaces();
+                }
+            });
+            toolbarLeft.add(button);
+        } catch (IOException err) {
+            System.out.println(err);
+        }
 
-        JButton button = new JButton("Combine selected surfaces");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainWindow.controller.combineSelectedSurfaces();
-            }
-        });
-        toolbarLeft.add(button);
 
-        JButton buttonAddMaterial = new JButton("Ajouter un materiau");
+        JButton buttonAddMaterial = new JButton("+materiau");
         buttonAddMaterial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -161,8 +166,13 @@ public class ToolBarPanel extends JPanel {
         });
         toolbarLeft.add(buttonAddMaterial);
 
-        JButton buttonCutSurface = new JButton("Couper une surface");
-        buttonCutSurface.addActionListener(handleClick(State.CUT_SURFACE));
-        toolbarLeft.add(buttonCutSurface);
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/cut.png"));
+            JButton buttonCutSurface = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            buttonCutSurface.addActionListener(handleClick(State.CUT_SURFACE));
+            toolbarLeft.add(buttonCutSurface);
+        } catch (IOException err) {
+            System.out.println(err);
+        }
     }
 }
