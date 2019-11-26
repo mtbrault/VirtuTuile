@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="virtutuile">
+    <archive path="C:/Users/valer/Desktop/VirtuTuile/virtutuile.jar" />
+  </library>
+  <library name="VirtuTuile">
+    <archive path="C:/Users/valer/Desktop/VirtuTuile/out/artifacts/VirtuTuile_jar/VirtuTuile.jar" />
+  </library>
+</eclipse-userlibraries>
+
