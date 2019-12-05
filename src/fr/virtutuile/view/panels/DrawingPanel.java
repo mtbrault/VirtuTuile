@@ -20,32 +20,25 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                System.out.println(e.getX()+ " " + e.getY() );
-                mainWindow.controller.onMouseMoved(mainWindow.controller.GraphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                mainWindow.controller.onMouseMoved(mainWindow.controller.GraphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
             }
 
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                mainWindow.controller.onMousePressed(mainWindow.controller.GraphicToCoord(me.getX(), me.getY()));
+                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()));
 
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Point point = mainWindow.controller.GraphicToCoord(e.getX(), e.getY());
-                mainWindow.controller.onClick(point);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                Point point = mainWindow.controller.GraphicToCoord(e.getX(), e.getY());
-                mainWindow.controller.onMouseReleased(point);
+                Point point = mainWindow.controller.graphicToCoord(e.getX(), e.getY());
+                mainWindow.controller.onMouseReleased();
             }
 
             @Override
@@ -57,7 +50,6 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 int notches = e.getWheelRotation();
                 int zoomSensibilty = 0;
-                double zoomUpgrade = 0.05;
 
                 if (notches > zoomSensibilty) {
                     mainWindow.controller.zoomIn();

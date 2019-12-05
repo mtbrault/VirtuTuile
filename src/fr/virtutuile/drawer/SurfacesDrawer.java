@@ -6,8 +6,6 @@ import fr.virtutuile.domain.Tile;
 import fr.virtutuile.domain.VirtuTuileController;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +17,25 @@ public class SurfacesDrawer {
         this.controller = controller;
     }
 
+    public void drawHoles(Graphics2D g2, List<fr.virtutuile.domain.Polygon> list) {
+        for (fr.virtutuile.domain.Polygon hole : list) {
+            List<Integer> xPoly = new ArrayList<Integer>();
+            List<Integer> yPoly = new ArrayList<Integer>();
+            List<Point> points = hole.getPoints();
+            for (Point point : points) {
+                Point graphicPoint = controller.coordToGraphic(point.x, point.y);
+                xPoly.add(graphicPoint.x);
+                yPoly.add(graphicPoint.y);
+            }
+            Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
+            g2.setColor(new Color(217, 217, 217));
+            g2.fill(polygon);
+            g2.draw(polygon);
+        }
+    }
+
     public void drawPolygon(Graphics g, Surface surface) {
-        Color color = new Color(surface.getColor().red, surface.getColor().green, surface.getColor().blue, surface.getColor().alpha);
         Graphics2D g2 = (Graphics2D) g;
-        g.setColor(color);
 
         List<Integer> xPoly = new ArrayList<Integer>();
         List<Integer> yPoly = new ArrayList<Integer>();
@@ -44,6 +57,9 @@ public class SurfacesDrawer {
         } else {
             g2.setStroke(new BasicStroke(1));
         }
+        g2.setColor(Color.decode(surface.getColor()));
+        g2.fill(polygon);
+        g2.setColor(Color.BLACK);
         g.drawPolygon(polygon);
         if (surface.getTiles().size() != 0) {
             for (Tile tile : surface.getTiles()) {
@@ -61,10 +77,13 @@ public class SurfacesDrawer {
                 } else {
                     g2.setStroke(new BasicStroke(1));
                 }
-               g.drawPolygon(polygonTile);
+                g2.setColor(Color.decode(surface.getMaterial().getColor()));
+                g2.fill(polygonTile);
+                g2.setColor(Color.BLACK);
+                g.drawPolygon(polygonTile);
             }
         }
-
+        drawHoles(g2, surface.getHoles());
     }
 
     public void draw(Graphics g) {

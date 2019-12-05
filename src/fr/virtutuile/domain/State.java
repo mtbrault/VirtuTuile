@@ -6,5 +6,6 @@ public enum State {
     SELECTION,
     MOVE_SURFACE,
     MOVE,
+    CUT_SURFACE,
     GRID
 }

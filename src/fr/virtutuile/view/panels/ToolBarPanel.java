@@ -1,5 +1,6 @@
 package fr.virtutuile.view.panels;
 
+import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.State;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.Point;
@@ -58,7 +59,7 @@ public class ToolBarPanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         JPanel toolbarLeft = new JPanel();
-        toolbarLeft.setLayout(new GridLayout(1, 10));
+        toolbarLeft.setLayout(new GridLayout(1, 11));
         add(toolbarLeft);
 
         try {
@@ -71,6 +72,12 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/undo.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.undo();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -78,6 +85,12 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/redo.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 40, 40)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.redo();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -96,7 +109,7 @@ public class ToolBarPanel extends JPanel {
             System.out.println(err);
         }
         try {
-            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/zoom-.png"));
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/move.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
             button.addActionListener(handleClick(State.MOVE));
             toolbarLeft.add(button);
@@ -140,65 +153,38 @@ public class ToolBarPanel extends JPanel {
         } catch (IOException err) {
             System.out.println(err);
         }
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/bind.png"));
+            JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.combineSelectedSurfaces();
+                }
+            });
+            toolbarLeft.add(button);
+        } catch (IOException err) {
+            System.out.println(err);
+        }
 
-        JButton button = new JButton("Combine selected surfaces");
-        button.addActionListener(new ActionListener() {
+
+        JButton buttonAddMaterial = new JButton("+materiau");
+        buttonAddMaterial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainWindow.controller.combineSelectedSurfaces();
+                mainWindow.controller.addMaterial(new Material());
+                mainWindow.controller.notifyObserverForSurfaces();
             }
         });
-        toolbarLeft.add(button);
+        toolbarLeft.add(buttonAddMaterial);
 
-        JPanel toolbarRight = new JPanel();
-        toolbarRight.setLayout(new GridLayout(1, 8, 0, 0));
-        add(toolbarRight);
-
-        JPanel blankSpaceRight1 = new JPanel();
-        blankSpaceRight1.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight1);
-
-        JPanel blankSpaceRight2 = new JPanel();
-        blankSpaceRight2.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight2);
-
-        JPanel blankSpaceRight3 = new JPanel();
-        blankSpaceRight3.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight3);
-
-        JPanel blankSpaceRight5 = new JPanel();
-        blankSpaceRight5.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight5);
-
-        JPanel blankSpaceRight4 = new JPanel();
-        blankSpaceRight4.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight4);
-
-        JPanel blankSpaceRight6 = new JPanel();
-        blankSpaceRight6.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight6);
-
-        JPanel blankSpaceRight7 = new JPanel();
-        blankSpaceRight7.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight7);
-
-        JPanel blankSpaceRight8 = new JPanel();
-        blankSpaceRight8.setBackground(Color.white);
-        toolbarRight.add(blankSpaceRight8);
-
-        JPanel rightTool1 = new JPanel();
-        rightTool1.setBackground(Color.white);
-        rightTool1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool1);
-
-        JPanel rightTool2 = new JPanel();
-        rightTool2.setBackground(Color.white);
-        rightTool2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool2);
-
-        JPanel rightTool3 = new JPanel();
-        rightTool3.setBackground(Color.white);
-        rightTool3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        toolbarRight.add(rightTool3);
+        try {
+            BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/cut.png"));
+            JButton buttonCutSurface = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            buttonCutSurface.addActionListener(handleClick(State.CUT_SURFACE));
+            toolbarLeft.add(buttonCutSurface);
+        } catch (IOException err) {
+            System.out.println(err);
+        }
     }
 }
