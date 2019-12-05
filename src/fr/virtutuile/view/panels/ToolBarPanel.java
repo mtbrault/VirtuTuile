@@ -72,6 +72,12 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/undo.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.undo();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
@@ -79,6 +85,12 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/redo.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 40, 40)));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mainWindow.controller.redo();
+                }
+            });
             toolbarLeft.add(button);
         } catch (IOException err) {
             System.out.println(err);
