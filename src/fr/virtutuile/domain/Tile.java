@@ -2,7 +2,7 @@ package fr.virtutuile.domain;
 
 import java.util.List;
 
-public class Tile extends Polygon {
+public class Tile extends Polygon implements java.io.Serializable {
     private boolean selected;
 
     public Tile(List<Point> points) {
