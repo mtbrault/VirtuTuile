@@ -3,7 +3,7 @@ package fr.virtutuile.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pattern {
+public class Pattern implements java.io.Serializable {
     public Pattern() {
     }
 

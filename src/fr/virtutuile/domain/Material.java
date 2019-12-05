@@ -1,6 +1,6 @@
 package fr.virtutuile.domain;
 
-public class Material {
+public class Material implements java.io.Serializable {
 
     private int width;
     private int height;

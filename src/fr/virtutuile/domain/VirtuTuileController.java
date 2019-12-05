@@ -1,6 +1,7 @@
 package fr.virtutuile.domain;
 
 import java.awt.*;
+import java.io.*;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,6 @@ public class VirtuTuileController {
     public Point mousePosition;
     private List<SurfacesControllerObserver> observers;
     private double zoom = 1;
-    public Point mousePositionZoom;
     public Point camPos;
     private Point canvasPosition;
     private State state = State.UNKNOWN;
@@ -38,9 +38,12 @@ public class VirtuTuileController {
         materials = new ArrayList<Material>();
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
-        mousePositionZoom = new Point(0, 0);
         materials.add(new Material());
         historyIndex = 0;
+    }
+
+    public List<Point> getPoints() {
+        return points;
     }
 
     public void addSurface(Surface surface) {
@@ -442,8 +445,42 @@ public class VirtuTuileController {
         notifyObserverForSurfaces();
     }
 
-    public List<Surface> getSurfaces() {
+    public ArrayList<Surface> getSurfaces() {
         return surfaces;
+    }
+
+    public void saveObject(String filename) {
+        try {
+            FileOutputStream file = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            Serialize object = new Serialize(surfaces, materials, points, camPos, zoom);
+            out.writeObject(object);
+            out.close();
+            file.close();
+            System.out.println("Object has been saved !");
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void loadObject(String filename) {
+        try {
+            FileInputStream file = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(file);
+
+            Serialize object = (Serialize) in.readObject();
+            surfaces = object.surfaces;
+            materials = object.materials;
+            zoom = object.zoom;
+            camPos = object.camPos;
+            points = object.points;
+            in.close();
+            file.close();
+            System.out.println("Object has been loaded");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex);
+        }
     }
 
     private void addHistory() {
