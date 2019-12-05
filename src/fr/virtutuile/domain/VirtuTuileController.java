@@ -10,6 +10,8 @@ import java.awt.Robot;
 import java.util.Iterator;
 
 public class VirtuTuileController {
+    private ArrayList<ArrayList<Surface>> history;
+    private int historyIndex;
     private ArrayList<Surface> surfaces;
     private ArrayList<Material> materials;
     private Tile selectedTile;
@@ -29,6 +31,8 @@ public class VirtuTuileController {
 
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
+        history = new ArrayList<ArrayList<Surface>>();
+        history.add(new ArrayList<Surface>());
         points = new ArrayList<Point>();
         observers = new LinkedList<SurfacesControllerObserver>();
         materials = new ArrayList<Material>();
@@ -36,10 +40,12 @@ public class VirtuTuileController {
         camPos = new Point(0, 0);
         mousePositionZoom = new Point(0, 0);
         materials.add(new Material());
+        historyIndex = 0;
     }
 
     public void addSurface(Surface surface) {
         surfaces.add(surface);
+        history.add(0, surfaces);
         notifyObserverForSurfaces();
     }
 
@@ -73,6 +79,7 @@ public class VirtuTuileController {
         Point pointB = new Point(pointC.x, pointA.y);
         Point pointD = new Point(pointA.x, pointC.y);
         surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
+        addHistory();
     }
 
     public void addRectangleSurface() {
@@ -100,6 +107,7 @@ public class VirtuTuileController {
         surface.setMaterial(materials.get(0));
         surface.setPattern(new Pattern());
         surfaces.add(surface);
+        addHistory();
         notifyObserverForSurfaces();
     }
 
@@ -109,11 +117,13 @@ public class VirtuTuileController {
             if (surface.isSelected())
                 iter.remove();
         }
+        addHistory();
         notifyObserverForSurfaces();
     }
 
     public void deleteSurface(Surface surfaceToDelete) {
         surfaces.remove(surfaceToDelete);
+        addHistory();
         notifyObserverForSurfaces();
     }
 
@@ -144,6 +154,7 @@ public class VirtuTuileController {
             points.add(point);
             for (Surface surface : surfaces) {
                 if (surface.isInside(point)) {
+                    System.out.println("test");
                     surface.setSelected(true);
                     movingSurface = surface;
                     for (Point surfacePoint : surface.getPoints()) {
@@ -433,6 +444,27 @@ public class VirtuTuileController {
 
     public List<Surface> getSurfaces() {
         return surfaces;
+    }
+
+    private void addHistory() {
+        for (int i = 0; i < historyIndex; i++)
+            history.remove(0);
+        historyIndex = 0;
+        history.add(0, new ArrayList<Surface>(surfaces));
+    }
+
+    public void undo() {
+        if (historyIndex < history.size() - 1)
+            historyIndex++;
+        surfaces = new ArrayList<Surface>(history.get(historyIndex));
+        notifyObserverForSurfaces();
+    }
+
+    public void redo() {
+        if (historyIndex > 0)
+            historyIndex--;
+        surfaces = new ArrayList<Surface>(history.get(historyIndex));
+        notifyObserverForSurfaces();
     }
 
     public void zoomIn() {
