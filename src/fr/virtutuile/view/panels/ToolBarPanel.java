@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ToolBarPanel extends JPanel {
 
@@ -65,10 +66,16 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") +"/src/fr/virtutuile/view/ressources/save.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            jfc.setDialogTitle("Choose a directory to save your file: ");
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    mainWindow.controller.saveObject("test.ser");
+                    int value = jfc.showSaveDialog(null);
+                    if (value == JFileChooser.APPROVE_OPTION) {
+                        mainWindow.controller.saveObject(jfc.getSelectedFile());
+                    }
                 }
             });
             toolbarLeft.add(button);
@@ -78,10 +85,17 @@ public class ToolBarPanel extends JPanel {
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") +"/src/fr/virtutuile/view/ressources/load.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));
+            JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+            jfc.setAcceptAllFileFilterUsed(false);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(".ser file", "ser");
+            jfc.addChoosableFileFilter(filter);
+            jfc.setDialogTitle("Choose a file to load");
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    mainWindow.controller.loadObject("test.ser");
+                    int value = jfc.showOpenDialog(null);
+                    if (value == JFileChooser.APPROVE_OPTION)
+                        mainWindow.controller.loadObject(jfc.getSelectedFile());
                 }
             });
             toolbarLeft.add(button);

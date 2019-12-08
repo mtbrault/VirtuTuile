@@ -449,12 +449,12 @@ public class VirtuTuileController {
         return surfaces;
     }
 
-    public void saveObject(String filename) {
+    public void saveObject(File filename) {
         try {
             FileOutputStream file = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(file);
 
-            Serialize object = new Serialize(surfaces, materials, points, camPos, zoom);
+            Serialize object = new Serialize(surfaces, materials, points, camPos, zoom, history, historyIndex);
             out.writeObject(object);
             out.close();
             file.close();
@@ -464,7 +464,7 @@ public class VirtuTuileController {
         }
     }
 
-    public void loadObject(String filename) {
+    public void loadObject(File filename) {
         try {
             FileInputStream file = new FileInputStream(filename);
             ObjectInputStream in = new ObjectInputStream(file);
@@ -475,6 +475,8 @@ public class VirtuTuileController {
             zoom = object.zoom;
             camPos = object.camPos;
             points = object.points;
+            history = object.history;
+            historyIndex = object.historyIndex;
             in.close();
             file.close();
             System.out.println("Object has been loaded");
