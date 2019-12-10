@@ -157,7 +157,6 @@ public class VirtuTuileController {
             points.add(point);
             for (Surface surface : surfaces) {
                 if (surface.isInside(point)) {
-                    System.out.println("test");
                     surface.setSelected(true);
                     movingSurface = surface;
                     for (Point surfacePoint : surface.getPoints()) {
@@ -260,6 +259,7 @@ public class VirtuTuileController {
             for (Surface surface : surfaces) {
                 if (surface.isSelected()) {
                     handleSurfaceStackable(surface, surfaces);
+                    addHistory();
                     notifyObserverForSurfaces();
                 }
             }
@@ -489,7 +489,11 @@ public class VirtuTuileController {
         for (int i = 0; i < historyIndex; i++)
             history.remove(0);
         historyIndex = 0;
-        history.add(0, new ArrayList<Surface>(surfaces));
+        ArrayList<Surface> tmp = new ArrayList<Surface>();
+        for (Surface surface : surfaces)
+            tmp.add(new Surface(surface));
+        history.add(0, tmp);
+        System.out.println("J'ai ajouté une sauvegarde");
     }
 
     public void undo() {
