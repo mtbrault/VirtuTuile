@@ -180,4 +180,9 @@ public class Surface extends Polygon {
         }
         return false;
     }
+
+    public void translatePoint(int x, int y) {
+        for (Point point : points)
+            point.add(new Point(x, y));
+    }
 }

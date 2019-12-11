@@ -493,7 +493,6 @@ public class VirtuTuileController {
         for (Surface surface : surfaces)
             tmp.add(new Surface(surface));
         history.add(0, tmp);
-        System.out.println("J'ai ajouté une sauvegarde");
     }
 
     public void undo() {
@@ -548,5 +547,79 @@ public class VirtuTuileController {
         dest.x = (int)Math.round(dest.x * zoom);
         dest.y = (int)Math.round(dest.y * zoom);
         return dest;
+    }
+
+    private Point getExtremePoint(Surface surface, int x, int y) {
+        int value = (x == -1 || y == -1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        Point pointValue = null;
+
+        for (Point point : surface.getPoints()) {
+            if (x == 1 && point.x > value) {
+                value = point.x;
+                pointValue = point;
+            }
+            else if (y == 1 && point.y >= value) {
+                value = point.y;
+                pointValue = point;
+            }
+            else if (x == -1 && point.x < value) {
+                value = point.x;
+                pointValue = point;
+            }
+            else if (y == -1 && point.y < value) {
+                value = point.y;
+                pointValue = point;
+            }
+        }
+        return pointValue;
+    }
+
+    public void changeSurfaceWithSurfaceCoord(Surface surface, int width, int height) {
+        Point landmark = null;
+
+        for (Surface it : surfaces) {
+            if (it.isSelected() && it != surface)
+                landmark = it.getPoints().get(0);
+        }
+        if (landmark == null)
+            return ;
+        int x = landmark.x - surface.getPoints().get(0).x + width;
+        int y = landmark.y - surface.getPoints().get(0).y + height;
+        surface.translatePoint(x, y);
+        notifyObserverForSurfaces();
+        addHistory();
+    }
+
+    public void pastSurface(Surface surface, int x, int y) {
+        Surface dest = null;
+        for (Surface it : surfaces) {
+            if (it.isSelected() && it != surface)
+                dest = it;
+        }
+        if (dest == null)
+            return ;
+        Point destPoint = getExtremePoint(dest, x, y);
+        Point fromPoint = getExtremePoint(surface, -x, -y);
+        surface.translatePoint(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
+        notifyObserverForSurfaces();
+        addHistory();
+    }
+
+    public void alignSurface(Surface surface, int x, int y) {
+        Surface dest = null;
+        for (Surface it : surfaces) {
+            if (it.isSelected() && it != surface)
+                dest = it;
+        }
+        if (dest == null)
+            return ;
+        Point destPoint = getExtremePoint(dest, x, y);
+        Point fromPoint = getExtremePoint(surface, x, y);
+        if (x != 0)
+            surface.translatePoint(destPoint.x - fromPoint.x, 0);
+        else
+            surface.translatePoint(0, destPoint.y - fromPoint.y);
+        notifyObserverForSurfaces();
+        addHistory();
     }
 }
