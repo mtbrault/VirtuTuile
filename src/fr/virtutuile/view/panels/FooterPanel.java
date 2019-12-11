@@ -27,14 +27,14 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
         setPreferredSize(footerDimension);
         setBackground(Color.white);
         setBorder(BorderFactory.createLineBorder(Color.black));
-        labelZoom = new JLabel("Zoom : " + (mainWindow.controller.getZoom() * 100));
+        labelZoom = new JLabel("Zoom : " + (int)(mainWindow.controller.getZoom() * 100) + "%");
         add(labelZoom);
     }
     
     
     @Override
     public void notifyUpdatedZoom() {
-    	labelZoom.setText("Zoom : " + (mainWindow.controller.getZoom() * 100));
+    	labelZoom.setText("Zoom : " + (int)(mainWindow.controller.getZoom() * 100) + "%");
     	labelZoom.repaint();
         repaint();
     }
