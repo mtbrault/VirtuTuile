@@ -34,8 +34,16 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
     
     @Override
     public void notifyUpdatedZoom() {
-    	labelZoom.setText("Zoom : " + (int)(mainWindow.controller.getZoom() * 100) + "%");
-    	labelZoom.repaint();
-        repaint();
+    	int zoomValue = (int)(mainWindow.controller.getZoom() * 100);
+    	if (zoomValue > 1000) {
+    		labelZoom.setText("Zoom : > " + 1000 + "%");
+        	labelZoom.repaint();
+            
+    	} else {
+    		labelZoom.setText("Zoom : " + zoomValue + "%");
+        	labelZoom.repaint();
+            	
+    	}
+    	repaint();
     }
 }
