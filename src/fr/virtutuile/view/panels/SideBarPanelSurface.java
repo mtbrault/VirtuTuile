@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -273,6 +274,7 @@ public class SideBarPanelSurface extends JPanel {
 		blockPanel.add(labelAlign, gridAlign);
 
 		Vector<DirectionType> directionArray = new Vector<DirectionType>();
+		directionArray.addElement(new DirectionType("Modifier", 0, 0));
 		directionArray.addElement(new DirectionType("gauche", -1, 0));
 		directionArray.addElement(new DirectionType("droite", 1, 0));
 		directionArray.addElement(new DirectionType("haut", 0, -1));
@@ -284,7 +286,12 @@ public class SideBarPanelSurface extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				JComboBox comboBox = (JComboBox) arg0.getSource();
 				DirectionType alignType = (DirectionType) comboBox.getSelectedItem();
-				controller.alignSurface(surface, alignType.getX(), alignType.getY());
+				if (!(alignType.getX() == 0 && alignType.getY() == 0)) {
+					controller.alignSurface(surface, alignType.getX(), alignType.getY());
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une valeur pour aligner");
+
+				}
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
@@ -304,11 +311,16 @@ public class SideBarPanelSurface extends JPanel {
 		blockPanel.add(labelPaste, gridPaste);
 
 		comboPaste = new JComboBox(directionArray);
+		comboPaste.setEnabled(true);
 		comboPaste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JComboBox comboBox = (JComboBox) arg0.getSource();
 				DirectionType pasteType = (DirectionType) comboBox.getSelectedItem();
-				controller.pastSurface(surface, pasteType.getX(), pasteType.getY());
+				if (!(pasteType.getX() == 0 && pasteType.getY() == 0)) {
+					controller.pastSurface(surface, pasteType.getX(), pasteType.getY());
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une valeur pour coller");
+				}
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
@@ -321,11 +333,10 @@ public class SideBarPanelSurface extends JPanel {
 
 	}
 
-	   @Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	    }
-
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+	}
 
 	class DirectionType {
 		private int x;
