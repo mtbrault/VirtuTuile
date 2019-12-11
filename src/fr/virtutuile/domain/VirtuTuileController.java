@@ -586,6 +586,7 @@ public class VirtuTuileController {
         int x = landmark.x - surface.getPoints().get(0).x + width;
         int y = landmark.y - surface.getPoints().get(0).y + height;
         surface.translatePoint(x, y);
+        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -601,6 +602,7 @@ public class VirtuTuileController {
         Point destPoint = getExtremePoint(dest, x, y);
         Point fromPoint = getExtremePoint(surface, -x, -y);
         surface.translatePoint(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
+        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -619,6 +621,7 @@ public class VirtuTuileController {
             surface.translatePoint(destPoint.x - fromPoint.x, 0);
         else
             surface.translatePoint(0, destPoint.y - fromPoint.y);
+        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
     }
