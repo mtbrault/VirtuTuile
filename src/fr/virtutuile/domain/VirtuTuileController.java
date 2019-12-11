@@ -22,6 +22,7 @@ public class VirtuTuileController {
     private Surface cutSurface = null;
     public Point mousePosition;
     private List<SurfacesControllerObserver> observers;
+    private List<ZoomControllerObserver> observersZoom;
     private double zoom = 1;
     public Point camPos;
     private Point canvasPosition;
@@ -35,6 +36,7 @@ public class VirtuTuileController {
         history.add(new ArrayList<Surface>());
         points = new ArrayList<Point>();
         observers = new LinkedList<SurfacesControllerObserver>();
+        observersZoom = new LinkedList<ZoomControllerObserver>();
         materials = new ArrayList<Material>();
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
@@ -514,6 +516,7 @@ public class VirtuTuileController {
         camPos.x = (int)((mousePosition.x - camPos.x) * 0.1f + camPos.x);
         camPos.y = (int)((mousePosition.y - camPos.y) * 0.1f + camPos.y);
         notifyObserverForSurfaces();
+        notifyObserverForZoom();
     }
 
     public void zoomOut() {
@@ -521,12 +524,23 @@ public class VirtuTuileController {
         camPos.x = (int)((mousePosition.x - camPos.x) * -0.1f + camPos.x);
         camPos.y = (int)((mousePosition.y - camPos.y) * -0.1f + camPos.y);
         notifyObserverForSurfaces();
+        notifyObserverForZoom();
     }
 
     public void registerObserver(SurfacesControllerObserver newListener) {
         observers.add(newListener);
     }
+    
+    public void registerObserverZoom(ZoomControllerObserver newListenerZoom) {
+        observersZoom.add(newListenerZoom);
+    }
 
+    public void notifyObserverForZoom() {
+        for (ZoomControllerObserver observerZoom : observersZoom) {
+        	observerZoom.notifyUpdatedZoom();
+        }
+    }
+    
     public void notifyObserverForSurfaces() {
         for (SurfacesControllerObserver observer : observers) {
             observer.notifyCreatedSurface();

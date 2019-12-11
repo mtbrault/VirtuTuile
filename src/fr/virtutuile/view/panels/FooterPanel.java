@@ -1,19 +1,24 @@
 package fr.virtutuile.view.panels;
 
+import fr.virtutuile.domain.Material;
+import fr.virtutuile.domain.Surface;
+import fr.virtutuile.domain.ZoomControllerObserver;
 import fr.virtutuile.view.frames.MainWindow;
 
 import java.awt.*;
 
 import javax.swing.*;
 
-public class FooterPanel extends JPanel {
+public class FooterPanel extends JPanel implements ZoomControllerObserver {
 
     private final   MainWindow mainWindow;
-
+    private JLabel labelZoom;
+    
     public FooterPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         buildUp();
-    }
+        mainWindow.controller.registerObserverZoom(this);
+        }
 
     private void buildUp() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -22,7 +27,15 @@ public class FooterPanel extends JPanel {
         setPreferredSize(footerDimension);
         setBackground(Color.white);
         setBorder(BorderFactory.createLineBorder(Color.black));
-        JLabel lblNewLabel_2 = new JLabel("Zoom : " + (mainWindow.controller.getZoom() * 100));
-        add(lblNewLabel_2);
+        labelZoom = new JLabel("Zoom : " + (mainWindow.controller.getZoom() * 100));
+        add(labelZoom);
+    }
+    
+    
+    @Override
+    public void notifyUpdatedZoom() {
+    	labelZoom.setText("Zoom : " + (mainWindow.controller.getZoom() * 100));
+    	labelZoom.repaint();
+        repaint();
     }
 }
