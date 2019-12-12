@@ -49,7 +49,7 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.controller.detectTile(Integer.parseInt(textFieldDetect.getText()));
-				
+
 			}
 		});
 		add(textFieldDetect, "cell 6 1,growx");

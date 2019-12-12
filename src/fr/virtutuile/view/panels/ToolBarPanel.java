@@ -135,8 +135,7 @@ public class ToolBarPanel extends JPanel {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //mainWindow.controller.deleteSurface();
-                    mainWindow.controller.detectTile(9);
+                    mainWindow.controller.deleteSurface();
                 }
             });
             toolbarLeft.add(button);
