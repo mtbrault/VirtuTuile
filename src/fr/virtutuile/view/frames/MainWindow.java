@@ -40,6 +40,7 @@ public class MainWindow extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     }
+
     public MainWindow () {
         addKeyListener(this);
         setFocusable(true);

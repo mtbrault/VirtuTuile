@@ -206,7 +206,10 @@ public class ToolBarPanel extends JPanel {
         buttonAddMaterial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainWindow.controller.addMaterial(new Material());
+            	JFrame materialPopup = new JFrame();
+                String materialName = JOptionPane.showInputDialog(materialPopup, "Nom du matériaux :");
+
+                mainWindow.controller.addMaterial(new Material(materialName));
                 mainWindow.controller.notifyObserverForSurfaces();
             }
         });
