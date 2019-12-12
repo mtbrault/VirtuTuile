@@ -563,7 +563,7 @@ public class VirtuTuileController {
         return dest;
     }
 
-    private Point getExtremePoint(Surface surface, int x, int y) {
+    private Point getExtremePoint(Polygon surface, int x, int y) {
         int value = (x == -1 || y == -1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
         Point pointValue = null;
 
@@ -638,5 +638,23 @@ public class VirtuTuileController {
         surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
+    }
+
+    public void detectTile(int size) {
+        for (Surface surface : surfaces) {
+            for (Tile tile : surface.getTiles()) {
+                int top = getExtremePoint(tile,0, -1).y;
+                int bottom = getExtremePoint(tile, 0, 1).y;
+                int right = getExtremePoint(tile, 1, 0).x;
+                int left = getExtremePoint(tile, -1, 0).x;
+                if (right - left < size)
+                    tile.setDetected(true);
+                else if (bottom - top < size)
+                    tile.setDetected(true);
+                else
+                    tile.setDetected(false);
+            }
+        }
+        notifyObserverForSurfaces();
     }
 }
