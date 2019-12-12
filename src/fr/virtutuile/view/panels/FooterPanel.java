@@ -31,12 +31,12 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
 		JLabel labelGrid = new JLabel("Taille de la grille :");
 		add(labelGrid, "cell 0 1");
 
-		textFieldGrid = new JTextField();
+		textFieldGrid = new JTextField("valeur par default a modifié");
 		textFieldGrid.setColumns(10);
 		textFieldGrid.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("");
+				System.out.println("here mettre le changement de size de la grid " + Integer.parseInt(textFieldGrid.getText()));
 			}
 		});
 		add(textFieldGrid, "cell 1 1,growx");
