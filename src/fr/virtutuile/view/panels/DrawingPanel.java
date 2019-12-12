@@ -20,12 +20,12 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(new Point(e.getX(), e.getY()));
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(new Point(e.getX(), e.getY()));
             }
 
         });
@@ -77,7 +77,7 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         mainWindow.controller.setCanvasPosition(pos);
         SurfacesDrawer surfacesDrawer = new SurfacesDrawer(mainWindow.controller);
         if (mainWindow.controller.getGridSwitch()) {
-            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height);
+            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height, mainWindow);
             gridDrawer.draw(g);
         }
         surfacesDrawer.draw(g);
