@@ -42,7 +42,7 @@ public class VirtuTuileController {
         materials = new ArrayList<Material>();
         mousePosition = new Point(0, 0);
         camPos = new Point(0, 0);
-        materials.add(new Material());
+        materials.add(new Material("Materiau 1"));
         historyIndex = 0;
     }
 
@@ -79,6 +79,10 @@ public class VirtuTuileController {
     public  ArrayList<Material> getMaterials() {
         return this.materials;
     }
+
+    public void setSurfaceMaterial(Surface surface, Material material) {
+		surface.setMaterial(material);
+	}
 
     public void addRectangleHole(Surface surface) {
         Point pointA = points.get(0);

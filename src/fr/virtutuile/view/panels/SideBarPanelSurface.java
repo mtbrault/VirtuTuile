@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
 import fr.virtutuile.view.panels.SideBarPanelSurface.DirectionType;
@@ -34,6 +35,7 @@ public class SideBarPanelSurface extends JPanel {
 	private JTextField textfieldY;
 	private JTextField textField;
 	private JComboBox comboAlign;
+	private JComboBox comboMaterial;
 	private JComboBox comboPaste;
 
 	public SideBarPanelSurface(Surface surface, int nbSurface, VirtuTuileController controller) {
@@ -145,18 +147,22 @@ public class SideBarPanelSurface extends JPanel {
 		gridMaterial.gridy = 4;
 		blockPanel.add(labelMaterial, gridMaterial);
 
-		JButton btnMaterial = new JButton("Changer");
-		btnMaterial.addActionListener(new ActionListener() {
+		comboMaterial = new JComboBox(controller.getMaterials().toArray());
+
+		comboMaterial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				controller.changeSurfaceMaterial(surface);
+				JComboBox comboBox = (JComboBox) arg0.getSource();
+				Material material = (Material) comboMaterial.getSelectedItem();
+				controller.setSurfaceMaterial(surface, material);
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
-		});
+		});	
+
 		GridBagConstraints gridBtnMaterial = new GridBagConstraints();
 		gridBtnMaterial.gridx = 1;
 		gridBtnMaterial.gridy = 4;
-		blockPanel.add(btnMaterial, gridBtnMaterial);
+		blockPanel.add(comboMaterial, gridBtnMaterial);
 
 		JLabel labelMotif = new JLabel("Motifs");
 		GridBagConstraints gridMotif = new GridBagConstraints();
