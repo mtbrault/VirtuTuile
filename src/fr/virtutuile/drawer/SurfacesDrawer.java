@@ -80,6 +80,8 @@ public class SurfacesDrawer {
                 g2.setColor(Color.decode(surface.getMaterial().getColor()));
                 g2.fill(polygonTile);
                 g2.setColor(Color.BLACK);
+                if (tile.isDetected())
+                    g2.setColor(Color.red);
                 g.drawPolygon(polygonTile);
             }
         }
