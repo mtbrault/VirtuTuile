@@ -2,7 +2,7 @@ package fr.virtutuile.domain;
 
 import java.util.List;
 
-public class Polygon {
+public class Polygon implements java.io.Serializable {
     protected List<Point> points;
     private PolygonType type;
     private String color = "#FFFFFF";

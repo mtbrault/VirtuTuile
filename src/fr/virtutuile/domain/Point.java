@@ -1,6 +1,6 @@
 package fr.virtutuile.domain;
 
-public class Point {
+public class Point implements java.io.Serializable {
     public Integer x;
     public Integer y;
     public Integer initX;

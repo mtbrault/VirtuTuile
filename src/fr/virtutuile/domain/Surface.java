@@ -20,6 +20,38 @@ public class Surface extends Polygon {
         tiles = new ArrayList<>();
     }
 
+    public Surface(Surface surface) {
+        super(surface.getPoints(), PolygonType.SURFACE);
+        this.points = copyPoint(this.points);
+        this.tiles = new ArrayList<Tile>(surface.getTiles());
+        this.holes = copyHoles(surface.getHoles()); //La fonction copyHoles doit être mis à jour
+        this.selected = surface.isSelected();
+        this.pattern = surface.getPattern();
+        this.material = surface.getMaterial();
+        this.jointSize = surface.getJointSize();
+        this.surfaceType = surface.getSurfaceType();
+        this.patternId = surface.getPatternId();
+    }
+
+    private List<Point> copyPoint(List<Point> points) {
+        List<Point> list = new ArrayList<Point>();
+        for (Point point : points)
+            list.add(new Point(point));
+        return list;
+    }
+
+    private List<Polygon> copyHoles(List<Polygon> holes) {
+        return holes;
+        /*List<Polygon> list = new ArrayList<Polygon>();
+        for (Polygon poly : holes)
+            list.add(new Polygon(poly, poly.get));
+        return list;*/
+    }
+
+    public Pattern getPattern() {
+        return pattern;
+    }
+
     public int getJointSize() {
         return jointSize;
     }
@@ -147,5 +179,10 @@ public class Surface extends Polygon {
             }
         }
         return false;
+    }
+
+    public void translatePoint(int x, int y) {
+        for (Point point : points)
+            point.add(new Point(x, y));
     }
 }
