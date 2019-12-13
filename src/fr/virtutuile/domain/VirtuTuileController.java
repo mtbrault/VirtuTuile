@@ -29,6 +29,8 @@ public class VirtuTuileController {
     private State state = State.UNKNOWN;
     private boolean gridSwitch = false;
     private boolean isBeingDragged = false;
+    private int gridDim = 100;
+    private int gridTreshHold = 4;
 
     public VirtuTuileController() {
         surfaces = new ArrayList<Surface>();
@@ -330,34 +332,45 @@ public class VirtuTuileController {
     }
 
     public Point gridAttractMouse(Point before) {
+        Point rCoord = graphicToCoord(before.x, before.y);
+        Point xyClosest = coordToGraphic(
+                rCoord.x % gridDim > gridDim / 2 ?
+                        rCoord.x - rCoord.x % gridDim  + gridDim : rCoord.x - rCoord.x % gridDim,
+                rCoord.y % gridDim > gridDim / 2 ?
+                        rCoord.x - rCoord.y % gridDim  + gridDim : rCoord.y - rCoord.y % gridDim
+        );
         Point after = new Point(before);
-        if (before.x % 100 < 4)
-            after.x -= after.x % 100;
-        else if (before.x % 100 >= 96)
-            after.x += 100 - after.x % 100;
-        if (before.y % 100 < 4)
-            after.y -= after.y % 100;
-        else if (before.y % 100 >= 96)
-            after.y += 100 - after.y % 100;
+
+        if (before.x - xyClosest.x <= gridTreshHold && before.x - xyClosest.x >= -gridTreshHold)
+            after.x -= before.x - xyClosest.x;
+        if (before.y - xyClosest.y <= gridTreshHold && before.y - xyClosest.y >= -gridTreshHold)
+            after.y -= before.y - xyClosest.y;
         return (after);
     }
 
     public Point gridAttractSurface(Point before) {
         Point after = new Point(before);
-        Point vector = new Point(0, 0);
+        Point vector = new Point(gridTreshHold + 1, gridTreshHold + 1);
         for (Point surfacePoint : movingSurface.getPoints()) {
-            Point compare = coordToGraphic(surfacePoint.x, surfacePoint.y);
-            if (compare.x % 100 < 4 && vector.x >= 0)
-                vector.x -= compare.x % 100;
-            else if (compare.x % 100 >= 96 && vector.x <= 0)
-                vector.x += 100 - compare.x % 100;
-            if (compare.y % 100 < 4 && vector.y >= 0)
-                vector.y -= compare.y % 100;
-            else if (compare.y % 100 >= 96 && vector.y <= 0)
-                vector.y += 100 - compare.y % 100;
+            Point gCoord = coordToGraphic(surfacePoint.x, surfacePoint.y);
+            Point xyClosest = coordToGraphic(
+                    surfacePoint.x % gridDim > gridDim / 2 ?
+                            surfacePoint.x - surfacePoint.x % gridDim  + gridDim : surfacePoint.x - surfacePoint.x % gridDim,
+                    surfacePoint.y % gridDim > gridDim / 2 ?
+                            surfacePoint.x - surfacePoint.y % gridDim  + gridDim : surfacePoint.y - surfacePoint.y % gridDim
+            );
+            System.out.println(surfacePoint.x - xyClosest.x);
+            if (gCoord.x - xyClosest.x <= gridTreshHold && gCoord.x - xyClosest.x >= -gridTreshHold)
+                vector.x = Math.abs(vector.x) < Math.abs(gCoord.x - xyClosest.x) ? vector.x : gCoord.x - xyClosest.x;
+            if (gCoord.y - xyClosest.y <= gridTreshHold && gCoord.y - xyClosest.y >= -gridTreshHold)
+                vector.y = Math.abs(vector.y) < Math.abs(gCoord.y - xyClosest.y) ? vector.y : gCoord.y - xyClosest.y;
         }
-        after.x += vector.x;
-        after.y += vector.y;
+        if (vector.x > gridTreshHold)
+            vector.x = 0;
+        if (vector.y > gridTreshHold)
+            vector.y = 0;
+        after.x -= vector.x;
+        after.y -= vector.y;
         return (after);
     }
 
@@ -397,9 +410,15 @@ public class VirtuTuileController {
         return selectedTile;
     }
 
+    public int getGridDim() {
+        return gridDim;
+    }
+
     public void onMouseMoved(Point point) {
         if (gridSwitch)
-            point = gridMagnet(coordToGraphic(point.x, point.y));
+            point = gridMagnet(point);
+        else
+            point = graphicToCoord(point.x, point.y);
         mousePosition.setPos(point.x, point.y);
         for (Surface surface : surfaces) {
             for(Tile tile : surface.getTiles()) {
