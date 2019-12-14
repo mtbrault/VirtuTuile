@@ -9,7 +9,7 @@ import fr.virtutuile.view.frames.MainWindow;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
@@ -31,7 +31,7 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()));
+                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()), SwingUtilities.isLeftMouseButton(me));
 
             }
 

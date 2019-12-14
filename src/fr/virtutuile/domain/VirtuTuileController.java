@@ -165,8 +165,16 @@ public class VirtuTuileController {
         surfaces.add(tmpSurface);
         notifyObserverForSurfaces();
     }
-
-    public void onMousePressed(Point point) {
+    public void addTmpIrregularSurface() {
+        Point point1 = new Point(points.get(0));
+        Point point2 = new Point(mousePosition.x, mousePosition.y);
+        List<Point> surfacePoints = new ArrayList<Point>(Arrays.asList(point1, point2));
+        tmpSurface = new Surface(surfacePoints);
+        tmpSurface.setIrregular();
+        surfaces.add(tmpSurface);
+        notifyObserverForSurfaces();
+    }
+    public void onMousePressed(Point point, boolean isLeft) {
         if (state == State.MOVE) {
             points.add(point);
         } else if (state == State.MOVE_SURFACE) {
@@ -214,6 +222,17 @@ public class VirtuTuileController {
                 points.clear();
             } else {
                 addTmpSurface();
+            }
+        }else if (state == State.CREATE_IRREGULAR_SURFACE) {
+            points.add(point);
+            if (points.size() == 1) {
+                addTmpIrregularSurface();
+            } else {
+                if (!isLeft) {
+                    points.clear();
+                    return;
+                }
+                tmpSurface.addPoint(new Point(point));
             }
         } else if (state == State.CUT_SURFACE) {
             cutSurface = isInsideAnySurface(mousePosition);
@@ -433,6 +452,14 @@ public class VirtuTuileController {
 
                 Point point4 = surfacePoints.get(3);
                 point4.y = mousePosition.y;
+            }
+        } else if(state == State.CREATE_IRREGULAR_SURFACE) {
+            if (points.size() >= 1) {
+                List<Point> surfacePoints = tmpSurface.getPoints();
+
+                Point lastPoint = surfacePoints.get(surfacePoints.size() - 1);
+                lastPoint.x = mousePosition.x;
+                lastPoint.y = mousePosition.y;
             }
         } else if (state == State.MOVE && points.size() > 0) {
             Point pressedPoint = points.get(0);

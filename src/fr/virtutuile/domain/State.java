@@ -7,5 +7,6 @@ public enum State {
     MOVE_SURFACE,
     MOVE,
     CUT_SURFACE,
+    CREATE_IRREGULAR_SURFACE,
     GRID
 }

@@ -89,12 +89,19 @@ public class Surface extends Polygon {
         this.tileShift = tileShift;
     }
 
+    public void addPoint(Point lastPoint) {
+        points.add(lastPoint);
+    }
     public SurfaceType getSurfaceType() {
         return surfaceType;
     }
 
     public int getHeight() {
-        return Math.abs(points.get(0).y - points.get(3).y);
+        if (SurfaceType.REGULAR == surfaceType) {
+            return Math.abs(points.get(0).y - points.get(3).y);
+        } else {
+            return Math.abs(points.get(0).y - points.get(1).y);
+        }
     }
 
     public void digHole(List<Point> list) {
