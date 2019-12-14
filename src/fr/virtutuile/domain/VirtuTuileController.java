@@ -239,32 +239,6 @@ public class VirtuTuileController {
         }
     }
 
-    public boolean handleSurfaceStackable(Surface selectedSurface, ArrayList<Surface> otherSurfaces) {
-        List<Point> selectedSurfacePoints = selectedSurface.getPoints();
-        for (Surface surface : otherSurfaces) {
-            if (surface != selectedSurface) {
-                if (selectedSurface.isSurfaceStacked(surface)) {
-                    int dist1 = Math.abs(selectedSurfacePoints.get(0).x - surface.getPoints().get(1).x);
-                    int dist2 = Math.abs(selectedSurfacePoints.get(1).x - surface.getPoints().get(0).x);
-                    int dist3 = Math.abs(selectedSurfacePoints.get(0).y - surface.getPoints().get(2).y);
-                    int dist4 = Math.abs(selectedSurfacePoints.get(2).y - surface.getPoints().get(0).y);
-                    int minXDist = dist1 < dist2 ? dist1 : dist2 * -1;
-                    int minYDist = dist3 < dist4 ? dist3 : dist4 * -1;
-                    int minDist = Math.abs(minXDist) < Math.abs(minYDist) ? minXDist : minYDist;
-                    if (minDist != 0) {
-                        if (minDist == minXDist)
-                            selectedSurface.move(new Point(minDist,0));
-                        else
-                            selectedSurface.move(new Point(0,minDist));
-                        selectedSurface.onMoved();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public void onMouseReleased() {
         if (state == State.MOVE) {
             points.clear();
@@ -274,7 +248,6 @@ public class VirtuTuileController {
             points.clear();
             for (Surface surface : surfaces) {
                 if (surface.isSelected()) {
-                    handleSurfaceStackable(surface, surfaces);
                     addHistory();
                     notifyObserverForSurfaces();
                 }
@@ -325,7 +298,6 @@ public class VirtuTuileController {
                         ArrayList<Point> newPoints = new ArrayList<Point>();
                         for (i = 0; i < newPolygon.getPoints().size(); i += 2) {
                             if (newPolygon.getPoints().get(i) == null) {
-                                System.out.println("null");
                                 return;
                             }
                             newPoints.add(new Point(newPolygon.getPoints().get(i).intValue(), newPolygon.getPoints().get(i + 1).intValue()));
@@ -628,6 +600,23 @@ public class VirtuTuileController {
             }
         }
         return pointValue;
+    }
+
+    private Surface getExtremeSurface(Surface surface) {
+        Point left = getExtremePoint(surface, -1,0);
+        Point right = getExtremePoint(surface, 1,0);
+        Point down = getExtremePoint(surface, 0,1);
+        Point up = getExtremePoint(surface, 0,-1);
+        Point point1 = new Point(left.x, up.y);
+        Point point2 = new Point(right.x, up.y);
+        Point point3 = new Point(right.x, down.y);
+        Point point4 = new Point(left.x, down.y);
+        return new Surface(new ArrayList<Point>(){
+            {add(point1);
+            add(point2);
+            add(point3);
+            add(point4);}
+        });
     }
 
     public void changeSurfaceWithSurfaceCoord(Surface surface, int width, int height) {

@@ -9,11 +9,12 @@ public class Surface extends Polygon {
     private List<Tile> tiles;
     private List<Polygon> holes = new ArrayList<>();
     private boolean selected;
-    private Pattern pattern;
+    private Pattern pattern = new Pattern();
     private Material material;
     private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
-    private int patternId = 1;
+    private int patternId = 0;
+    private double tileShift = 0.5;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
@@ -69,6 +70,14 @@ public class Surface extends Polygon {
 
     public void setIrregular() {
         surfaceType = SurfaceType.IRREGULAR;
+    }
+
+    public double getTileShift() {
+        return this.tileShift;
+    }
+
+    public void setTileShift(double tileShift) {
+        this.tileShift = tileShift;
     }
 
     public SurfaceType getSurfaceType() {
@@ -151,18 +160,47 @@ public class Surface extends Polygon {
         }
     }
 
-    public boolean isSurfaceStacked(Surface surface) {
+    public Point getExtremePoint(int x, int y) {
+        int value = (x == -1 || y == -1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        Point pointValue = null;
+
         for (Point point : points) {
-            if (surface.isInside(point)) {
-                return true;
+            if (x == 1 && point.x > value) {
+                value = point.x;
+                pointValue = point;
+            }
+            else if (y == 1 && point.y >= value) {
+                value = point.y;
+                pointValue = point;
+            }
+            else if (x == -1 && point.x < value) {
+                value = point.x;
+                pointValue = point;
+            }
+            else if (y == -1 && point.y < value) {
+                value = point.y;
+                pointValue = point;
             }
         }
-        for (Point point : surface.getPoints()) {
-            if (isInside(point)) {
-                return true;
-            }
-        }
-        return false;
+        return pointValue;
+    }
+
+
+    public Surface getExtremeSurface() {
+        Point left = getExtremePoint(-1,0);
+        Point right = getExtremePoint( 1,0);
+        Point down = getExtremePoint( 0,1);
+        Point up = getExtremePoint(0,-1);
+        Point point1 = new Point(left.x, up.y);
+        Point point2 = new Point(right.x, up.y);
+        Point point3 = new Point(right.x, down.y);
+        Point point4 = new Point(left.x, down.y);
+        return new Surface(new ArrayList<Point>(){
+            {add(point1);
+                add(point2);
+                add(point3);
+                add(point4);}
+        });
     }
 
     public void translatePoint(int x, int y) {
