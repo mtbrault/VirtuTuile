@@ -658,7 +658,6 @@ public class VirtuTuileController {
         int x = landmark.x - surface.getPoints().get(0).x + width;
         int y = landmark.y - surface.getPoints().get(0).y + height;
         surface.translatePoint(x, y);
-        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -674,7 +673,6 @@ public class VirtuTuileController {
         Point destPoint = getExtremePoint(dest, x, y);
         Point fromPoint = getExtremePoint(surface, -x, -y);
         surface.translatePoint(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
-        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -693,9 +691,41 @@ public class VirtuTuileController {
             surface.translatePoint(destPoint.x - fromPoint.x, 0);
         else
             surface.translatePoint(0, destPoint.y - fromPoint.y);
-        surface.onMoved();
         notifyObserverForSurfaces();
         addHistory();
+    }
+
+    public void centerSurface(Surface surface, int opt) {
+        Surface dest = null;
+        for (Surface it : surfaces) {
+            if (it.isSelected() && it != surface)
+                dest = it;
+        }
+        if (dest == null)
+            return ;
+        if (opt == 0) {
+            int destOrigine = getExtremePoint(dest, -1, 0).x;
+            int destWidth = getExtremePoint(dest, 1, 0).x - destOrigine;
+            int origine = getExtremePoint(surface, -1, 0).x;
+            int fromWidth = getExtremePoint(surface, 1, 0).x - origine;
+            int diff = (destWidth - fromWidth) / 2;
+            if (diff == 0)
+                return ;
+            surface.translatePoint(destOrigine + diff - origine, 0);
+            notifyObserverForSurfaces();
+            addHistory();
+        } else if (opt == 1) {
+            int destOrigine = getExtremePoint(dest, 0, -1).y;
+            int destHeight = getExtremePoint(dest, 0, 1).y - destOrigine;
+            int origine = getExtremePoint(surface, 0, -1).y;
+            int fromHeight = getExtremePoint(surface, 0, 1).y - origine;
+            int diff = (destHeight - fromHeight) / 2;
+            if (diff == 0)
+                return ;
+            surface.translatePoint(0, destOrigine + diff - origine);
+            notifyObserverForSurfaces();
+            addHistory();
+        }
     }
 
     public void detectTile(int size) {
