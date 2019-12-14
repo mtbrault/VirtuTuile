@@ -55,13 +55,29 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
 		gbc_labelZoom.gridy = 0;
 		add(labelZoom, gbc_labelZoom);
 
-		textFieldGrid = new JTextField("valeur par default a modifié");
+		textFieldGrid = new JTextField("100");
 		textFieldGrid.setColumns(10);
 		textFieldGrid.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(
-						"here mettre le changement de size de la grid " + Integer.parseInt(textFieldGrid.getText()));
+				System.out.println("CHANGE");
+				int value = 0;
+				try {
+					textFieldGrid.setText(textFieldGrid.getText().replaceAll("[^\\d.]", ""));
+					value = Integer.parseInt(textFieldGrid.getText());
+				} catch (Exception err) {
+					System.out.println(err.getMessage());
+					mainWindow.controller.getGridDim();
+					textFieldGrid.setText(Integer.toString(value));
+					return;
+				}
+				if (value < 1) {
+					value = 1;
+					textFieldGrid.setText("1");
+					System.out.println("Number too low");
+				}
+				mainWindow.controller.setGridDim(value);
+				mainWindow.repaint();
 			}
 		});
 

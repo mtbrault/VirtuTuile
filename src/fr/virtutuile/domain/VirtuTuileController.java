@@ -147,6 +147,11 @@ public class VirtuTuileController {
         notifyObserverForSurfaces();
     }
 
+    public void setGridDim(int value) {
+        gridDim = value;
+        System.out.println("SETTED DIM");
+    }
+
     public void addTmpSurface() {
         Point point1 = new Point(points.get(0));
         Point point2 = new Point(mousePosition.x, point1.y);
