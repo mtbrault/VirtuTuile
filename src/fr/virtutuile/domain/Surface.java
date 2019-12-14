@@ -222,5 +222,6 @@ public class Surface extends Polygon {
     public void translatePoint(int x, int y) {
         for (Point point : points)
             point.add(new Point(x, y));
+        onMoved();
     }
 }
