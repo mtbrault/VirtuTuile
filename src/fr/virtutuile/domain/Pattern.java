@@ -5,6 +5,9 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 
+import java.awt.geom.Area;
+import java.awt.geom.PathIterator;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +63,59 @@ public class Pattern implements java.io.Serializable {
         }
        return new Tile(newPoints);
     }
+
+    public static Area convertPolygonToShape(Polygon p) {
+        int xtab[] = new int[p.getPoints().size()];
+        int ytab[] = new int[p.getPoints().size()];
+        int i = 0;
+        for (Point a : p.getPoints()) {
+            xtab[i] = a.x;
+            ytab[i] = a.y;
+            i += 1;
+        }
+        java.awt.Polygon awtPoly = new java.awt.Polygon(xtab, ytab, p.getPoints().size());
+        return new Area(awtPoly);
+    }
+
+    public static Tile convertShapeToTile(Area s) {
+        PathIterator iter = s.getPathIterator(null);
+        List<Point> points = new ArrayList<>();
+        double[] tmp = new double[2];
+        while (!iter.isDone()) {
+            iter.currentSegment(tmp);
+            int x = (int)tmp[0];
+            int y = (int)tmp[1];
+            points.add(new Point(x, y));
+            iter.next();
+        }
+        return new Tile(points);
+    }
+
+    public List<Tile> holeManager(Surface surface, List<Tile> tiles) {
+        List<Tile> newList = new ArrayList<>();
+        for (Tile tile : tiles) {
+            for (Hole hole : surface.getHoles()) {
+                int inside = 0;
+                for (Point p : tile.getPoints()) {
+                    if (hole.isInside(p))
+                        inside += 1;
+                }
+                if (inside == 0) {
+                    newList.add(tile);
+                } else if (inside < tile.getPoints().size()) {
+                    Area awtHole = convertPolygonToShape(hole);
+                    Area awtTile = convertPolygonToShape(tile);
+                    awtTile.subtract(awtHole);
+                    tile = convertShapeToTile(awtTile);
+                    newList.add(tile);
+                }
+            }
+        }
+        return (newList);
+    }
+
     public List<Tile> build(Material material, Surface surface) {
-        ArrayList<Tile> tiles = new ArrayList<Tile>();
+        List<Tile> tiles = new ArrayList<Tile>();
         Surface extremeSurface = surface.getExtremeSurface();
         Point point1 = extremeSurface.getPoints().get(0);
         Point point2 = extremeSurface.getPoints().get(1);
@@ -107,6 +161,8 @@ public class Pattern implements java.io.Serializable {
                 }
             }
         }
+        if (surface.getHoles().size() > 0)
+            tiles = holeManager(surface, tiles);
         return tiles;
     }
 }

@@ -1,13 +1,13 @@
 package fr.virtutuile.domain;
 
+import java.awt.event.HierarchyBoundsAdapter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Surface extends Polygon {
 
     private List<Tile> tiles;
-    private List<Polygon> holes = new ArrayList<>();
+    private List<Hole> holes = new ArrayList<>();
     private boolean selected;
     private Pattern pattern = new Pattern();
     private Material material;
@@ -50,7 +50,7 @@ public class Surface extends Polygon {
         return list;
     }
 
-    private List<Polygon> copyHoles(List<Polygon> holes) {
+    private List<Hole> copyHoles(List<Hole> holes) {
         return holes;
         /*List<Polygon> list = new ArrayList<Polygon>();
         for (Polygon poly : holes)
@@ -109,11 +109,11 @@ public class Surface extends Polygon {
             if (!isInside(points))
                 return;
         }
-        Polygon poly = new Polygon(new ArrayList<Point>(list), PolygonType.HOLE);
-        holes.add(poly);
+        Hole h = new Hole(new ArrayList<Point>(list));
+        holes.add(h);
     }
 
-    public List<Polygon> getHoles() {
+    public List<Hole> getHoles() {
         return (holes);
     }
 
@@ -151,9 +151,11 @@ public class Surface extends Polygon {
     public void setMaterial(Material material) {
         this.material = material;
     }
+
     public Material getMaterial() {
         return this.material;
     }
+
     public ArrayList<Point> getIntersectionsPointWithSurface(Surface surface) {
         ArrayList<Point> intersectionPoints = new ArrayList<Point>();
         for (Point point : surface.getPoints()) {
@@ -168,6 +170,7 @@ public class Surface extends Polygon {
         }
         return intersectionPoints;
     }
+
     public void onMoved() {
         if (material != null) {
             if (pattern != null) {

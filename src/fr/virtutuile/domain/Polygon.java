@@ -17,6 +17,19 @@ public class Polygon implements java.io.Serializable {
         return false;
     }
 
+    public boolean isInside(Point p3) {
+        int nbSegment = 0;
+        for (int i = 0; i < points.size() - 1; i++) {
+            if (isOnLine(points.get(i), points.get(i + 1), p3)) {
+                nbSegment++;
+            }
+        }
+        if (isOnLine(points.get(0), points.get(points.size() - 1), p3)) {
+            nbSegment++;
+        }
+        return (nbSegment % 2 == 1);
+    }
+
     public Polygon(List<Point> points, PolygonType type) {
         this.points = points;
         this.type = type;
@@ -34,18 +47,6 @@ public class Polygon implements java.io.Serializable {
         this.color = color;
     }
 
-    public boolean isInside(Point p3) {
-        int nbSegment = 0;
-        for (int i = 0; i < points.size() - 1; i++) {
-            if (isOnLine(points.get(i), points.get(i + 1), p3)) {
-                nbSegment++;
-            }
-        }
-        if (isOnLine(points.get(0), points.get(points.size() - 1), p3)) {
-            nbSegment++;
-        }
-        return (nbSegment % 2 == 1);
-    }
 
     public void move(Point newPoint) {
         for (Point point : points) {
