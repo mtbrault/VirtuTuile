@@ -66,31 +66,37 @@ public class Pattern implements java.io.Serializable {
         Point point1 = extremeSurface.getPoints().get(0);
         Point point2 = extremeSurface.getPoints().get(1);
         Point point4 = extremeSurface.getPoints().get(3);
-        int nbXTiles = Math.abs(point1.x - point2.x) / (material.getWidth() + surface.getJointSize()) + 1;
-        int nbYTiles = Math.abs(point1.y - point4.y) / (material.getHeight() + surface.getJointSize()) + 1;
         int minPointX = point1.x;
         int minPointY = point1.y;
+        int tileHeight = material.getHeight();
+        int tileWidth = material.getWidth();
+        if (surface.isVertical()) {
+            tileHeight = material.getWidth();
+            tileWidth = material.getHeight();
+        }
+        int nbXTiles = Math.abs(point1.x - point2.x) / (tileWidth + surface.getJointSize()) + 1;
+        int nbYTiles = Math.abs(point1.y - point4.y) / (tileHeight + surface.getJointSize()) + 1;
         if (surface.getPatternId() == 0) {
             for (int y = 0; y < nbYTiles; y++) {
                 for (int x = 0; x < nbXTiles; x++) {
                     ArrayList points = new ArrayList<Point>();
-                    int Xpoint0 = x * material.getWidth() + minPointX + (surface.getJointSize() * x);
+                    int Xpoint0 = x * tileWidth + minPointX + (surface.getJointSize() * x);
                     if (y % 2 == 0) {
-                        Xpoint0 -= material.getWidth() * surface.getTileShift();
+                        Xpoint0 -= tileWidth * surface.getTileShift();
                         if (Xpoint0 < point1.x) {
                             Xpoint0 = point1.x;
                         }
                     }
-                    int Ypoint0 = y * material.getHeight() + minPointY + (y*surface.getJointSize());
+                    int Ypoint0 = y *tileHeight + minPointY + (y*surface.getJointSize());
                     points.add(new Point(Xpoint0, Ypoint0));
 
-                    int Xpoint = (x + 1) * material.getWidth() + minPointX + (x*surface.getJointSize());
+                    int Xpoint = (x + 1) * tileWidth + minPointX + (x*surface.getJointSize());
                     if (y % 2 == 0) {
-                        Xpoint -= material.getWidth() * surface.getTileShift();
+                        Xpoint -= tileWidth * surface.getTileShift();
                     }
                     points.add(new Point(Xpoint, Ypoint0));
 
-                    int Ypoint = (y + 1) * material.getHeight() + minPointY + (y*surface.getJointSize());
+                    int Ypoint = (y + 1) * tileHeight + minPointY + (y*surface.getJointSize());
                     points.add(new Point(Xpoint, Ypoint));
 
                     points.add(new Point(Xpoint0, Ypoint));

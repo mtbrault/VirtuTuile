@@ -15,10 +15,19 @@ public class Surface extends Polygon {
     private SurfaceType surfaceType = SurfaceType.REGULAR;
     private int patternId = 0;
     private double tileShift = 0.5;
+    private boolean vertical = true;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
         tiles = new ArrayList<>();
+    }
+
+    public boolean isVertical() {
+        return vertical;
+    }
+
+    public void setVertical() {
+        vertical = !vertical;
     }
 
     public Surface(Surface surface) {
