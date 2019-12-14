@@ -1,5 +1,8 @@
 package fr.virtutuile.domain;
 
+import javafx.scene.shape.*;
+import javafx.scene.shape.Shape;
+
 import java.awt.*;
 import java.io.*;
 import java.sql.Array;
@@ -281,46 +284,57 @@ public class VirtuTuileController {
 
     public void combineSelectedSurfaces() {
         for (Surface firstSurface : surfaces) {
-            if (firstSurface.isSelected() && firstSurface.getSurfaceType() == SurfaceType.REGULAR) {
+            if (firstSurface.isSelected()) {
                 for (Surface secondSurface : surfaces) {
-                    if (firstSurface != secondSurface && secondSurface.isSelected() && secondSurface.getSurfaceType() == SurfaceType.REGULAR) {
-                        SurfacePosition position = firstSurface.getPositionSurface(secondSurface);
-                         if (position == SurfacePosition.LEFT) {
-                             firstSurface.getPoints().add(secondSurface.getPoints().get(2));
-                             firstSurface.getPoints().add(secondSurface.getPoints().get(3));
-                             firstSurface.getPoints().add(secondSurface.getPoints().get(0));
-                             firstSurface.getPoints().add(secondSurface.getPoints().get(1));
-                             firstSurface.setIrregular();
-                             firstSurface.getTiles().clear();
-                             deleteSurface(secondSurface);
-                         }
-                        if (position == SurfacePosition.RIGHT) {
-                            secondSurface.getPoints().add(firstSurface.getPoints().get(2));
-                            secondSurface.getPoints().add(firstSurface.getPoints().get(3));
-                            secondSurface.getPoints().add(firstSurface.getPoints().get(0));
-                            secondSurface.getPoints().add(firstSurface.getPoints().get(1));
-                            secondSurface.setIrregular();
-                            secondSurface.getTiles().clear();
-                            deleteSurface(firstSurface);
+                    if (firstSurface != secondSurface && secondSurface.isSelected()) {
+                        ArrayList<Double> fxPoints = new ArrayList<Double>();
+                        for (Point point : firstSurface.getPoints()) {
+                            fxPoints.add((double)point.x);
+                            fxPoints.add((double)point.y);
                         }
-                        if (position == SurfacePosition.TOP) {
-                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(2));
-                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(1));
-                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(0));
-                            firstSurface.getPoints().add(1, secondSurface.getPoints().get(3));
-                            firstSurface.setIrregular();
-                            firstSurface.getTiles().clear();
-                            deleteSurface(secondSurface);
+                        Double[] fpoints = fxPoints.toArray(new Double[fxPoints.size()]);
+                        javafx.scene.shape.Polygon firstPoly = new javafx.scene.shape.Polygon();
+                        firstPoly.getPoints().addAll(fpoints);
+
+                        ArrayList<Double> fxPoints2 = new ArrayList<Double>();
+                        for (Point point : secondSurface.getPoints()) {
+                            fxPoints2.add((double)point.x);
+                            fxPoints2.add((double)point.y);
                         }
-                        if (position == SurfacePosition.BOTTOM) {
-                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(2));
-                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(1));
-                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(0));
-                            secondSurface.getPoints().add(1, firstSurface.getPoints().get(3));
-                            secondSurface.setIrregular();
-                            secondSurface.getTiles().clear();
-                            deleteSurface(firstSurface);
+                        javafx.scene.shape.Polygon secondPoly = new javafx.scene.shape.Polygon();
+                        secondPoly.getPoints().addAll(fxPoints2.toArray(new Double[fxPoints2.size()]));
+                        Path p3 = (Path)javafx.scene.shape.Polygon.union(firstPoly, secondPoly);
+                        Double[] pointsShape = new Double[(p3.getElements().size() - 1)*2];
+                        int i = 0;
+                        for(PathElement el : p3.getElements()){
+                            if(el instanceof MoveTo){
+                                MoveTo mt = (MoveTo) el;
+                                pointsShape[i] = mt.getX();
+                                pointsShape[i+1] = mt.getY();
+                            }
+                            if(el instanceof LineTo){
+                                LineTo lt = (LineTo) el;
+                                pointsShape[i] = lt.getX();
+                                pointsShape[i+1] = lt.getY();
+                            }
+                            i += 2;
                         }
+
+                        javafx.scene.shape.Polygon newPolygon = new javafx.scene.shape.Polygon();
+                        newPolygon.getPoints().addAll(pointsShape);
+                        ArrayList<Point> newPoints = new ArrayList<Point>();
+                        for (i = 0; i < newPolygon.getPoints().size(); i += 2) {
+                            if (newPolygon.getPoints().get(i) == null) {
+                                System.out.println("null");
+                                return;
+                            }
+                            newPoints.add(new Point(newPolygon.getPoints().get(i).intValue(), newPolygon.getPoints().get(i + 1).intValue()));
+                        }
+                        Surface newSurface = new Surface(newPoints);
+                        newSurface.setIrregular();
+                        surfaces.add(newSurface);
+                        deleteSurface(firstSurface);
+                        deleteSurface(secondSurface);
                         return;
                     }
                 }

@@ -10,7 +10,6 @@ public class Point implements java.io.Serializable {
         this.x = new Integer(x);
         this.y = new Integer(y);
     }
-
     public Point(Point point) {
         this.x = new Integer(point.x);
         this.y = new Integer(point.y);

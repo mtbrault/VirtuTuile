@@ -144,29 +144,13 @@ public class Surface extends Polygon {
         return intersectionPoints;
     }
     public void onMoved() {
-        tiles = pattern.build(material, this);
+        if (material != null) {
+            if (pattern != null) {
+                tiles = pattern.build(material, this);
+            }
+        }
     }
 
-    public SurfacePosition getPositionSurface(Surface surface) {
-        List<Point> surfacePoints = surface.getPoints();
-        int dist1 = Math.abs(points.get(0).x - surfacePoints.get(1).x);
-        int dist2 = Math.abs(points.get(1).x - surfacePoints.get(0).x);
-        int dist3 = Math.abs(points.get(0).y - surfacePoints.get(2).y);
-        int dist4 = Math.abs(points.get(2).y - surfacePoints.get(0).y);
-        if (dist1 == 0) {
-            return SurfacePosition.LEFT;
-        }
-        if (dist2 == 0) {
-            return SurfacePosition.RIGHT;
-        }
-        if (dist3 == 0) {
-            return SurfacePosition.TOP;
-        }
-        if (dist4 == 0) {
-            return SurfacePosition.BOTTOM;
-        }
-        return SurfacePosition.NONE;
-    }
     public boolean isSurfaceStacked(Surface surface) {
         for (Point point : points) {
             if (surface.isInside(point)) {
