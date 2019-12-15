@@ -236,7 +236,6 @@ public class ToolBarPanel extends JPanel {
 					mainWindow.controller.addMaterial(new Material(materialName.getText()));
 					mainWindow.controller.notifyObserverForSurfaces();
 				}
-
 			}
 		});
 		toolbarLeft.add(buttonAddMaterial);

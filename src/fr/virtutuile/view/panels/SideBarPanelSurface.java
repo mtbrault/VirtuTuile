@@ -30,6 +30,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 	private JTextField textField;
 	private JComboBox comboAlign;
 	private JComboBox comboMaterial;
+	private JComboBox comboMotif;
 	private JComboBox comboPaste;
 	private JComboBox comboCenter;
 	private ColorChangePanel colorChange;
@@ -72,8 +73,16 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gbc_lblSurfaceX.gridx = 0;
 		gbc_lblSurfaceX.gridy = 0;
 		blockPanel.add(lblSurfaceX, gbc_lblSurfaceX);
+		
+		JLabel lblBoiteNbr = new JLabel("Nombre de boites : " + surface.getNbBoxNeedForMaterial());
+		lblBoiteNbr.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblBoiteNbr = new GridBagConstraints();
+		gbc_lblBoiteNbr.insets = new Insets(0, 0, 5, 0);
+		gbc_lblBoiteNbr.gridx = 1;
+		gbc_lblBoiteNbr.gridy = 0;
+		blockPanel.add(lblBoiteNbr, gbc_lblBoiteNbr);
 
-		JLabel lblHauteur = new JLabel("Largeur");
+		JLabel lblHauteur = new JLabel("Largeur :");
 		lblHauteur.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHauteur.setVerticalAlignment(SwingConstants.BOTTOM);
 		GridBagConstraints gbc_lblHauteur = new GridBagConstraints();
@@ -100,7 +109,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gbc_textField.gridy = 1;
 		blockPanel.add(textField, gbc_textField);
 
-		JLabel lblNewLabel = new JLabel("Hauteur");
+		JLabel lblNewLabel = new JLabel("Hauteur :");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -126,7 +135,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		blockPanel.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 
-		JLabel lblEpaisseurDuJoin = new JLabel("Epaisseur du joint");
+		JLabel lblEpaisseurDuJoin = new JLabel("Epaisseur du joint :");
 		lblEpaisseurDuJoin.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblEpaisseurDuJoin = new GridBagConstraints();
 		gbc_lblEpaisseurDuJoin.anchor = GridBagConstraints.WEST;
@@ -154,10 +163,10 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			}
 		});
 
-		JLabel labelMaterial = new JLabel("Matériaux");
+		JLabel labelMaterial = new JLabel("Matériaux :");
 		GridBagConstraints gridMaterial = new GridBagConstraints();
 		gridMaterial.anchor = GridBagConstraints.WEST;
-		gridMaterial.insets = new Insets(0, 0, 0, 5);
+		gridMaterial.insets = new Insets(0, 0, 5, 5);
 		gridMaterial.gridx = 0;
 		gridMaterial.gridy = 4;
 		blockPanel.add(labelMaterial, gridMaterial);
@@ -175,30 +184,37 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		});
 
 		GridBagConstraints gridBtnMaterial = new GridBagConstraints();
+		gridBtnMaterial.insets = new Insets(0, 0, 5, 0);
 		gridBtnMaterial.gridx = 1;
 		gridBtnMaterial.gridy = 4;
 		blockPanel.add(comboMaterial, gridBtnMaterial);
 
-		JLabel labelMotif = new JLabel("Motifs");
+		JLabel labelMotif = new JLabel("Motifs :");
 		GridBagConstraints gridMotif = new GridBagConstraints();
 		gridMotif.anchor = GridBagConstraints.WEST;
-		gridMotif.insets = new Insets(0, 0, 0, 5);
+		gridMotif.insets = new Insets(0, 0, 5, 5);
 		gridMotif.gridx = 0;
 		gridMotif.gridy = 5;
 		blockPanel.add(labelMotif, gridMotif);
 
-		JButton btnMotif = new JButton("Changer");
-		btnMotif.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				surface.changePattern();
+		String[] paternList = new String[] {"1", "2", "3", "4"};
+
+		comboMotif = new JComboBox(paternList);
+
+		comboMotif.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JComboBox comboBox = (JComboBox) arg0.getSource();
+				String paternNbr = (String) comboMotif.getSelectedItem();
+				surface.changePattern(Integer.parseInt(paternNbr) - 1);
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
 		});
 		GridBagConstraints gridBtnMotif = new GridBagConstraints();
+		gridBtnMotif.insets = new Insets(0, 0, 5, 0);
 		gridBtnMotif.gridx = 1;
 		gridBtnMotif.gridy = 5;
-		blockPanel.add(btnMotif, gridBtnMotif);
+		blockPanel.add(comboMotif, gridBtnMotif);
 
 		colorChange = new ColorChangePanel(Color.WHITE);
 		colorChange.addColorChangedListener(this);
@@ -206,22 +222,23 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		JLabel labelColor = new JLabel("Color");
 		GridBagConstraints gridColor = new GridBagConstraints();
 		gridColor.anchor = GridBagConstraints.WEST;
-		gridColor.insets = new Insets(0, 0, 0, 5);
+		gridColor.insets = new Insets(0, 0, 5, 5);
 		gridColor.gridx = 0;
 		gridColor.gridy = 6;
 		blockPanel.add(labelColor, gridColor);
 
 		GridBagConstraints gridTextColor = new GridBagConstraints();
+		gridTextColor.insets = new Insets(0, 0, 5, 0);
 		gridTextColor.fill = GridBagConstraints.HORIZONTAL;
 
 		gridTextColor.gridx = 1;
 		gridTextColor.gridy = 6;
 		blockPanel.add(colorChange, gridTextColor);
 
-		JLabel labelSurfaceAction = new JLabel("Modifier selon surface");
+		JLabel labelSurfaceAction = new JLabel("Modifier selon surface :");
 		GridBagConstraints gridSurface = new GridBagConstraints();
 		gridSurface.anchor = GridBagConstraints.WEST;
-		gridSurface.insets = new Insets(0, 0, 0, 5);
+		gridSurface.insets = new Insets(0, 0, 5, 5);
 		gridSurface.gridx = 0;
 		gridSurface.gridy = 9;
 		blockPanel.add(labelSurfaceAction, gridSurface);
@@ -250,14 +267,15 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			}
 		});
 		GridBagConstraints gridBtnSurface = new GridBagConstraints();
+		gridBtnSurface.insets = new Insets(0, 0, 5, 0);
 		gridBtnSurface.gridx = 1;
 		gridBtnSurface.gridy = 9;
 		blockPanel.add(btnSurface, gridBtnSurface);
 
-		JLabel labelAlign = new JLabel("Aligner");
+		JLabel labelAlign = new JLabel("Aligner :");
 		GridBagConstraints gridAlign = new GridBagConstraints();
 		gridAlign.anchor = GridBagConstraints.WEST;
-		gridAlign.insets = new Insets(0, 0, 0, 5);
+		gridAlign.insets = new Insets(0, 0, 5, 5);
 		gridAlign.gridx = 0;
 		gridAlign.gridy = 10;
 		blockPanel.add(labelAlign, gridAlign);
@@ -287,14 +305,15 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		});
 
 		GridBagConstraints gridAlignCombo = new GridBagConstraints();
+		gridAlignCombo.insets = new Insets(0, 0, 5, 0);
 		gridAlignCombo.gridx = 1;
 		gridAlignCombo.gridy = 10;
 		blockPanel.add(comboAlign, gridAlignCombo);
 
-		JLabel labelPaste = new JLabel("Coller");
+		JLabel labelPaste = new JLabel("Coller :");
 		GridBagConstraints gridPaste = new GridBagConstraints();
 		gridPaste.anchor = GridBagConstraints.WEST;
-		gridPaste.insets = new Insets(0, 0, 0, 5);
+		gridPaste.insets = new Insets(0, 0, 5, 5);
 		gridPaste.gridx = 0;
 		gridPaste.gridy = 11;
 		blockPanel.add(labelPaste, gridPaste);
@@ -316,11 +335,12 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		});
 
 		GridBagConstraints gridPasteCombo = new GridBagConstraints();
+		gridPasteCombo.insets = new Insets(0, 0, 5, 0);
 		gridPasteCombo.gridx = 1;
 		gridPasteCombo.gridy = 11;
 		blockPanel.add(comboPaste, gridPasteCombo);
 
-		JLabel labelTileShift = new JLabel("Décalage");
+		JLabel labelTileShift = new JLabel("Décalage :");
 		labelTileShift.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_tileShift = new GridBagConstraints();
 		gbc_tileShift.insets = new Insets(0, 0, 5, 5);
@@ -353,10 +373,10 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		blockPanel.add(textfieldTileShift, gbc_textFieldTile);
 		textfieldTileShift.setColumns(10);
 
-		JLabel labelTuileDirection = new JLabel("Tuile Direction");
+		JLabel labelTuileDirection = new JLabel("Direction des tuiles :");
 		GridBagConstraints gridTuileDirection = new GridBagConstraints();
 		gridTuileDirection.anchor = GridBagConstraints.WEST;
-		gridTuileDirection.insets = new Insets(0, 0, 0, 5);
+		gridTuileDirection.insets = new Insets(0, 0, 5, 5);
 		gridTuileDirection.gridx = 0;
 		gridTuileDirection.gridy = 13;
 		blockPanel.add(labelTuileDirection, gridTuileDirection);
@@ -382,13 +402,15 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			}
 		});
 		GridBagConstraints gridBtnTuile = new GridBagConstraints();
+		gridBtnTuile.insets = new Insets(0, 0, 5, 0);
 		gridBtnTuile.gridx = 1;
 		gridBtnTuile.gridy = 13;
 		blockPanel.add(btnTuileDirection, gridBtnTuile);
 
 		
-		JLabel labelCenter = new JLabel("Center");
+		JLabel labelCenter = new JLabel("Centre :");
 		GridBagConstraints gridCenter = new GridBagConstraints();
+		gridCenter.insets = new Insets(0, 0, 0, 5);
 		gridCenter.anchor = GridBagConstraints.WEST;
 		gridPaste.insets = new Insets(0, 0, 0, 5);
 		gridCenter.gridx = 0;

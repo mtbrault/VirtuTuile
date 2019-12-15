@@ -49,7 +49,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gbc_lblSurfaceX.gridy = 0;
 		materialPanel.add(lblSurfaceX, gbc_lblSurfaceX);
 
-		JLabel lblHauteur = new JLabel("Largeur");
+		JLabel lblHauteur = new JLabel("Largeur :");
 		lblHauteur.setHorizontalAlignment(SwingConstants.LEFT);
 		lblHauteur.setVerticalAlignment(SwingConstants.BOTTOM);
 		GridBagConstraints gbc_lblHauteur = new GridBagConstraints();
@@ -77,7 +77,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gbc_textField.gridy = 1;
 		materialPanel.add(textField, gbc_textField);
 
-		JLabel lblNewLabel = new JLabel("Hauteur");
+		JLabel lblNewLabel = new JLabel("Hauteur :");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -104,7 +104,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		materialPanel.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 
-		JLabel labelColor = new JLabel("Color");
+		JLabel labelColor = new JLabel("Couleur :");
 		labelColor.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints colorGrid = new GridBagConstraints();
 		colorGrid.insets = new Insets(0, 0, 5, 5);
@@ -123,7 +123,33 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gridColor.gridy = 3;
 		materialPanel.add(colorChange, gridColor);
 		
-	
+		JLabel lblBoite = new JLabel("Tuile par boites :");
+		GridBagConstraints gbc_lblBoite = new GridBagConstraints();
+		gbc_lblBoite.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBoite.anchor = GridBagConstraints.WEST;
+		gbc_lblBoite.gridx = 0;
+		gbc_lblBoite.gridy = 4;
+		materialPanel.add(lblBoite, gbc_lblBoite);
+
+		JTextField textFieldBoite = new JTextField("" + material.getNbTileByBox());
+		textFieldBoite.setColumns(10);
+		textFieldBoite.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				material.setNbTileByBox(Integer.parseInt(textFieldBoite.getText()));
+				controller.rebuildAllSurface();
+				controller.notifyObserverForSurfaces();
+			}
+		});
+		textFieldBoite.setColumns(10);
+
+		GridBagConstraints gbctextFieldBoite = new GridBagConstraints();
+		gbctextFieldBoite.insets = new Insets(0, 0, 5, 0);
+		gbctextFieldBoite.fill = GridBagConstraints.HORIZONTAL;
+		gbctextFieldBoite.gridx = 1;
+		gbctextFieldBoite.gridy = 4;
+		materialPanel.add(textFieldBoite, gbctextFieldBoite);
+
 	}
 	
 	@Override
