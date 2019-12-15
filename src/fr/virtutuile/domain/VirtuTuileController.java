@@ -634,7 +634,7 @@ public class VirtuTuileController {
             return ;
         int x = landmark.x - surface.getPoints().get(0).x + width;
         int y = landmark.y - surface.getPoints().get(0).y + height;
-        surface.translatePoint(x, y);
+        surface.move(x, y);
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -649,7 +649,7 @@ public class VirtuTuileController {
             return ;
         Point destPoint = getExtremePoint(dest, x, y);
         Point fromPoint = getExtremePoint(surface, -x, -y);
-        surface.translatePoint(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
+        surface.move(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -665,9 +665,9 @@ public class VirtuTuileController {
         Point destPoint = getExtremePoint(dest, x, y);
         Point fromPoint = getExtremePoint(surface, x, y);
         if (x != 0)
-            surface.translatePoint(destPoint.x - fromPoint.x, 0);
+            surface.move(destPoint.x - fromPoint.x, 0);
         else
-            surface.translatePoint(0, destPoint.y - fromPoint.y);
+            surface.move(0, destPoint.y - fromPoint.y);
         notifyObserverForSurfaces();
         addHistory();
     }
@@ -688,7 +688,7 @@ public class VirtuTuileController {
             int diff = (destWidth - fromWidth) / 2;
             if (diff == 0)
                 return ;
-            surface.translatePoint(destOrigine + diff - origine, 0);
+            surface.move(destOrigine + diff - origine, 0);
             notifyObserverForSurfaces();
             addHistory();
         } else if (opt == 1) {
@@ -699,7 +699,7 @@ public class VirtuTuileController {
             int diff = (destHeight - fromHeight) / 2;
             if (diff == 0)
                 return ;
-            surface.translatePoint(0, destOrigine + diff - origine);
+            surface.move(0, destOrigine + diff - origine);
             notifyObserverForSurfaces();
             addHistory();
         }

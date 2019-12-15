@@ -69,6 +69,16 @@ public class Surface extends Polygon {
         }
     }
 
+    @Override
+    public boolean isInside(Point p3) {
+        boolean inHole = false;
+        for (Hole hole : getHoles()) {
+            if (hole.isInside(p3))
+                inHole = true;
+        }
+        return super.isInside(p3) && !inHole;
+    }
+
     public Pattern getPattern() {
         return pattern;
     }
@@ -243,11 +253,5 @@ public class Surface extends Polygon {
                 add(point3);
                 add(point4);}
         });
-    }
-
-    public void translatePoint(int x, int y) {
-        for (Point point : points)
-            point.add(new Point(x, y));
-        onMoved();
     }
 }

@@ -77,22 +77,12 @@ public class SurfacesDrawer {
             g.drawString(String.valueOf(dis1), graphicPoint.x, graphicPoint.y);
         }
         Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
+        Area awtShape = new Area(polygon);
         if (surface.getHoles().size() > 0) {
-            Area awtShape = new Area(polygon);
             for (Hole hole : surface.getHoles()) {
                 Area awtHole = Pattern.convertPolygonToShape(hole);
                 awtShape.subtract(awtHole);
             }
-            Polygon tmpPoly  = new Polygon();
-            PathIterator iter = awtShape.getPathIterator(null);
-            List<Point> tmpPoints = new ArrayList<>();
-            double[] tmp = new double[2];
-            while (!iter.isDone()) {
-                iter.currentSegment(tmp);
-                tmpPoly.addPoint((int)tmp[0], (int)tmp[1]);
-                iter.next();
-            }
-            polygon = tmpPoly;
         }
         if (surface.isSelected()) {
             //taille de la ligne quand la surface est selectionnée
@@ -101,9 +91,9 @@ public class SurfacesDrawer {
             g2.setStroke(new BasicStroke(1));
         }
         g2.setColor(Color.decode(surface.getColor()));
-        g2.fill(polygon);
+        g2.fill(awtShape);
         g2.setColor(Color.BLACK);
-        g.drawPolygon(polygon);
+        g2.draw(awtShape);
         if (surface.getTiles().size() != 0) {
             drawTiles(g, g2, surface.getTiles(), surface.getMaterial().getColor());
         }
