@@ -187,6 +187,9 @@ public class ToolBarPanel extends JPanel {
         } catch (IOException err) {
             System.out.println(err);
         }
+        JButton buttonIrregular = new JButton("Surface irrégulière");
+        buttonIrregular.addActionListener(handleClick(State.CREATE_IRREGULAR_SURFACE));
+        toolbarLeft.add(buttonIrregular);
         try {
             BufferedImage myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/fr/virtutuile/view/ressources/bind.png"));
             JButton button = new JButton(new ImageIcon(resizeImage(myPicture, 60, 60)));

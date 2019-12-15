@@ -115,6 +115,18 @@ public class Surface extends Polygon {
         }
     }
 
+    public int getNbBoxNeedForMaterial() {
+        int box = tiles.size() / material.getNbTileByBox();
+        if (tiles.size() % material.getNbTileByBox() != 0) {
+            box++;
+        }
+        return box;
+    }
+
+    public int getNbTiles() {
+        return this.tiles.size();
+    }
+
     public void digHole(List<Point> list) {
         for (Point points : list) {
             if (!isInside(points))
