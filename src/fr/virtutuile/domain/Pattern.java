@@ -162,6 +162,53 @@ public class Pattern implements java.io.Serializable {
                     }
                 }
             }
+        } else if (surface.getPatternId() == 1) {
+            for (int y = 0; y < nbYTiles / 2 + 1; y++) {
+                for (int x = 0; x < nbXTiles; x++) {
+                    ArrayList points = new ArrayList<Point>();
+                    ArrayList secondPoints = new ArrayList<Point>();
+                    int maxSize = Math.max(tileWidth, tileHeight);
+                    int minSize = Math.min(tileWidth, tileHeight);
+                    int Xpoint0 = x * maxSize + minPointX + (surface.getJointSize() * x);
+                    int Ypoint0 = y * maxSize + minPointY + (y*surface.getJointSize());
+                    if (x % 2 == y % 2) {
+                        int Xpoint1 = Xpoint0 + maxSize;
+                        int Ypoint1 = Ypoint0 + minSize;
+                        int Ypoint2 = Ypoint0 + (2 * minSize);
+                        points.add(new Point(Xpoint0, Ypoint0));
+                        points.add(new Point(Xpoint1, Ypoint0));
+                        points.add(new Point(Xpoint1, Ypoint1));
+                        points.add(new Point(Xpoint0, Ypoint1));
+
+                        secondPoints.add(new Point(Xpoint0, Ypoint1));
+                        secondPoints.add(new Point(Xpoint1, Ypoint1));
+                        secondPoints.add(new Point(Xpoint1, Ypoint2));
+                        secondPoints.add(new Point(Xpoint0, Ypoint2));
+
+                    } else {
+                        int Xpoint1 = Xpoint0 + minSize;
+                        int Ypoint1 = Ypoint0 + maxSize;
+                        int Xpoint2 = Xpoint0 + 2 * minSize;
+                        points.add(new Point(Xpoint0, Ypoint0));
+                        points.add(new Point(Xpoint1, Ypoint0));
+                        points.add(new Point(Xpoint1, Ypoint1));
+                        points.add(new Point(Xpoint0, Ypoint1));
+
+                        secondPoints.add(new Point(Xpoint1, Ypoint0));
+                        secondPoints.add(new Point(Xpoint2, Ypoint0));
+                        secondPoints.add(new Point(Xpoint2, Ypoint1));
+                        secondPoints.add(new Point(Xpoint1, Ypoint1));
+                    }
+                    Tile tile = this.getIntersection(surface, new Tile(points));
+                    if (tile != null) {
+                        tiles.add(tile);
+                    }
+                    Tile tile2 = this.getIntersection(surface, new Tile(secondPoints));
+                    if (tile2 != null) {
+                        tiles.add(tile2);
+                    }
+                }
+            }
         }
         if (surface.getHoles().size() > 0)
             tiles = holeManager(surface, tiles);

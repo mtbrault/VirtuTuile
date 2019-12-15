@@ -13,7 +13,7 @@ public class Surface extends Polygon {
     private Material material;
     private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
-    private int patternId = 0;
+    private int patternId = 1;
     private double tileShift = 0.5;
     private boolean vertical = true;
 
