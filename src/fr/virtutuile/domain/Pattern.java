@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pattern implements java.io.Serializable {
+    int offSetX = 0;
+    int offSetY = 0;
+    int patternId = -1;
+
     public Pattern() {
     }
 
@@ -77,6 +81,11 @@ public class Pattern implements java.io.Serializable {
         return new Area(awtPoly);
     }
 
+    public void movePatern(int x, int y) {
+        offSetX += x;
+        offSetY += y;
+    }
+
     public static Polygon convertShapeToPolygon(Area s, PolygonType type) {
         PathIterator iter = s.getPathIterator(null);
         List<Point> points = new ArrayList<>();
@@ -122,16 +131,38 @@ public class Pattern implements java.io.Serializable {
         return (newList);
     }
 
+    private void correctOffset(int w, int h) {
+        if (offSetY < 0 && -offSetY > h * 2) {
+            offSetY += h * 2;
+        } else if (offSetY >= 0 && offSetY > h * 2) {
+            offSetY -= h * 2;
+        }
+        if (offSetX < 0 && -offSetX > w * 2) {
+            offSetX += w * 2;
+        } else if (offSetX >= 0 && offSetX > w * 2) {
+            offSetX -= w * 2;
+        }
+        if (offSetX > 0)
+            offSetX -= (patternId == 2 ? 1 : 2) * w;
+        if (offSetY > 0)
+            offSetY -= (patternId == 2 ? 1 : 2) * h;
+    }
+
     public List<Tile> build(Material material, Surface surface) {
+        patternId = surface.getPatternId();
         List<Tile> tiles = new ArrayList<Tile>();
         Surface extremeSurface = surface.getExtremeSurface();
         Point point1 = extremeSurface.getPoints().get(0);
         Point point2 = extremeSurface.getPoints().get(1);
         Point point4 = extremeSurface.getPoints().get(3);
-        int minPointX = point1.x;
-        int minPointY = point1.y;
         if (material == null)
             return new ArrayList<>();
+        correctOffset(material.getWidth(), material.getHeight());
+        int minPointX = point1.x + offSetX;
+        int minPointY = point1.y + offSetY;
+
+
+
         int tileHeight = material.getHeight();
         int tileWidth = material.getWidth();
         if (surface.isVertical()) {

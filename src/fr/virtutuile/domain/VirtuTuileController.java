@@ -242,6 +242,10 @@ public class VirtuTuileController {
                 cutSurface = isInsideAnySurface(mousePosition);
                 addTmpSurface();
             }
+        } else if (state == State.MOVE_PATTERN) {
+            mousePosition.initX = mousePosition.x;
+            mousePosition.initY = mousePosition.y;
+            movingSurface = isInsideAnySurface(mousePosition);
         }
     }
 
@@ -258,6 +262,8 @@ public class VirtuTuileController {
                     notifyObserverForSurfaces();
                 }
             }
+        } else if (state == State.MOVE_PATTERN) {
+            movingSurface = null;
         }
     }
 
@@ -411,6 +417,17 @@ public class VirtuTuileController {
             Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
             if (movingSurface != null)
                 movingSurface.move(movementVec.x, movementVec.y);
+        } else if (state == State.MOVE_PATTERN && movingSurface != null) {
+                if (movingSurface.isInside(mousePosition)) {
+                    Point vector = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+                    movingSurface.movePatern(vector.x, vector.y);
+                    movingSurface.setPattern(movingSurface.getPattern());
+                    /*for (Tile t : movingSurface.getTiles()) {
+                        t.move(vector.x, vector.y);
+                    }*/
+                } else {
+                    //Move mouse
+                }
         }
         notifyObserverForSurfaces();
     }

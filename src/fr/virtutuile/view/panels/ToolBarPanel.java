@@ -238,7 +238,16 @@ public class ToolBarPanel extends JPanel {
 				}
 			}
 		});
+
 		toolbarLeft.add(buttonAddMaterial);
+		JButton buttonMovePattern = new JButton("Déplacer pattern");
+		buttonMovePattern.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.controller.setState(State.MOVE_PATTERN);
+			}
+		});
+		toolbarLeft.add(buttonMovePattern);
 
 		try {
 			BufferedImage myPicture = ImageIO
