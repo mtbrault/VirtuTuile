@@ -51,11 +51,15 @@ public class Surface extends Polygon {
     }
 
     private List<Hole> copyHoles(List<Hole> holes) {
-        return holes;
-        /*List<Polygon> list = new ArrayList<Polygon>();
-        for (Polygon poly : holes)
-            list.add(new Polygon(poly, poly.get));
-        return list;*/
+        List<Hole> list = new ArrayList<>();
+        List<Point> points = new ArrayList<>();
+        for (Hole poly : holes) {
+            points.clear();
+            for (Point tmp : poly.getPoints())
+                points.add(new Point(tmp.x, tmp.y));
+            list.add(new Hole(points));
+        }
+        return list;
     }
 
     @Override
@@ -138,10 +142,13 @@ public class Surface extends Polygon {
     }
 
     public void digHole(List<Point> list) {
+        int count = 0;
         for (Point points : list) {
             if (!isInside(points))
-                return;
+                count += 1;
         }
+        if (count == list.size())
+            return;
         Hole h = new Hole(new ArrayList<Point>(list));
         holes.add(h);
     }

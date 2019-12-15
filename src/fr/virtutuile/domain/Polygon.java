@@ -24,6 +24,15 @@ public class Polygon implements java.io.Serializable {
         this.type = type;
     }
 
+    public Polygon(Polygon cp) {
+        points.clear();
+        for (Point p : cp.getPoints()) {
+            points.add(new Point(p.x, p.y));
+        }
+        this.type = cp.type;
+        this.color = cp.color;
+    }
+
     public List<Point> getPoints() {
         return points;
     }

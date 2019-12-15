@@ -92,7 +92,6 @@ public class VirtuTuileController {
         Point pointC = points.get(1);
         Point pointB = new Point(pointC.x, pointA.y);
         Point pointD = new Point(pointA.x, pointC.y);
-
         surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
         addHistory();
         surface.setPattern(surface.getPattern());
@@ -155,7 +154,6 @@ public class VirtuTuileController {
 
     public void setGridDim(int value) {
         gridDim = value;
-        System.out.println("SETTED DIM");
     }
 
     public void addTmpSurface() {
@@ -227,24 +225,18 @@ public class VirtuTuileController {
                 tmpSurface.addPoint(new Point(point));
             }
         } else if (state == State.CUT_SURFACE) {
-            cutSurface = isInsideAnySurface(mousePosition);
-            if (cutSurface == null) {
-                points.clear();
-                surfaces.remove(tmpSurface);
-                System.out.println("Hollowing tool has to be used on a surface.");
-                return;
-            }
             points.add(point);
             if (points.size() == 2) {
-                surfaces.remove(tmpSurface);
-                if (isInsideAnySurface(mousePosition) == cutSurface) {
+                if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null) {
+                    surfaces.remove(tmpSurface);
                     addRectangleHole(cutSurface);
-                } else {
-                    System.out.println("Hollowing tool has to be used on a surface.");
+                    cutSurface = null;
+                    points.clear();
                 }
-                cutSurface = null;
-                points.clear();
             } else {
+                Surface tmp = isInsideAnySurface(mousePosition);
+                if (tmp != null)
+                    cutSurface = tmp;
                 addTmpSurface();
             }
         }
@@ -361,7 +353,6 @@ public class VirtuTuileController {
                     surfacePoint.y % gridDim > gridDim / 2 ?
                             surfacePoint.x - surfacePoint.y % gridDim  + gridDim : surfacePoint.y - surfacePoint.y % gridDim
             );
-            System.out.println(surfacePoint.x - xyClosest.x);
             if (gCoord.x - xyClosest.x <= gridTreshHold && gCoord.x - xyClosest.x >= -gridTreshHold)
                 vector.x = Math.abs(vector.x) < Math.abs(gCoord.x - xyClosest.x) ? vector.x : gCoord.x - xyClosest.x;
             if (gCoord.y - xyClosest.y <= gridTreshHold && gCoord.y - xyClosest.y >= -gridTreshHold)
