@@ -254,10 +254,4 @@ public class Surface extends Polygon {
                 add(point4);}
         });
     }
-
-    public void translatePoint(int x, int y) {
-        for (Point point : points)
-            point.add(new Point(x, y));
-        onMoved();
-    }
 }
