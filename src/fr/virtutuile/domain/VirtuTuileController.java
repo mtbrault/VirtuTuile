@@ -466,15 +466,17 @@ public class VirtuTuileController {
     }
 
     public void undo() {
-        if (historyIndex < history.size() - 1)
-            historyIndex++;
+        if (historyIndex >= history.size() - 1)
+            return ;
+        historyIndex++;
         surfaces = new ArrayList<Surface>(history.get(historyIndex));
         notifyObserverForSurfaces();
     }
 
     public void redo() {
-        if (historyIndex > 0)
-            historyIndex--;
+        if (historyIndex <= 0)
+            return ;
+        historyIndex--;
         surfaces = new ArrayList<Surface>(history.get(historyIndex));
         notifyObserverForSurfaces();
     }
@@ -589,7 +591,7 @@ public class VirtuTuileController {
         addHistory();
     }
 
-    public void pastSurface(Surface surface, int x, int y) {
+    public void pastSurface(Surface surface, int opt) {
         Surface dest = null;
         for (Surface it : surfaces) {
             if (it.isSelected() && it != surface)
@@ -597,9 +599,35 @@ public class VirtuTuileController {
         }
         if (dest == null)
             return ;
-        Point destPoint = getExtremePoint(dest, x, y);
-        Point fromPoint = getExtremePoint(surface, -x, -y);
-        surface.move(destPoint.x - fromPoint.x, destPoint.y - fromPoint.y);
+        if (opt == 0) {
+            if (getExtremePoint(dest, 0, -1).y > getExtremePoint(surface, 0, 1).y)
+                return ;
+            else if (getExtremePoint(dest, 0, 1).y < getExtremePoint(surface, 0, -1).y)
+                return ;
+            int destRight = getExtremePoint(dest, 1, 0).x;
+            int destLeft = getExtremePoint(dest, -1, 0).x;
+            int fromRight = getExtremePoint(surface, 1, 0).x;
+            int fromLeft = getExtremePoint(surface, -1, 0).x;
+            if (destRight < fromLeft) {
+                surface.move(destRight - fromLeft, 0);
+            } else if (destLeft > fromRight) {
+                surface.move(destLeft - fromRight, 0);
+            }
+        } else if (opt == 1) {
+            if (getExtremePoint(dest, -1, 0).x > getExtremePoint(surface, 1, 0).x)
+                return ;
+            else if (getExtremePoint(dest, 1, 0).x < getExtremePoint(surface, -1, 0).x)
+                return ;
+            int destBot = getExtremePoint(dest, 0, 1).y;
+            int destTop = getExtremePoint(dest, 0, -1).y;
+            int fromTop = getExtremePoint(surface, 0, -1).y;
+            int fromBot = getExtremePoint(surface, 0, 1).y;
+            if (destBot < fromTop) {
+                surface.move(0, destBot - fromTop);
+            } else if (destTop > fromBot) {
+                surface.move(0, destTop - fromBot);
+            }
+        }
         notifyObserverForSurfaces();
         addHistory();
     }
