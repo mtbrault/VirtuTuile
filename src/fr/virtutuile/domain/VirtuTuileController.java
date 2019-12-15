@@ -92,6 +92,7 @@ public class VirtuTuileController {
         Point pointC = points.get(1);
         Point pointB = new Point(pointC.x, pointA.y);
         Point pointD = new Point(pointA.x, pointC.y);
+
         surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
         addHistory();
         surface.setPattern(surface.getPattern());

@@ -2,9 +2,9 @@ package fr.virtutuile.drawer;
 
 import fr.virtutuile.domain.*;
 import fr.virtutuile.domain.Point;
+import fr.virtutuile.domain.Polygon;
 
 import java.awt.*;
-import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class SurfacesDrawer {
                 xTilePoly.add(graphicPoint.x);
                 yTilePoly.add(graphicPoint.y);
             }
-            Polygon polygonTile = new Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
+            java.awt.Polygon polygonTile = new java.awt.Polygon(xTilePoly.stream().mapToInt(i->i).toArray(), yTilePoly.stream().mapToInt(i->i).toArray(), xTilePoly.size());
             if (tile.isSelected()) {
                 g2.setStroke(new BasicStroke(2));
             } else {
@@ -76,11 +76,16 @@ public class SurfacesDrawer {
             Point graphicPoint = controller.coordToGraphic(((points.get(i).x  + points.get(i + 1).x)  / 2), (points.get(i).y + points.get(i + 1).y) / 2);
             g.drawString(String.valueOf(dis1), graphicPoint.x, graphicPoint.y);
         }
-        Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
+        java.awt.Polygon polygon = new java.awt.Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         Area awtShape = new Area(polygon);
         if (surface.getHoles().size() > 0) {
             for (Hole hole : surface.getHoles()) {
-                Area awtHole = Pattern.convertPolygonToShape(hole);
+                List<Point> list = new ArrayList<>();
+                for (Point p : hole.getPoints()) {
+                    list.add(controller.coordToGraphic(p.x, p.y));
+                }
+                Polygon toDraw = new Polygon(list, PolygonType.HOLE);
+                Area awtHole = Pattern.convertPolygonToShape(toDraw);
                 awtShape.subtract(awtHole);
             }
         }
