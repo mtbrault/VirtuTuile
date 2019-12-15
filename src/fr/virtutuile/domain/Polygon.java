@@ -32,7 +32,7 @@ public class Polygon implements java.io.Serializable {
         return color;
     }
 
-    public Color setColor(Color color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 

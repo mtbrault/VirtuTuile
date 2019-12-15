@@ -8,7 +8,8 @@ public class Material implements java.io.Serializable {
     private int height;
     private String name;
     private Color color;
-
+    private int nbTileByBox = 10;	
+    
     public Material(String name) {
         this.name = name;
     	this.width = 10;
@@ -42,6 +43,15 @@ public class Material implements java.io.Serializable {
     public void setHeight(int height) {
         this.height = height;
     }
+    
+    public void setNbTileByBox(int nb) {	
+        this.nbTileByBox = nb;	
+    }	
+
+    public int getNbTileByBox() {	
+        return nbTileByBox;	
+    }	
+
 
     public int getHeight() {
         return height;

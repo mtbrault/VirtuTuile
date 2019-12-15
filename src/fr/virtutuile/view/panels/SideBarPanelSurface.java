@@ -1,7 +1,6 @@
 package fr.virtutuile.view.panels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -12,22 +11,18 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.Box;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
-import fr.virtutuile.view.panels.ColorChange.ColorChangedListener;
-import fr.virtutuile.view.panels.SideBarPanelSurface.DirectionType;
+import fr.virtutuile.view.panels.ColorChangePanel.ColorChangedListener;
 
 public class SideBarPanelSurface extends JPanel implements ColorChangedListener {
 	private JTextField textField_1;
@@ -36,7 +31,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 	private JComboBox comboAlign;
 	private JComboBox comboMaterial;
 	private JComboBox comboPaste;
-	private ColorChange colorChange;
+	private ColorChangePanel colorChange;
 	private Surface surface;
 	private VirtuTuileController controller;
 	private JPanel blockPanel;
@@ -204,7 +199,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gridBtnMotif.gridy = 5;
 		blockPanel.add(btnMotif, gridBtnMotif);
 
-		colorChange = new ColorChange(Color.WHITE);
+		colorChange = new ColorChangePanel(Color.WHITE);
 		colorChange.addColorChangedListener(this);
 
 		JLabel labelColor = new JLabel("Color");

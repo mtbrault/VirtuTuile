@@ -56,7 +56,7 @@ public class SideBarPanel extends JPanel implements SurfacesControllerObserver {
 	}
 
 	@Override
-	public void notifyCreatedSurface() {
+	public void notifyObserver() {
 		int nbSurface = 0;
 		surfacesPanel.removeAll();
 		surfacesPanel.updateUI();
@@ -74,4 +74,6 @@ public class SideBarPanel extends JPanel implements SurfacesControllerObserver {
 
 		repaint();
 	}
+
+
 }

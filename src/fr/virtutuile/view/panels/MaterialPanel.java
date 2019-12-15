@@ -9,22 +9,18 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.VirtuTuileController;
-import fr.virtutuile.view.panels.ColorChange.ColorChangedListener;
+import fr.virtutuile.view.panels.ColorChangePanel.ColorChangedListener;
 
 public class MaterialPanel extends JPanel implements ColorChangedListener {
 	private JPanel materialPanel;
-	private ColorChange colorChange;
+	private ColorChangePanel colorChange;
 	private Material material;
 	private VirtuTuileController controller;
 
@@ -117,7 +113,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		colorGrid.gridy = 3;
 		materialPanel.add(labelColor, colorGrid);
 
-		colorChange = new ColorChange(Color.WHITE);
+		colorChange = new ColorChangePanel(Color.WHITE);
 		colorChange.addColorChangedListener(this);
 
 		GridBagConstraints gridColor = new GridBagConstraints();
