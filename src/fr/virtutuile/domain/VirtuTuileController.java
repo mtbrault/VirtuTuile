@@ -266,52 +266,8 @@ public class VirtuTuileController {
             if (firstSurface.isSelected()) {
                 for (Surface secondSurface : surfaces) {
                     if (firstSurface != secondSurface && secondSurface.isSelected()) {
-                        ArrayList<Double> fxPoints = new ArrayList<Double>();
-                        for (Point point : firstSurface.getPoints()) {
-                            fxPoints.add((double)point.x);
-                            fxPoints.add((double)point.y);
-                        }
-                        Double[] fpoints = fxPoints.toArray(new Double[fxPoints.size()]);
-                        javafx.scene.shape.Polygon firstPoly = new javafx.scene.shape.Polygon();
-                        firstPoly.getPoints().addAll(fpoints);
-
-                        ArrayList<Double> fxPoints2 = new ArrayList<Double>();
-                        for (Point point : secondSurface.getPoints()) {
-                            fxPoints2.add((double)point.x);
-                            fxPoints2.add((double)point.y);
-                        }
-                        javafx.scene.shape.Polygon secondPoly = new javafx.scene.shape.Polygon();
-                        secondPoly.getPoints().addAll(fxPoints2.toArray(new Double[fxPoints2.size()]));
-                        Path p3 = (Path)javafx.scene.shape.Polygon.union(firstPoly, secondPoly);
-                        Double[] pointsShape = new Double[(p3.getElements().size() - 1)*2];
-                        int i = 0;
-                        for(PathElement el : p3.getElements()){
-                            if(el instanceof MoveTo){
-                                MoveTo mt = (MoveTo) el;
-                                pointsShape[i] = mt.getX();
-                                pointsShape[i+1] = mt.getY();
-                            }
-                            if(el instanceof LineTo){
-                                LineTo lt = (LineTo) el;
-                                pointsShape[i] = lt.getX();
-                                pointsShape[i+1] = lt.getY();
-                            }
-                            i += 2;
-                        }
-
-                        javafx.scene.shape.Polygon newPolygon = new javafx.scene.shape.Polygon();
-                        newPolygon.getPoints().addAll(pointsShape);
-                        ArrayList<Point> newPoints = new ArrayList<Point>();
-                        for (i = 0; i < newPolygon.getPoints().size(); i += 2) {
-                            if (newPolygon.getPoints().get(i) == null) {
-                                return;
-                            }
-                            newPoints.add(new Point(newPolygon.getPoints().get(i).intValue(), newPolygon.getPoints().get(i + 1).intValue()));
-                        }
-                        Surface newSurface = new Surface(newPoints);
-                        newSurface.setIrregular();
-                        surfaces.add(newSurface);
-                        deleteSurface(firstSurface);
+                        firstSurface.merge(secondSurface);
+                        firstSurface.setIrregular();
                         deleteSurface(secondSurface);
                         return;
                     }
