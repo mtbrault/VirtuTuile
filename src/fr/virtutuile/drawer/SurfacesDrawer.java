@@ -35,7 +35,7 @@ public class SurfacesDrawer {
         }
     }*/
 
-    public void drawTiles(Graphics g, Graphics2D g2, List<Tile> tiles, String color) {
+    public void drawTiles(Graphics g, Graphics2D g2, List<Tile> tiles, Color color) {
         for (Tile tile : tiles) {
             List<Integer> xTilePoly = new ArrayList<Integer>();
             List<Integer> yTilePoly = new ArrayList<Integer>();
@@ -51,7 +51,7 @@ public class SurfacesDrawer {
             } else {
                 g2.setStroke(new BasicStroke(1));
             }
-            g2.setColor(Color.decode(color));
+            g2.setColor(color);
             g2.fill(polygonTile);
             g2.setColor(Color.BLACK);
             if (tile.isDetected())
@@ -95,7 +95,7 @@ public class SurfacesDrawer {
         } else {
             g2.setStroke(new BasicStroke(1));
         }
-        g2.setColor(Color.decode(surface.getColor()));
+        g2.setColor(surface.getColor());
         g2.fill(awtShape);
         g2.setColor(Color.BLACK);
         g2.draw(awtShape);
