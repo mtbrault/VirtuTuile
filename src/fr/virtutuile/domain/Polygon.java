@@ -1,5 +1,7 @@
 package fr.virtutuile.domain;
 
+import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 public class Polygon implements java.io.Serializable {
@@ -7,28 +9,12 @@ public class Polygon implements java.io.Serializable {
     private PolygonType type;
     private String color = "#FFFFFF";
 
-
-    private boolean isOnLine(Point p1, Point p2, Point p3) {
-        if (p3.x < Math.max(p1.x, p2.x) && p3.y < Math.max(p1.y, p2.y) && p3.y > Math.min(p1.y, p2.y)) {
-            return true;
-        } else if (p1.x >= p3.x && p1.y == p3.y) {
+    public boolean isInside(Point p3) {
+        Area awtShape = Pattern.convertPolygonToShape(this);
+        if (awtShape.contains(new java.awt.Point(p3.x, p3.y))) {
             return true;
         }
         return false;
-    }
-
-    public boolean isInside(Point p3) {
-        int nbSegment = 0;
-        System.out.println("");
-        for (int i = 0; i < points.size() - 1; i++) {
-            if (isOnLine(points.get(i), points.get(i + 1), p3)) {
-                nbSegment++;
-            }
-        }
-        if (isOnLine(points.get(0), points.get(points.size() - 1), p3)) {
-            nbSegment++;
-        }
-        return (nbSegment % 2 == 1);
     }
 
     public Polygon(List<Point> points, PolygonType type) {

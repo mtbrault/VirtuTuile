@@ -69,6 +69,16 @@ public class Surface extends Polygon {
         }
     }
 
+    @Override
+    public boolean isInside(Point p3) {
+        boolean inHole = false;
+        for (Hole hole : getHoles()) {
+            if (hole.isInside(p3))
+                inHole = true;
+        }
+        return super.isInside(p3) && !inHole;
+    }
+
     public Pattern getPattern() {
         return pattern;
     }
