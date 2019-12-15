@@ -31,6 +31,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 	private JComboBox comboAlign;
 	private JComboBox comboMaterial;
 	private JComboBox comboPaste;
+	private JComboBox comboCenter;
 	private ColorChangePanel colorChange;
 	private Surface surface;
 	private VirtuTuileController controller;
@@ -385,6 +386,38 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gridBtnTuile.gridy = 13;
 		blockPanel.add(btnTuileDirection, gridBtnTuile);
 
+		
+		JLabel labelCenter = new JLabel("Center");
+		GridBagConstraints gridCenter = new GridBagConstraints();
+		gridCenter.anchor = GridBagConstraints.WEST;
+		gridPaste.insets = new Insets(0, 0, 0, 5);
+		gridCenter.gridx = 0;
+		gridCenter.gridy = 14;
+		blockPanel.add(labelCenter, gridCenter);
+
+		Vector<DirectionType> typeArray = new Vector<DirectionType>();
+		typeArray.addElement(new DirectionType("Modifier", -1, 0));
+		typeArray.addElement(new DirectionType("Horizontalement", 0, 0));
+		typeArray.addElement(new DirectionType("Verticalement", 1, 0));
+
+		comboCenter = new JComboBox(typeArray);
+		comboCenter.setEnabled(true);
+		comboCenter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				DirectionType centerType = (DirectionType) comboBox.getSelectedItem();
+				if (centerType.getX() != -1) {
+					controller.centerSurface(surface, centerType.getX());
+				} else {
+					JOptionPane.showMessageDialog(null, "Veuillez sélectionner une valeur pour centrer");
+				}
+			}
+		});
+
+		GridBagConstraints gridCenterCombo = new GridBagConstraints();
+		gridCenterCombo.gridx = 1;
+		gridCenterCombo.gridy = 14;
+		blockPanel.add(comboCenter, gridCenterCombo);
 	}
 
 	@Override
