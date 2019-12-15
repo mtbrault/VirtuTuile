@@ -154,7 +154,6 @@ public class VirtuTuileController {
 
     public void setGridDim(int value) {
         gridDim = value;
-        System.out.println("SETTED DIM");
     }
 
     public void addTmpSurface() {
@@ -211,6 +210,7 @@ public class VirtuTuileController {
                 surfaces.remove(tmpSurface);
                 addRectangleSurface();
                 points.clear();
+                notifyObserverForSurfaces();
             } else {
                 addTmpSurface();
             }
@@ -226,24 +226,20 @@ public class VirtuTuileController {
                 tmpSurface.addPoint(new Point(point));
             }
         } else if (state == State.CUT_SURFACE) {
-            cutSurface = isInsideAnySurface(mousePosition);
-            if (cutSurface == null) {
-                points.clear();
-                surfaces.remove(tmpSurface);
-                System.out.println("Hollowing tool has to be used on a surface.");
-                return;
-            }
             points.add(point);
             if (points.size() == 2) {
-                surfaces.remove(tmpSurface);
-                if (isInsideAnySurface(mousePosition) == cutSurface) {
+                Surface tmp;
+                if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null)
                     addRectangleHole(cutSurface);
-                } else {
-                    System.out.println("Hollowing tool has to be used on a surface.");
+                else if ((cutSurface = isInsideAnySurface(new Point(points.get(0).x, points.get(1).y))) != null ||
+                        (cutSurface = isInsideAnySurface(new Point(points.get(1).x, points.get(0).y))) != null) {
+                    addRectangleHole(cutSurface);
                 }
+                surfaces.remove(tmpSurface);
                 cutSurface = null;
                 points.clear();
             } else {
+                cutSurface = isInsideAnySurface(mousePosition);
                 addTmpSurface();
             }
         }
@@ -360,7 +356,6 @@ public class VirtuTuileController {
                     surfacePoint.y % gridDim > gridDim / 2 ?
                             surfacePoint.x - surfacePoint.y % gridDim  + gridDim : surfacePoint.y - surfacePoint.y % gridDim
             );
-            System.out.println(surfacePoint.x - xyClosest.x);
             if (gCoord.x - xyClosest.x <= gridTreshHold && gCoord.x - xyClosest.x >= -gridTreshHold)
                 vector.x = Math.abs(vector.x) < Math.abs(gCoord.x - xyClosest.x) ? vector.x : gCoord.x - xyClosest.x;
             if (gCoord.y - xyClosest.y <= gridTreshHold && gCoord.y - xyClosest.y >= -gridTreshHold)
@@ -448,7 +443,6 @@ public class VirtuTuileController {
         } else if(state == State.CREATE_IRREGULAR_SURFACE) {
             if (points.size() >= 1) {
                 List<Point> surfacePoints = tmpSurface.getPoints();
-
                 Point lastPoint = surfacePoints.get(surfacePoints.size() - 1);
                 lastPoint.x = mousePosition.x;
                 lastPoint.y = mousePosition.y;

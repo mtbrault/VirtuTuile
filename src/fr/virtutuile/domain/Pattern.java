@@ -77,7 +77,7 @@ public class Pattern implements java.io.Serializable {
         return new Area(awtPoly);
     }
 
-    public static Tile convertShapeToTile(Area s) {
+    public static Polygon convertShapeToPolygon(Area s, PolygonType type) {
         PathIterator iter = s.getPathIterator(null);
         List<Point> points = new ArrayList<>();
         double[] tmp = new double[2];
@@ -88,7 +88,13 @@ public class Pattern implements java.io.Serializable {
             points.add(new Point(x, y));
             iter.next();
         }
-        return new Tile(points);
+        if (type == PolygonType.TILE)
+            return new Tile(points);
+        else if (type == PolygonType.HOLE)
+            return new Hole(points);
+        else if (type == PolygonType.SURFACE)
+            return new Surface(points);
+        return null;
     }
 
     public List<Tile> holeManager(Surface surface, List<Tile> tiles) {
@@ -107,7 +113,7 @@ public class Pattern implements java.io.Serializable {
                     Area awtHole = convertPolygonToShape(hole);
                     Area awtTile = convertPolygonToShape(tile);
                     awtTile.subtract(awtHole);
-                    newList.add(convertShapeToTile(awtTile));
+                    newList.add((Tile)convertShapeToPolygon(awtTile, PolygonType.TILE));
                 } else if (inside == tile.getPoints().size()){
                     newList.remove(tile);
                 }
@@ -124,6 +130,8 @@ public class Pattern implements java.io.Serializable {
         Point point4 = extremeSurface.getPoints().get(3);
         int minPointX = point1.x;
         int minPointY = point1.y;
+        if (material == null)
+            return new ArrayList<>();
         int tileHeight = material.getHeight();
         int tileWidth = material.getWidth();
         if (surface.isVertical()) {

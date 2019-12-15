@@ -1,7 +1,9 @@
 package fr.virtutuile.domain;
 
 import java.awt.event.HierarchyBoundsAdapter;
+import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Surface extends Polygon {
@@ -51,11 +53,15 @@ public class Surface extends Polygon {
     }
 
     private List<Hole> copyHoles(List<Hole> holes) {
-        return holes;
-        /*List<Polygon> list = new ArrayList<Polygon>();
-        for (Polygon poly : holes)
-            list.add(new Polygon(poly, poly.get));
-        return list;*/
+        List<Hole> list = new ArrayList<>();
+        List<Point> points = new ArrayList<>();
+        for (Hole poly : holes) {
+            points.clear();
+            for (Point tmp : poly.getPoints())
+                points.add(new Point(tmp.x, tmp.y));
+            list.add(new Hole(points));
+        }
+        return list;
     }
 
     @Override
@@ -87,8 +93,8 @@ public class Surface extends Polygon {
         return jointSize;
     }
 
-    public void changePattern() {
-        this.patternId = (this.patternId + 1) % 2;
+    public void changePattern(int id) {
+        this.patternId = id;
     }
     public int getPatternId() {
         return patternId;
@@ -126,6 +132,8 @@ public class Surface extends Polygon {
     }
 
     public int getNbBoxNeedForMaterial() {
+        if (tiles == null || material == null)
+            return -1;
         int box = tiles.size() / material.getNbTileByBox();
         if (tiles.size() % material.getNbTileByBox() != 0) {
             box++;
@@ -137,13 +145,43 @@ public class Surface extends Polygon {
         return this.tiles.size();
     }
 
+    public Hole mergeHoles(Hole a, Hole b) {
+        Area awtA = Pattern.convertPolygonToShape(a);
+        Area awtB = Pattern.convertPolygonToShape(b);
+        awtA.add(awtB);
+        return (Hole)Pattern.convertShapeToPolygon(awtA, PolygonType.HOLE);
+    }
+
+    public boolean checkHoleCollision(Hole a, Hole b) {
+        Area awtA = Pattern.convertPolygonToShape(a);
+        Area awtB = Pattern.convertPolygonToShape(b);
+        awtA.intersect(awtB);
+        awtA.intersect(new Area(awtB));
+        return !awtA.isEmpty();
+    }
+
+    public void joinHoles(Hole toAdd) {
+        List<Hole> newList = new ArrayList<>();
+        for (Hole hole : getHoles()) {
+            if (checkHoleCollision(toAdd, hole)) {
+                toAdd = mergeHoles(toAdd, hole);
+            } else {
+                newList.add(hole);
+            }
+        }
+        newList.add(toAdd);
+        holes = newList;
+    }
+
     public void digHole(List<Point> list) {
+        int count = 0;
         for (Point points : list) {
             if (!isInside(points))
-                return;
+                count += 1;
         }
-        Hole h = new Hole(new ArrayList<Point>(list));
-        holes.add(h);
+        if (count == list.size())
+            return;
+        joinHoles(new Hole(new ArrayList<Point>(list)));
     }
 
     public List<Hole> getHoles() {
