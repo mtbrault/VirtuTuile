@@ -210,6 +210,7 @@ public class VirtuTuileController {
                 surfaces.remove(tmpSurface);
                 addRectangleSurface();
                 points.clear();
+                notifyObserverForSurfaces();
             } else {
                 addTmpSurface();
             }
@@ -227,16 +228,18 @@ public class VirtuTuileController {
         } else if (state == State.CUT_SURFACE) {
             points.add(point);
             if (points.size() == 2) {
-                if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null) {
-                    surfaces.remove(tmpSurface);
+                Surface tmp;
+                if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null)
                     addRectangleHole(cutSurface);
-                    cutSurface = null;
-                    points.clear();
+                else if ((cutSurface = isInsideAnySurface(new Point(points.get(0).x, points.get(1).y))) != null ||
+                        (cutSurface = isInsideAnySurface(new Point(points.get(1).x, points.get(0).y))) != null) {
+                    addRectangleHole(cutSurface);
                 }
+                surfaces.remove(tmpSurface);
+                cutSurface = null;
+                points.clear();
             } else {
-                Surface tmp = isInsideAnySurface(mousePosition);
-                if (tmp != null)
-                    cutSurface = tmp;
+                cutSurface = isInsideAnySurface(mousePosition);
                 addTmpSurface();
             }
         }
@@ -440,7 +443,6 @@ public class VirtuTuileController {
         } else if(state == State.CREATE_IRREGULAR_SURFACE) {
             if (points.size() >= 1) {
                 List<Point> surfacePoints = tmpSurface.getPoints();
-
                 Point lastPoint = surfacePoints.get(surfacePoints.size() - 1);
                 lastPoint.x = mousePosition.x;
                 lastPoint.y = mousePosition.y;
