@@ -92,7 +92,7 @@ public class Pattern implements java.io.Serializable {
     }
 
     public List<Tile> holeManager(Surface surface, List<Tile> tiles) {
-        List<Tile> newList = new ArrayList<>();
+        List<Tile> newList = new ArrayList<>(tiles);
         for (Tile tile : tiles) {
             for (Hole hole : surface.getHoles()) {
                 int inside = 0;
@@ -101,13 +101,15 @@ public class Pattern implements java.io.Serializable {
                         inside += 1;
                 }
                 if (inside == 0) {
-                    newList.add(tile);
+
                 } else if (inside < tile.getPoints().size()) {
+                    newList.remove(tile);
                     Area awtHole = convertPolygonToShape(hole);
                     Area awtTile = convertPolygonToShape(tile);
                     awtTile.subtract(awtHole);
-                    tile = convertShapeToTile(awtTile);
-                    newList.add(tile);
+                    newList.add(convertShapeToTile(awtTile));
+                } else if (inside == tile.getPoints().size()){
+                    newList.remove(tile);
                 }
             }
         }

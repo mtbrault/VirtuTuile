@@ -19,6 +19,7 @@ public class Polygon implements java.io.Serializable {
 
     public boolean isInside(Point p3) {
         int nbSegment = 0;
+        System.out.println("");
         for (int i = 0; i < points.size() - 1; i++) {
             if (isOnLine(points.get(i), points.get(i + 1), p3)) {
                 nbSegment++;
@@ -47,10 +48,10 @@ public class Polygon implements java.io.Serializable {
         this.color = color;
     }
 
-
-    public void move(Point newPoint) {
+    public void move(int x, int y) {
         for (Point point : points) {
-            point.add(newPoint);
+            point.x += x;
+            point.y += y;
         }
     }
 }

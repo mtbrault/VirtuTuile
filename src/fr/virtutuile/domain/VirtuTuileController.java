@@ -94,6 +94,8 @@ public class VirtuTuileController {
         Point pointD = new Point(pointA.x, pointC.y);
         surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
         addHistory();
+        surface.setPattern(surface.getPattern());
+        notifyObserverForSurfaces();
     }
 
     public void addRectangleSurface() {
@@ -183,20 +185,9 @@ public class VirtuTuileController {
                 if (surface.isInside(point)) {
                     surface.setSelected(true);
                     movingSurface = surface;
-                    for (Point surfacePoint : surface.getPoints()) {
-                        surfacePoint.initX = surfacePoint.x;
-                        surfacePoint.initY =  surfacePoint.y;
-                    }
-                    for (Polygon hole : surface.getHoles()) {
-                        for (Point surfacePoint : hole.getPoints()) {
-                            surfacePoint.initX = surfacePoint.x;
-                            surfacePoint.initY = surfacePoint.y;
-                        }
-                    }
                     isBeingDragged = true;
-                } else {
+                } else
                     surface.setSelected(false);
-                }
             }
             notifyObserverForSurfaces();
         }
@@ -429,6 +420,7 @@ public class VirtuTuileController {
             point = gridMagnet(point);
         else
             point = graphicToCoord(point.x, point.y);
+        Point mousePosBefore = new Point(mousePosition);
         mousePosition.setPos(point.x, point.y);
         for (Surface surface : surfaces) {
             for(Tile tile : surface.getTiles()) {
@@ -466,24 +458,9 @@ public class VirtuTuileController {
             camPos.x =  (int)(zoom * (pressedPoint.x - mousePosition.x)) + camPos.x;
             camPos.y =  (int)(zoom * (pressedPoint.y - mousePosition.y)) + camPos.y;
         } else if (state == State.MOVE_SURFACE && points.size() > 0) {
-            Point pressedPoint = points.get(0);
-            if (movingSurface != null) {
-                for (Point surfacePoint : movingSurface.getPoints()) {
-                    surfacePoint.x = surfacePoint.initX - (pressedPoint.x - point.x);
-                    surfacePoint.y = surfacePoint.initY - (pressedPoint.y - point.y);
-                }
-                for (Polygon hole : movingSurface.getHoles()) {
-                    if (hole == null)
-                        continue;
-                    for (Point p : hole.getPoints()) {
-                        if (p == null)
-                            continue;
-                        p.x = p.initX - (pressedPoint.x - point.x);
-                        p.y = p.initY - (pressedPoint.y - point.y);
-                    }
-                }
-                movingSurface.onMoved();
-            }
+            Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+            if (movingSurface != null)
+                movingSurface.move(movementVec.x, movementVec.y);
         }
         notifyObserverForSurfaces();
     }
@@ -584,7 +561,7 @@ public class VirtuTuileController {
     
     public void notifyObserverForSurfaces() {
         for (SurfacesControllerObserver observer : observers) {
-            observer.notifyCreatedSurface();
+            observer.notifyObserver();
         }
     }
 

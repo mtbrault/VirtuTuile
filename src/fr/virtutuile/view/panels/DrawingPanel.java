@@ -84,7 +84,7 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
     }
 
     @Override
-    public void notifyCreatedSurface() {
+    public void notifyObserver() {
         repaint();
     }
 

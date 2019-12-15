@@ -1,5 +1,5 @@
 package fr.virtutuile.domain;
 
 public interface SurfacesControllerObserver {
-    public void notifyCreatedSurface();
+    public void notifyObserver();
 }

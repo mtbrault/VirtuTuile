@@ -58,6 +58,17 @@ public class Surface extends Polygon {
         return list;*/
     }
 
+    @Override
+    public void move(int x, int y) {
+        super.move(x, y);
+        for (Hole hole : getHoles()) {
+            hole.move(x, y);
+        }
+        for (Tile tile : getTiles()) {
+            tile.move(x, y);
+        }
+    }
+
     public Pattern getPattern() {
         return pattern;
     }
