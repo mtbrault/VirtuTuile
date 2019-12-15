@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,22 +26,40 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import fr.virtutuile.domain.Material;
 import fr.virtutuile.domain.Surface;
 import fr.virtutuile.domain.VirtuTuileController;
+import fr.virtutuile.view.panels.ColorChange.ColorChangedListener;
 import fr.virtutuile.view.panels.SideBarPanelSurface.DirectionType;
 
-public class SideBarPanelSurface extends JPanel {
+public class SideBarPanelSurface extends JPanel implements ColorChangedListener {
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textFieldColor;
-	private JTextField textfieldX;
-	private JTextField textfieldY;
 	private JTextField textField;
 	private JComboBox comboAlign;
 	private JComboBox comboMaterial;
 	private JComboBox comboPaste;
-	private JComboBox comboCenter;
+	private ColorChange colorChange;
+	private Surface surface;
+	private VirtuTuileController controller;
+	private JPanel blockPanel;
+	private int nbSurface;
+	private boolean tuileDirection;
+	private JButton btnTuileDirection;
 
 	public SideBarPanelSurface(Surface surface, int nbSurface, VirtuTuileController controller) {
-		JPanel blockPanel = new JPanel();
+		this.surface = surface;
+		this.nbSurface = nbSurface;
+		this.controller = controller;
+		this.blockPanel = new JPanel();
+		this.tuileDirection = false;
+
+		this.btnTuileDirection = new JButton("HORIZONTAL");
+		this.textField_1 = new JTextField("" + surface.getHeight());
+		this.textField = new JTextField("" + surface.getWidth());
+		this.textField_2 = new JTextField();
+		this.buildUp();
+	}
+
+	public void buildUp() {
+
 		add(blockPanel);
 		blockPanel.setBackground(Color.WHITE);
 		GridBagLayout gbl_blockPanel = new GridBagLayout();
@@ -68,7 +87,6 @@ public class SideBarPanelSurface extends JPanel {
 		gbc_lblHauteur.gridy = 1;
 		blockPanel.add(lblHauteur, gbc_lblHauteur);
 
-		textField = new JTextField("" + surface.getWidth());
 		textField.setColumns(10);
 		textField.addActionListener(new ActionListener() {
 			@Override
@@ -95,7 +113,6 @@ public class SideBarPanelSurface extends JPanel {
 		gbc_lblNewLabel.gridy = 2;
 		blockPanel.add(lblNewLabel, gbc_lblNewLabel);
 
-		textField_1 = new JTextField("" + surface.getHeight());
 		textField_1.setColumns(10);
 		textField_1.addActionListener(new ActionListener() {
 			@Override
@@ -122,7 +139,6 @@ public class SideBarPanelSurface extends JPanel {
 		gbc_lblEpaisseurDuJoin.gridy = 3;
 		blockPanel.add(lblEpaisseurDuJoin, gbc_lblEpaisseurDuJoin);
 
-		textField_2 = new JTextField();
 		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
 		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
@@ -134,9 +150,11 @@ public class SideBarPanelSurface extends JPanel {
 		textField_2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				surface.setJointSize(Integer.parseInt(textField_2.getText()));
-				surface.onMoved();
-				controller.notifyObserverForSurfaces();
+				if (textField_2.getText() != "") {
+					surface.setJointSize(Integer.parseInt(textField_2.getText()));
+					surface.onMoved();
+					controller.notifyObserverForSurfaces();
+				}
 			}
 		});
 
@@ -158,7 +176,7 @@ public class SideBarPanelSurface extends JPanel {
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
-		});	
+		});
 
 		GridBagConstraints gridBtnMaterial = new GridBagConstraints();
 		gridBtnMaterial.gridx = 1;
@@ -186,16 +204,8 @@ public class SideBarPanelSurface extends JPanel {
 		gridBtnMotif.gridy = 5;
 		blockPanel.add(btnMotif, gridBtnMotif);
 
-		textFieldColor = new JTextField();
-		textFieldColor.setColumns(10);
-		textFieldColor.setText(surface.getColor());
-		textFieldColor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				surface.setColor(textFieldColor.getText());
-				controller.notifyObserverForSurfaces();
-			}
-		});
+		colorChange = new ColorChange(Color.WHITE);
+		colorChange.addColorChangedListener(this);
 
 		JLabel labelColor = new JLabel("Color");
 		GridBagConstraints gridColor = new GridBagConstraints();
@@ -210,45 +220,7 @@ public class SideBarPanelSurface extends JPanel {
 
 		gridTextColor.gridx = 1;
 		gridTextColor.gridy = 6;
-		blockPanel.add(textFieldColor, gridTextColor);
-
-		JLabel labelX = new JLabel("x");
-		GridBagConstraints gridX = new GridBagConstraints();
-		gridX.anchor = GridBagConstraints.WEST;
-		gridX.insets = new Insets(0, 0, 0, 5);
-		gridX.gridx = 0;
-		gridX.gridy = 7;
-		blockPanel.add(labelX, gridX);
-
-		textfieldX = new JTextField();
-		textfieldX.setColumns(10);
-		textfieldX.setText("0");
-
-		GridBagConstraints gridTextX = new GridBagConstraints();
-		gridTextX.fill = GridBagConstraints.HORIZONTAL;
-
-		gridTextX.gridx = 1;
-		gridTextX.gridy = 7;
-		blockPanel.add(textfieldX, gridTextX);
-
-		JLabel labelY = new JLabel("y");
-		GridBagConstraints gridY = new GridBagConstraints();
-		gridY.anchor = GridBagConstraints.WEST;
-		gridY.insets = new Insets(0, 0, 0, 5);
-		gridY.gridx = 0;
-		gridY.gridy = 8;
-		blockPanel.add(labelY, gridY);
-
-		textfieldY = new JTextField();
-		textfieldY.setColumns(10);
-		textfieldY.setText("0");
-
-		GridBagConstraints gridTextY = new GridBagConstraints();
-		gridTextY.fill = GridBagConstraints.HORIZONTAL;
-
-		gridTextY.gridx = 1;
-		gridTextY.gridy = 8;
-		blockPanel.add(textfieldY, gridTextY);
+		blockPanel.add(colorChange, gridTextColor);
 
 		JLabel labelSurfaceAction = new JLabel("Modifier selon surface");
 		GridBagConstraints gridSurface = new GridBagConstraints();
@@ -261,8 +233,24 @@ public class SideBarPanelSurface extends JPanel {
 		JButton btnSurface = new JButton("Changer");
 		btnSurface.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				controller.changeSurfaceWithSurfaceCoord(surface, Integer.parseInt(textfieldX.getText()),
-						Integer.parseInt(textfieldY.getText()));
+				JTextField xField = new JTextField(5);
+				JTextField yField = new JTextField(5);
+
+				JPanel myPopup = new JPanel();
+				myPopup.add(new JLabel("x:"));
+				myPopup.add(xField);
+				myPopup.add(Box.createHorizontalStrut(15)); // a spacer
+				myPopup.add(new JLabel("y:"));
+				myPopup.add(yField);
+
+				int result = JOptionPane.showConfirmDialog(null, myPopup, "Entrer les valeurs de x et y",
+						JOptionPane.OK_CANCEL_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
+					controller.changeSurfaceWithSurfaceCoord(surface, Integer.parseInt(xField.getText()),
+							Integer.parseInt(yField.getText()));
+					controller.rebuildAllSurface();
+					controller.notifyObserverForSurfaces();
+				}
 			}
 		});
 		GridBagConstraints gridBtnSurface = new GridBagConstraints();
@@ -295,7 +283,10 @@ public class SideBarPanelSurface extends JPanel {
 					controller.alignSurface(surface, alignType.getX(), alignType.getY());
 				} else {
 					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une valeur pour aligner");
+
 				}
+				controller.rebuildAllSurface();
+				controller.notifyObserverForSurfaces();
 			}
 		});
 
@@ -323,6 +314,8 @@ public class SideBarPanelSurface extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(null, "Veuillez selectionnez une valeur pour coller");
 				}
+				controller.rebuildAllSurface();
+				controller.notifyObserverForSurfaces();
 			}
 		});
 
@@ -331,38 +324,72 @@ public class SideBarPanelSurface extends JPanel {
 		gridPasteCombo.gridy = 11;
 		blockPanel.add(comboPaste, gridPasteCombo);
 
+		JLabel labelTileShift = new JLabel("Décalage");
+		labelTileShift.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_tileShift = new GridBagConstraints();
+		gbc_tileShift.insets = new Insets(0, 0, 5, 5);
+		gbc_tileShift.anchor = GridBagConstraints.WEST;
+		gbc_tileShift.gridx = 0;
+		gbc_tileShift.gridy = 12;
+		blockPanel.add(labelTileShift, gbc_tileShift);
 
-		JLabel labelCenter = new JLabel("Center");
-		GridBagConstraints gridCenter = new GridBagConstraints();
-		gridCenter.anchor = GridBagConstraints.WEST;
-		gridPaste.insets = new Insets(0, 0, 0, 5);
-		gridCenter.gridx = 0;
-		gridCenter.gridy = 12;
-		blockPanel.add(labelCenter, gridCenter);
-
-		Vector<DirectionType> typeArray = new Vector<DirectionType>();
-		typeArray.addElement(new DirectionType("Modifier", -1, 0));
-		typeArray.addElement(new DirectionType("Horizontalement", 0, 0));
-		typeArray.addElement(new DirectionType("Verticalement", 1, 0));
-
-		comboCenter = new JComboBox(typeArray);
-		comboCenter.setEnabled(true);
-		comboCenter.addActionListener(new ActionListener() {
+		JTextField textfieldTileShift = new JTextField("" + surface.getTileShift());
+		textfieldTileShift.setColumns(10);
+		textfieldTileShift.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox comboBox = (JComboBox) e.getSource();
-				DirectionType centerType = (DirectionType) comboBox.getSelectedItem();
-				if (centerType.getX() != -1) {
-					controller.centerSurface(surface, centerType.getX());
-				} else {
-					JOptionPane.showMessageDialog(null, "Veuillez sélectionner une valeur pour centrer");
+				Double val = Double.parseDouble(textfieldTileShift.getText());
+				if (val == 1.0) {
+					val = 0.9;
+				} else if (val < 0) {
+					val = 0.1;
 				}
+				surface.setTileShift(val);
+				controller.notifyObserverForSurfaces();
+				controller.rebuildAllSurface();
 			}
 		});
+		GridBagConstraints gbc_textFieldTile = new GridBagConstraints();
+		gbc_textFieldTile.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldTile.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldTile.gridx = 1;
+		gbc_textFieldTile.gridy = 12;
+		blockPanel.add(textfieldTileShift, gbc_textFieldTile);
+		textfieldTileShift.setColumns(10);
 
-		GridBagConstraints gridCenterCombo = new GridBagConstraints();
-		gridCenterCombo.gridx = 1;
-		gridCenterCombo.gridy = 12;
-		blockPanel.add(comboCenter, gridCenterCombo);
+		JLabel labelTuileDirection = new JLabel("Tuile Direction");
+		GridBagConstraints gridTuileDirection = new GridBagConstraints();
+		gridTuileDirection.anchor = GridBagConstraints.WEST;
+		gridTuileDirection.insets = new Insets(0, 0, 0, 5);
+		gridTuileDirection.gridx = 0;
+		gridTuileDirection.gridy = 13;
+		blockPanel.add(labelTuileDirection, gridTuileDirection);
+
+		btnTuileDirection.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tuileDirection = !tuileDirection;
+				if (tuileDirection == true) {
+					btnTuileDirection.setText("VERTICAL");
+					btnTuileDirection.repaint();
+					surface.setVertical();
+					controller.notifyObserverForSurfaces();
+					controller.rebuildAllSurface();
+				} else if (tuileDirection == false) {
+					btnTuileDirection.setText("HORIZONTAL");
+					btnTuileDirection.repaint();
+					surface.setVertical();
+					controller.notifyObserverForSurfaces();
+					controller.rebuildAllSurface();
+				}
+
+			}
+		});
+		GridBagConstraints gridBtnTuile = new GridBagConstraints();
+		gridBtnTuile.gridx = 1;
+		gridBtnTuile.gridy = 13;
+		blockPanel.add(btnTuileDirection, gridBtnTuile);
+
 	}
 
 	@Override
@@ -398,5 +425,13 @@ public class SideBarPanelSurface extends JPanel {
 			return this.direction.toUpperCase();
 		}
 
+	}
+
+	@Override
+	public void colorChanged(Color newColor) {
+		colorChange.setSelectedColor(newColor, false);
+		surface.setColor(newColor);
+		controller.notifyObserverForSurfaces();
+		colorChange.repaint();
 	}
 }

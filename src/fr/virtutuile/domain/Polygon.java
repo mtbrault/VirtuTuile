@@ -3,11 +3,13 @@ package fr.virtutuile.domain;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.awt.Color;
+
 
 public class Polygon implements java.io.Serializable {
     protected List<Point> points;
     private PolygonType type;
-    private String color = "#FFFFFF";
+    private Color color = Color.white;
 
     public boolean isInside(Point p3) {
         Area awtShape = Pattern.convertPolygonToShape(this);
@@ -26,11 +28,11 @@ public class Polygon implements java.io.Serializable {
         return points;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public Color setColor(Color color) {
         this.color = color;
     }
 
