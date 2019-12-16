@@ -23,6 +23,7 @@ public class Surface extends Polygon {
     private int patternId = 1;
     private double tileShift = 0.5;
     private boolean vertical = true;
+    private boolean isMasked = true;
 
     public Surface(List<Point> points) {
         super(points, PolygonType.SURFACE);
@@ -69,6 +70,14 @@ public class Surface extends Polygon {
         return list;
     }
 
+    public void setMasked(boolean masked) {
+    	this.isMasked = masked;
+    }
+    
+    public boolean getMasked() {
+    	return this.isMasked;
+    }
+    
     @Override
     public void move(int x, int y) {
         super.move(x, y);
@@ -101,6 +110,7 @@ public class Surface extends Polygon {
     public void changePattern(int id) {
         this.patternId = id;
     }
+    
     public int getPatternId() {
         return patternId;
     }

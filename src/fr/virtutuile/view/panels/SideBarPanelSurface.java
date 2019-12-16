@@ -41,7 +41,6 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 	private int nbSurface;
 	private boolean tuileDirection;
 	private JButton btnTuileDirection;
-	private boolean isEnabled;
 
 	public SideBarPanelSurface(Surface surface, int nbSurface, VirtuTuileController controller) {
 		this.surface = surface;
@@ -49,7 +48,6 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		this.controller = controller;
 		this.blockPanel = new JPanel();
 		this.tuileDirection = false;
-		this.isEnabled = true;
 
 		this.btnTuileDirection = new JButton("HORIZONTAL");
 		this.textHauteur = new JTextField("" + surface.getHeight());
@@ -82,12 +80,12 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gbc_lblSurfaceX.gridy = 0;
 		blockPanel.add(lblSurfaceX, gbc_lblSurfaceX);
 
-		JButton btnAfficher = new JButton("Afficher");
+		JButton btnAfficher = new JButton(surface.getMasked() ? "Masquer" : "Afficher");
 		btnAfficher.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				isEnabled = !isEnabled;
-				if (isEnabled) {
+				surface.setMasked(!surface.getMasked());
+				if (surface.getMasked()) {
 					btnAfficher.setText("Afficher");
 					btnAfficher.repaint();
 					controller.notifyObserverForSurfaces();
@@ -98,14 +96,13 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 				}
 			}
 		});
+		GridBagConstraints gbc_btnAfficbher = new GridBagConstraints();
+		gbc_btnAfficbher.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAfficbher.gridx = 1;
+		gbc_btnAfficbher.gridy = 0;
+		blockPanel.add(btnAfficher, gbc_btnAfficbher);
 
-		if (isEnabled == true) {
-
-			GridBagConstraints gbc_btnAfficbher = new GridBagConstraints();
-			gbc_btnAfficbher.insets = new Insets(0, 0, 5, 0);
-			gbc_btnAfficbher.gridx = 1;
-			gbc_btnAfficbher.gridy = 0;
-			blockPanel.add(btnAfficher, gbc_btnAfficbher);
+		if (surface.getMasked() == true) {
 
 			JLabel lblInformation = new JLabel("Information :");
 			lblInformation.setHorizontalAlignment(SwingConstants.LEFT);
@@ -214,6 +211,8 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			blockPanel.add(labelMaterial, gridMaterial);
 
 			comboMaterial = new JComboBox(controller.getMaterials().toArray());
+			comboMaterial
+					.setSelectedIndex(controller.getSurfaceMaterialIndex(surface, controller.getMaterials().toArray()));
 
 			comboMaterial.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -242,6 +241,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			String[] paternList = new String[] { "1", "2", "3", "4" };
 
 			comboMotif = new JComboBox(paternList);
+			comboMotif.setSelectedIndex(surface.getPatternId());
 
 			comboMotif.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -258,7 +258,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			gridBtnMotif.gridy = 6;
 			blockPanel.add(comboMotif, gridBtnMotif);
 
-			colorChange = new ColorChangePanel(Color.WHITE);
+			colorChange = new ColorChangePanel(surface.getColor());
 			colorChange.addColorChangedListener(this);
 
 			JLabel labelColor = new JLabel("Couleur : ");

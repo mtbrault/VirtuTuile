@@ -25,7 +25,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 	private VirtuTuileController controller;
 
 	public MaterialPanel(Material material, VirtuTuileController controller) {
-		this.materialPanel = new JPanel();		
+		this.materialPanel = new JPanel();
 		this.material = material;
 		this.controller = controller;
 		this.buildUp();
@@ -96,6 +96,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 				controller.notifyObserverForSurfaces();
 			}
 		});
+
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
@@ -113,7 +114,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		colorGrid.gridy = 3;
 		materialPanel.add(labelColor, colorGrid);
 
-		colorChange = new ColorChangePanel(Color.WHITE);
+		colorChange = new ColorChangePanel(material.getColor());
 		colorChange.addColorChangedListener(this);
 
 		GridBagConstraints gridColor = new GridBagConstraints();
@@ -122,7 +123,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gridColor.gridx = 1;
 		gridColor.gridy = 3;
 		materialPanel.add(colorChange, gridColor);
-		
+
 		JLabel lblBoite = new JLabel("Tuile par boites :");
 		GridBagConstraints gbc_lblBoite = new GridBagConstraints();
 		gbc_lblBoite.insets = new Insets(0, 0, 5, 5);
@@ -151,7 +152,7 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		materialPanel.add(textFieldBoite, gbctextFieldBoite);
 
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
