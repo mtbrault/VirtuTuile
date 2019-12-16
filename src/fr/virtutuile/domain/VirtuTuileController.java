@@ -35,6 +35,8 @@ public class VirtuTuileController {
 	private boolean isBeingDragged = false;
 	private int gridDim = 100;
 	private int gridTreshHold = 4;
+	private Hole movingHole = null;
+	private Surface movingHoleTheSurface = null;
 
 	public VirtuTuileController() {
 		surfaces = new ArrayList<Surface>();
@@ -204,6 +206,16 @@ public class VirtuTuileController {
 					surface.setSelected(false);
 			}
 			notifyObserverForSurfaces();
+		} else if (state == State.MOVE_HOLE) {
+			points.add(point);
+			for (Surface surface : surfaces) {
+				for (Hole hole : surface.getHoles()) {
+					if (hole.isInside(point)) {
+						movingHole = hole;
+						movingHoleTheSurface = surface;
+					}
+				}
+			}
 		} else if (state == State.SELECTION) {
 			boolean findOne = false;
 			for (Surface surface : surfaces) {
@@ -246,7 +258,6 @@ public class VirtuTuileController {
 		} else if (state == State.CUT_SURFACE) {
 			points.add(point);
 			if (points.size() == 2) {
-				Surface tmp;
 				if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null)
 					addRectangleHole(cutSurface);
 				else if ((cutSurface = isInsideAnySurface(new Point(points.get(0).x, points.get(1).y))) != null
@@ -280,6 +291,12 @@ public class VirtuTuileController {
 					notifyObserverForSurfaces();
 				}
 			}
+		}  else if (state == State.MOVE_HOLE) {
+			isBeingDragged = false;
+			movingHole = null;
+			movingHoleTheSurface = null;
+			points.clear();
+			addHistory();
 		} else if (state == State.MOVE_PATTERN) {
 			movingSurface = null;
 		}
@@ -419,6 +436,12 @@ public class VirtuTuileController {
 
 				Point point4 = surfacePoints.get(3);
 				point4.y = mousePosition.y;
+			}
+		} else if (state == State.MOVE_HOLE) {
+			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+			if (movingHole != null) {
+				movingHole.move(movementVec.x, movementVec.y);
+				movingHoleTheSurface.setPattern(movingHoleTheSurface.getPattern());
 			}
 		} else if (state == State.CREATE_IRREGULAR_SURFACE) {
 			if (points.size() >= 1) {
