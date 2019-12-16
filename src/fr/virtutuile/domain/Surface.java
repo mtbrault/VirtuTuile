@@ -204,9 +204,16 @@ public class Surface extends Polygon {
         double diff = height - currentHeight;
         for (Point point : points) {
             if (point.y != topExtremePointY){
-                System.out.println(" "+ currentHeight + " " + diff);
                 double add = (point.y - topExtremePointY) / currentHeight * diff;
-                point.add(new Point(0, (int)Math.floor(add)));
+                point.add(new Point(0, (int)Math.round(add)));
+            }
+        }
+        for (Hole hole : holes) {
+            for (Point point : hole.getPoints()) {
+                if (point.y != topExtremePointY){
+                    double add = (point.y - topExtremePointY) / currentHeight * diff;
+                    point.add(new Point(0, (int)Math.round(add)));
+                }
             }
         }
     }
@@ -218,7 +225,15 @@ public class Surface extends Polygon {
         for (Point point : points) {
             if (point.x != leftExtremePointX) {
                 double add = (point.x - leftExtremePointX) / currentWidth * diff;
-                point.add(new Point((int)Math.floor(add), 0));
+                point.add(new Point((int)Math.round(add), 0));
+            }
+        }
+        for (Hole hole : holes) {
+            for (Point point : hole.getPoints()) {
+                if (point.x != leftExtremePointX) {
+                    double add = (point.x - leftExtremePointX) / currentWidth * diff;
+                    point.add(new Point((int)Math.round(add), 0));
+                }
             }
         }
     }
