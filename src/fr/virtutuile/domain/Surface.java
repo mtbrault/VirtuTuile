@@ -40,15 +40,22 @@ public class Surface extends Polygon {
 
     public Surface(Surface surface) {
         super(surface.getPoints(), PolygonType.SURFACE);
+        this.type = surface.getPolygonType();
         this.points = copyPoint(this.points);
         this.tiles = new ArrayList<Tile>(surface.getTiles());
-        this.holes = copyHoles(surface.getHoles()); //La fonction copyHoles doit être mis à jour
+        this.holes = copyHoles(surface.getHoles());
         this.selected = surface.isSelected();
         this.pattern = surface.getPattern();
         this.material = surface.getMaterial();
         this.jointSize = surface.getJointSize();
         this.surfaceType = surface.getSurfaceType();
         this.patternId = surface.getPatternId();
+        this.tileShift = surface.getTileShift();
+        this.vertical = surface.isVertical();
+        this.isMasked = surface.getMasked();
+        this.surfaceType = surface.getSurfaceType();
+        setColor(surface.getColor());
+        setPattern(surface.getPattern());
     }
 
     private List<Point> copyPoint(List<Point> points) {

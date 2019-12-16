@@ -105,8 +105,8 @@ public class VirtuTuileController {
 		Point pointB = new Point(pointC.x, pointA.y);
 		Point pointD = new Point(pointA.x, pointC.y);
 		surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
-		addHistory();
 		surface.setPattern(surface.getPattern());
+		addHistory();
 		notifyObserverForSurfaces();
 	}
 
@@ -486,7 +486,7 @@ public class VirtuTuileController {
 		}
 	}
 
-	private void addHistory() {
+	public void addHistory() {
 		for (int i = 0; i < historyIndex; i++)
 			history.remove(0);
 		historyIndex = 0;
@@ -497,17 +497,19 @@ public class VirtuTuileController {
 	}
 
 	public void undo() {
-		if (historyIndex >= history.size() - 1)
-			return;
-		historyIndex++;
+		if (historyIndex < history.size() - 1)
+			historyIndex++;
+		else
+			return ;
 		surfaces = new ArrayList<Surface>(history.get(historyIndex));
 		notifyObserverForSurfaces();
 	}
 
 	public void redo() {
-		if (historyIndex <= 0)
-			return;
-		historyIndex--;
+		if (historyIndex > 0)
+			historyIndex--;
+		else
+			return ;
 		surfaces = new ArrayList<Surface>(history.get(historyIndex));
 		notifyObserverForSurfaces();
 	}
