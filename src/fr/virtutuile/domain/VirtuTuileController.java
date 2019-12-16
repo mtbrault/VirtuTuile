@@ -30,6 +30,7 @@ public class VirtuTuileController {
 	public Point camPos;
 	private Point canvasPosition;
 	private State state = State.UNKNOWN;
+	private Metering metering = Metering.POUCE;
 	private boolean gridSwitch = false;
 	private boolean isBeingDragged = false;
 	private int gridDim = 100;
@@ -449,7 +450,24 @@ public class VirtuTuileController {
 	public ArrayList<Surface> getSurfaces() {
 		return surfaces;
 	}
-
+	public double convertMeteringToDisplay(int cm) {
+		switch (this.metering) {
+			case CM:
+				return cm;
+			case POUCE:
+				return Math.round(cm / 2.54);
+		}
+		return cm;
+	}
+	public int convertMeteringToCm(double otherMetrics) {
+		switch (this.metering) {
+			case CM:
+				return (int)Math.round(otherMetrics);
+			case POUCE:
+				return (int)Math.round(otherMetrics * 2.54);
+		}
+		return (int)Math.round(otherMetrics);
+	}
 	public void saveObject(File filename) {
 		try {
 			FileOutputStream file = new FileOutputStream(filename);

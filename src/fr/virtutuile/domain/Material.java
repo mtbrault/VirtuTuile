@@ -1,6 +1,7 @@
 package fr.virtutuile.domain;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class Material implements java.io.Serializable {
 
@@ -48,6 +49,15 @@ public class Material implements java.io.Serializable {
         this.nbTileByBox = nb;	
     }	
 
+    public int getNbAllProjectUsedTile(ArrayList<Surface> surfaces) {
+        int nbTiles = 0;
+        for (Surface surface : surfaces) {
+            if (surface.getMaterial() == this) {
+                nbTiles += surface.getNbTiles();
+            }
+        }
+        return nbTiles;
+    }
     public int getNbTileByBox() {	
         return nbTileByBox;	
     }	

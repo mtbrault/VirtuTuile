@@ -52,10 +52,10 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		this.btnTuileDirection = new JButton(!surface.isVertical() ? "VERTICAL" : "HORIZONTAL");
 		btnTuileDirection.setForeground(Color.BLACK);
 		btnTuileDirection.setBackground(Color.WHITE);
-		this.textHauteur = new JTextField("" + surface.getHeight());
+		this.textHauteur = new JTextField("" + controller.convertMeteringToDisplay(surface.getHeight()));
 		textHauteur.setForeground(Color.BLACK);
 		textHauteur.setBackground(Color.WHITE);
-		this.textLargeur = new JTextField("" + surface.getWidth());
+		this.textLargeur = new JTextField("" + controller.convertMeteringToDisplay(surface.getWidth()));
 		textLargeur.setForeground(Color.BLACK);
 		textLargeur.setBackground(Color.WHITE);
 		this.textEpaisseurJoin = new JTextField();
@@ -145,7 +145,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		textLargeur.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				surface.setWidth(Integer.parseInt(textLargeur.getText()));
+				surface.setWidth(controller.convertMeteringToCm(Double.parseDouble(textLargeur.getText())));
 				surface.onMoved();
 				controller.addHistory();
 				controller.notifyObserverForSurfaces();
@@ -172,7 +172,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		textHauteur.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				surface.setHeight(Integer.parseInt(textHauteur.getText()));
+				surface.setHeight(controller.convertMeteringToCm(Double.parseDouble(textHauteur.getText())));
 				surface.onMoved();
 				controller.addHistory();
 				controller.notifyObserverForSurfaces();
@@ -202,12 +202,12 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		gbc_EpaisseurJoin.gridy = 4;
 		blockPanel.add(textEpaisseurJoin, gbc_EpaisseurJoin);
 		textEpaisseurJoin.setColumns(10);
-		textEpaisseurJoin.setText("" + surface.getJointSize());
+		textEpaisseurJoin.setText("" + controller.convertMeteringToDisplay(surface.getJointSize()));
 		textEpaisseurJoin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (textEpaisseurJoin.getText() != "") {
-					surface.setJointSize(Integer.parseInt(textEpaisseurJoin.getText()));
+					surface.setJointSize(controller.convertMeteringToCm(Double.parseDouble(textEpaisseurJoin.getText())));
 					surface.onMoved();
 					controller.addHistory();
 					controller.notifyObserverForSurfaces();

@@ -173,8 +173,8 @@ public class Pattern implements java.io.Serializable {
             tileHeight = material.getWidth();
             tileWidth = material.getHeight();
         }
-        int nbXTiles = Math.abs(point1.x - point2.x) / (tileWidth + surface.getJointSize()) + 1;
-        int nbYTiles = Math.abs(point1.y - point4.y) / (tileHeight + surface.getJointSize()) + 1;
+        int nbXTiles = Math.abs(point1.x - point2.x) / (tileWidth + surface.getJointSize()) + 4;
+        int nbYTiles = Math.abs(point1.y - point4.y) / (tileHeight + surface.getJointSize()) + 4;
         if (surface.getPatternId() == 0) {
             for (int y = 0; y <= nbYTiles; y++) {
                 for (int x = 0; x <= nbXTiles; x++) {
@@ -334,9 +334,6 @@ public class Pattern implements java.io.Serializable {
                     x++;
                     int Xpoint2 = Xpoint1 + tileHeight;
                     int Ypoint2 = Ypoint0 + tileWidth;
-                    x++;
-                    int Ypoint3 = Ypoint0 - (tileWidth / 2);
-                    int Xpoint4 = Xpoint2 + tileHeight;
                     ArrayList pointsTile1 = new ArrayList<Point>();
                     pointsTile1.add(new Point(Xpoint0, Ypoint0));
                     pointsTile1.add(new Point(Xpoint1, Ypoint0));
@@ -347,20 +344,23 @@ public class Pattern implements java.io.Serializable {
                         tiles.add(tile1);
                     }
                     ArrayList pointsTile2 = new ArrayList<Point>();
-                    pointsTile2.add(new Point(Xpoint1 + (x*surface.getJointSize()), Ypoint0+ (y*surface.getJointSize())));
-                    pointsTile2.add(new Point(Xpoint2 + (x*surface.getJointSize()), Ypoint0+ (y*surface.getJointSize())));
+                    pointsTile2.add(new Point(Xpoint1 + (x*surface.getJointSize()), Ypoint0));
+                    pointsTile2.add(new Point(Xpoint2 + (x*surface.getJointSize()), Ypoint0));
                     pointsTile2.add(new Point(Xpoint2 + (x*surface.getJointSize()), Ypoint2+ (y*surface.getJointSize())));
                     pointsTile2.add(new Point(Xpoint1 + (x*surface.getJointSize()), Ypoint2+ (y*surface.getJointSize())));
                     Tile tile2 = this.getIntersection(surface, new Tile(pointsTile2));
                     if (tile2 != null) {
                         tiles.add(tile2);
                     }
+                    x++;
                     if (y == 0) {
+                        int Ypoint3 = Ypoint0 - (tileWidth / 2);
+                        int Xpoint4 = Xpoint2 + tileHeight;
                         ArrayList pointsTile3 = new ArrayList<Point>();
-                        pointsTile3.add(new Point(Xpoint2, Ypoint3));
-                        pointsTile3.add(new Point(Xpoint4, Ypoint3));
-                        pointsTile3.add(new Point(Xpoint4, Ypoint1));
-                        pointsTile3.add(new Point(Xpoint2, Ypoint1));
+                        pointsTile3.add(new Point(Xpoint2 + (x*surface.getJointSize()), Ypoint3+ (y*surface.getJointSize())));
+                        pointsTile3.add(new Point(Xpoint4 + (x*surface.getJointSize()), Ypoint3+ (y*surface.getJointSize())));
+                        pointsTile3.add(new Point(Xpoint4 + (x*surface.getJointSize()), Ypoint1+ (y*surface.getJointSize())));
+                        pointsTile3.add(new Point(Xpoint2 + (x*surface.getJointSize()), Ypoint1+ (y*surface.getJointSize())));
                         Tile tile3 = this.getIntersection(surface, new Tile(pointsTile3));
                         if (tile3 != null) {
                             tiles.add(tile3);

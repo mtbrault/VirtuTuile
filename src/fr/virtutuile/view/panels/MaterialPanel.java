@@ -59,12 +59,12 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gbc_lblHauteur.gridy = 1;
 		materialPanel.add(lblHauteur, gbc_lblHauteur);
 
-		JTextField textField = new JTextField("" + material.getWidth());
+		JTextField textField = new JTextField("" + controller.convertMeteringToDisplay(material.getWidth()));
 		textField.setColumns(10);
 		textField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				material.setWidth(Integer.parseInt(textField.getText()));
+				material.setWidth(controller.convertMeteringToCm(Double.parseDouble(textField.getText())));
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
@@ -86,12 +86,12 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		gbc_lblNewLabel.gridy = 2;
 		materialPanel.add(lblNewLabel, gbc_lblNewLabel);
 
-		JTextField textField_1 = new JTextField("" + material.getHeight());
+		JTextField textField_1 = new JTextField("" + controller.convertMeteringToDisplay(material.getHeight()));
 		textField_1.setColumns(10);
 		textField_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				material.setHeight(Integer.parseInt(textField_1.getText()));
+				material.setHeight(controller.convertMeteringToCm(Double.parseDouble(textField_1.getText())));
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}

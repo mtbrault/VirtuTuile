@@ -74,7 +74,6 @@ public class SurfacesDrawer {
         java.awt.Polygon polygon = new java.awt.Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         Area awtShape = new Area(polygon);
         if (surface.getHoles().size() > 0) {
-            int test = 0;
             for (Hole hole : surface.getHoles()) {
                 List<Point> list = new ArrayList<>();
                 for (Point p : hole.getPoints()) {
@@ -101,7 +100,7 @@ public class SurfacesDrawer {
         for (int i = 0; i < points.size() - 1; i += 1) {
             double dis1 = Math.sqrt((points.get(i + 1).x  - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
             Point graphicPoint = controller.coordToGraphic(((points.get(i).x  + points.get(i + 1).x)  / 2), (points.get(i).y + points.get(i + 1).y) / 2);
-            g.drawString(String.valueOf(Math.round(dis1)), graphicPoint.x, graphicPoint.y);
+            g.drawString(String.valueOf(controller.convertMeteringToDisplay((int)Math.round(dis1))), graphicPoint.x, graphicPoint.y);
         }
     }
 
