@@ -345,4 +345,11 @@ public class Surface extends Polygon {
         holes.addAll(s.getHoles());
         setPattern(getPattern());
     }
+
+    public void movePatern(int x, int y) {
+        if (pattern == null)
+            return;
+        pattern.movePatern(x, y);
+        //pattern.build(material, this);
+    }
 }
