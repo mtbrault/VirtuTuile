@@ -450,12 +450,12 @@ public class VirtuTuileController {
 	public ArrayList<Surface> getSurfaces() {
 		return surfaces;
 	}
-	public double convertMeteringToDisplay(int cm) {
+	public int convertMeteringToDisplay(int cm) {
 		switch (this.metering) {
 			case CM:
 				return cm;
 			case POUCE:
-				return Math.round(cm / 2.54);
+				return (int)Math.round(cm / 2.54);
 		}
 		return cm;
 	}
