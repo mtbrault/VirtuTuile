@@ -20,7 +20,7 @@ public class Surface extends Polygon {
     private Material material;
     private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
-    private int patternId = 1;
+    private int patternId = 0;
     private double tileShift = 0.5;
     private boolean vertical = true;
     private boolean isMasked = true;
@@ -110,7 +110,6 @@ public class Surface extends Polygon {
     public void changePattern(int id) {
         this.patternId = id;
     }
-    
     public int getPatternId() {
         return patternId;
     }

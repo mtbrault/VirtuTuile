@@ -68,7 +68,7 @@ public class VirtuTuileController {
 	}
 
 	public boolean getGridSwitch() {
-		return (gridSwitch);
+		return gridSwitch;
 	}
 
 	public void addMaterial(Material material) {
@@ -234,6 +234,10 @@ public class VirtuTuileController {
 			} else {
 				if (!isLeft) {
 					points.clear();
+					tmpSurface.setMaterial(materials.get(0));
+					tmpSurface.onMoved();
+					this.addHistory();
+					tmpSurface = null;
 					return;
 				}
 				tmpSurface.addPoint(new Point(point));
@@ -560,7 +564,7 @@ public class VirtuTuileController {
 		return dest;
 	}
 
-	private Point getExtremePoint(Polygon surface, int x, int y) {
+	public Point getExtremePoint(Polygon surface, int x, int y) {
 		int value = (x == -1 || y == -1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		Point pointValue = null;
 
