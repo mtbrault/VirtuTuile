@@ -290,7 +290,7 @@ public class Pattern implements java.io.Serializable {
                 }
             }
         } else if (surface.getPatternId() == 3) {
-            for (int y = 0; y <= 2/*nbYTiles*/; y+=1) {
+            for (int y = 0; y <= nbYTiles; y+=1) {
                 for (int x = 0; x <= nbXTiles;) {
                     int Xpoint0 = x * tileWidth + minPointX + (surface.getJointSize() * x) - (tileWidth / 2 * (y % 4));
                     int Ypoint0 = y * tileHeight + minPointY + (y*surface.getJointSize());
