@@ -4,6 +4,7 @@ import javafx.scene.shape.*;
 import javafx.scene.shape.Shape;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.io.*;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -30,10 +31,15 @@ public class VirtuTuileController {
 	public Point camPos;
 	private Point canvasPosition;
 	private State state = State.UNKNOWN;
+	private Metering metering = Metering.POUCE;
 	private boolean gridSwitch = false;
 	private boolean isBeingDragged = false;
 	private int gridDim = 100;
 	private int gridTreshHold = 4;
+	private Hole movingHole = null;
+	private Surface movingHoleTheSurface = null;
+	private Tile movingTile = null;
+	private ArrayList<Line2D> lines = new ArrayList<Line2D>();
 
 	public VirtuTuileController() {
 		surfaces = new ArrayList<Surface>();
@@ -105,8 +111,8 @@ public class VirtuTuileController {
 		Point pointB = new Point(pointC.x, pointA.y);
 		Point pointD = new Point(pointA.x, pointC.y);
 		surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
-		addHistory();
 		surface.setPattern(surface.getPattern());
+		addHistory();
 		notifyObserverForSurfaces();
 	}
 
@@ -203,6 +209,24 @@ public class VirtuTuileController {
 					surface.setSelected(false);
 			}
 			notifyObserverForSurfaces();
+		}  else if (state == State.MOVE_ONE_TILE) {
+			for (Surface surface : surfaces) {
+				for (Tile tile : surface.getTiles()) {
+					if (tile.isInside(point)) {
+						movingTile = tile;
+					}
+				}
+			}
+		}else if (state == State.MOVE_HOLE) {
+			points.add(point);
+			for (Surface surface : surfaces) {
+				for (Hole hole : surface.getHoles()) {
+					if (hole.isInside(point)) {
+						movingHole = hole;
+						movingHoleTheSurface = surface;
+					}
+				}
+			}
 		} else if (state == State.SELECTION) {
 			boolean findOne = false;
 			for (Surface surface : surfaces) {
@@ -245,7 +269,6 @@ public class VirtuTuileController {
 		} else if (state == State.CUT_SURFACE) {
 			points.add(point);
 			if (points.size() == 2) {
-				Surface tmp;
 				if (cutSurface != null || (cutSurface = isInsideAnySurface(mousePosition)) != null)
 					addRectangleHole(cutSurface);
 				else if ((cutSurface = isInsideAnySurface(new Point(points.get(0).x, points.get(1).y))) != null
@@ -279,6 +302,15 @@ public class VirtuTuileController {
 					notifyObserverForSurfaces();
 				}
 			}
+		} else if (state == State.MOVE_ONE_TILE) {
+			movingTile = null;
+		} else if (state == State.MOVE_HOLE) {
+			isBeingDragged = false;
+			movingHole = null;
+			movingHoleTheSurface = null;
+			points.clear();
+			lines.clear();
+			addHistory();
 		} else if (state == State.MOVE_PATTERN) {
 			movingSurface = null;
 		}
@@ -389,6 +421,10 @@ public class VirtuTuileController {
 		return gridDim;
 	}
 
+	public ArrayList<Line2D> getLines() {
+		return lines;
+	}
+
 	public void onMouseMoved(Point point) {
 		if (gridSwitch)
 			point = gridMagnet(point);
@@ -418,6 +454,23 @@ public class VirtuTuileController {
 
 				Point point4 = surfacePoints.get(3);
 				point4.y = mousePosition.y;
+			}
+		} else if (state == State.MOVE_HOLE) {
+			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+			if (movingHole != null) {
+				movingHole.move(movementVec.x, movementVec.y);
+				movingHoleTheSurface.setPattern(movingHoleTheSurface.getPattern());
+				lines.clear();
+				for (Point surfacePoint : movingHoleTheSurface.getPoints()) {
+					Point firstPoint = coordToGraphic(surfacePoint.x, surfacePoint.y);
+					Point secondPoint = coordToGraphic(movingHole.getPoints().get(0).x, movingHole.getPoints().get(0).y);
+					lines.add(new Line2D.Double(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y));
+				}
+			}
+		} else if (state == State.MOVE_ONE_TILE) {
+			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+			if (movingTile != null) {
+				movingTile.move(movementVec.x, movementVec.y);
 			}
 		} else if (state == State.CREATE_IRREGULAR_SURFACE) {
 			if (points.size() >= 1) {
@@ -449,7 +502,33 @@ public class VirtuTuileController {
 	public ArrayList<Surface> getSurfaces() {
 		return surfaces;
 	}
-
+	public int convertMeteringToDisplay(int cm) {
+		switch (this.metering) {
+			case CM:
+				return cm;
+			case POUCE:
+				return (int)Math.round(cm / 2.54);
+		}
+		return cm;
+	}
+	
+	public void setMetering(Metering value) {
+		this.metering = value;
+	}
+	
+	public Metering getMetering() {
+		return this.metering;
+	}
+	
+	public int convertMeteringToCm(double otherMetrics) {
+		switch (this.metering) {
+			case CM:
+				return (int)Math.round(otherMetrics);
+			case POUCE:
+				return (int)Math.round(otherMetrics * 2.54);
+		}
+		return (int)Math.round(otherMetrics);
+	}
 	public void saveObject(File filename) {
 		try {
 			FileOutputStream file = new FileOutputStream(filename);
@@ -486,7 +565,7 @@ public class VirtuTuileController {
 		}
 	}
 
-	private void addHistory() {
+	public void addHistory() {
 		for (int i = 0; i < historyIndex; i++)
 			history.remove(0);
 		historyIndex = 0;
@@ -497,17 +576,19 @@ public class VirtuTuileController {
 	}
 
 	public void undo() {
-		if (historyIndex >= history.size() - 1)
-			return;
-		historyIndex++;
+		if (historyIndex < history.size() - 1)
+			historyIndex++;
+		else
+			return ;
 		surfaces = new ArrayList<Surface>(history.get(historyIndex));
 		notifyObserverForSurfaces();
 	}
 
 	public void redo() {
-		if (historyIndex <= 0)
-			return;
-		historyIndex--;
+		if (historyIndex > 0)
+			historyIndex--;
+		else
+			return ;
 		surfaces = new ArrayList<Surface>(history.get(historyIndex));
 		notifyObserverForSurfaces();
 	}

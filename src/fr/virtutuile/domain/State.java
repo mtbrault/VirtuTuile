@@ -6,8 +6,9 @@ public enum State {
     SELECTION,
     MOVE_PATTERN,
     MOVE_SURFACE,
+    MOVE_HOLE,
     MOVE,
     CUT_SURFACE,
     CREATE_IRREGULAR_SURFACE,
-
+    MOVE_ONE_TILE,
 }

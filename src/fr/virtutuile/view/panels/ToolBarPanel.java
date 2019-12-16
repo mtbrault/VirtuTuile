@@ -30,6 +30,8 @@ public class ToolBarPanel extends JPanel {
 	private JButton buttonSurfaceRect;
 	private JButton buttonIrregular;
 	private JButton buttonCutSurface;
+	private JButton buttonMoveHole;
+	private JButton buttonMoveTile;
 	private JButton buttonMovePattern;
 
 	String undo = "<html>Undo</html>";
@@ -49,6 +51,8 @@ public class ToolBarPanel extends JPanel {
 	String createHole = "<html><center>Créer </br> Trou</center></html>";
 	String moovePatern = "<html><center>Déplacer </br> Pattern</center></html>";
 	String addHole = "<html><center>Créer </br> Trou</center></html>";
+	String moveHole = "<html><center>Déplacer </br> Trou</center></html>";
+	String moveTile = "<html><center>Déplacer </br> Tuile</center></html>";
 
 	public ToolBarPanel(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -59,6 +63,8 @@ public class ToolBarPanel extends JPanel {
 		buttonIrregular = new JButton(addSurfaceIreg);
 		buttonMovePattern = new JButton(moovePatern);
 		buttonCutSurface = new JButton(createHole);
+		buttonMoveHole = new JButton(moveHole);
+		buttonMoveTile = new JButton(moveTile);
 		buildUp();
 	}
 
@@ -89,41 +95,6 @@ public class ToolBarPanel extends JPanel {
 		toolbarLeft.setLayout(new GridLayout(1, 11));
 		add(toolbarLeft);
 
-		JButton buttonSave = new JButton(save);
-		buttonSave.setForeground(Color.BLACK);
-		buttonSave.setBackground(Color.WHITE);
-		JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
-		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		jfc.setDialogTitle("Choose a directory to save your file: ");
-		buttonSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int value = jfc.showSaveDialog(null);
-				if (value == JFileChooser.APPROVE_OPTION) {
-					mainWindow.controller.saveObject(jfc.getSelectedFile());
-				}
-			}
-		});
-		toolbarLeft.add(buttonSave);
-
-		JButton buttonLoad = new JButton(load);
-		buttonLoad.setForeground(Color.BLACK);
-		buttonLoad.setBackground(Color.WHITE);
-		JFileChooser jfc1 = new JFileChooser(System.getProperty("user.dir"));
-		jfc1.setAcceptAllFileFilterUsed(false);
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(".ser file", "ser");
-		jfc1.addChoosableFileFilter(filter);
-		jfc1.setDialogTitle("Choose a file to load");
-		buttonLoad.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int value = jfc1.showOpenDialog(null);
-				if (value == JFileChooser.APPROVE_OPTION)
-					mainWindow.controller.loadObject(jfc1.getSelectedFile());
-			}
-		});
-		toolbarLeft.add(buttonLoad);
-
 		JButton buttonUndo = new JButton(undo);
 		buttonUndo.setForeground(Color.BLACK);
 		buttonUndo.setBackground(Color.WHITE);
@@ -152,7 +123,11 @@ public class ToolBarPanel extends JPanel {
 		buttonDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainWindow.controller.deleteSurface();
+				if (mainWindow.controller.getState() == State.SELECTION) {
+					mainWindow.controller.deleteSurface();
+				} else {
+					JOptionPane.showMessageDialog(null, "Sélectionnez une surface à supprimer !");
+				}
 			}
 		});
 		toolbarLeft.add(buttonDelete);
@@ -173,6 +148,7 @@ public class ToolBarPanel extends JPanel {
 					buttonIrregular.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
 					buttonMovePattern.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonMooveZone.setBackground(Color.white);
 				}
@@ -197,6 +173,7 @@ public class ToolBarPanel extends JPanel {
 					buttonIrregular.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
 					buttonMovePattern.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonSelect.setBackground(Color.white);
 				}
@@ -204,7 +181,6 @@ public class ToolBarPanel extends JPanel {
 		});
 		toolbarLeft.add(buttonSelect);
 
-	
 		buttonMove.setForeground(Color.BLACK);
 		buttonMove.setBackground(Color.WHITE);
 		buttonMove.addActionListener(new ActionListener() {
@@ -221,6 +197,7 @@ public class ToolBarPanel extends JPanel {
 					buttonIrregular.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
 					buttonMovePattern.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonMove.setBackground(Color.white);
 				}
@@ -260,6 +237,7 @@ public class ToolBarPanel extends JPanel {
 					buttonIrregular.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
 					buttonMovePattern.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonSurfaceRect.setBackground(Color.white);
 				}
@@ -283,6 +261,7 @@ public class ToolBarPanel extends JPanel {
 					buttonMooveZone.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
 					buttonMovePattern.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonIrregular.setBackground(Color.white);
 				}
@@ -345,6 +324,7 @@ public class ToolBarPanel extends JPanel {
 					buttonSelect.setBackground(Color.white);
 					buttonMooveZone.setBackground(Color.white);
 					buttonCutSurface.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonMovePattern.setBackground(Color.white);
 				}
@@ -361,13 +341,14 @@ public class ToolBarPanel extends JPanel {
 				// TODO Auto-generated method stub
 				handleClick(State.CUT_SURFACE);
 				if (mainWindow.controller.getState() == State.CUT_SURFACE) {
-					buttonMovePattern.setBackground(Color.LIGHT_GRAY);
+					buttonCutSurface.setBackground(Color.LIGHT_GRAY);
+					buttonMovePattern.setBackground(Color.white);
 					buttonIrregular.setBackground(Color.white);
 					buttonSurfaceRect.setBackground(Color.white);
 					buttonMove.setBackground(Color.white);
 					buttonSelect.setBackground(Color.white);
 					buttonMooveZone.setBackground(Color.white);
-					buttonCutSurface.setBackground(Color.white);
+					buttonMoveHole.setBackground(Color.white);
 				} else {
 					buttonCutSurface.setBackground(Color.white);
 				}
@@ -375,5 +356,53 @@ public class ToolBarPanel extends JPanel {
 		});
 		toolbarLeft.add(buttonCutSurface);
 
+		buttonMoveHole.setBackground(Color.WHITE);
+		buttonMoveHole.setForeground(Color.BLACK);
+		buttonMoveHole.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				handleClick(State.MOVE_HOLE);
+				if (mainWindow.controller.getState() == State.MOVE_HOLE) {
+					buttonMoveHole.setBackground(Color.LIGHT_GRAY);
+					buttonMovePattern.setBackground(Color.white);
+					buttonIrregular.setBackground(Color.white);
+					buttonSurfaceRect.setBackground(Color.white);
+					buttonMove.setBackground(Color.white);
+					buttonSelect.setBackground(Color.white);
+					buttonMooveZone.setBackground(Color.white);
+					buttonCutSurface.setBackground(Color.white);
+				} else {
+					buttonMoveHole.setBackground(Color.white);
+				}
+			}
+		});
+		toolbarLeft.add(buttonMoveHole);
+		
+		buttonMoveTile.setBackground(Color.WHITE);
+		buttonMoveTile.setForeground(Color.BLACK);
+		buttonMoveTile.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				handleClick(State.MOVE_ONE_TILE);
+				if (mainWindow.controller.getState() == State.MOVE_ONE_TILE) {
+					buttonMoveTile.setBackground(Color.LIGHT_GRAY);
+					buttonMoveHole.setBackground(Color.white);
+					buttonMovePattern.setBackground(Color.white);
+					buttonIrregular.setBackground(Color.white);
+					buttonSurfaceRect.setBackground(Color.white);
+					buttonMove.setBackground(Color.white);
+					buttonSelect.setBackground(Color.white);
+					buttonMooveZone.setBackground(Color.white);
+					buttonCutSurface.setBackground(Color.white);
+				} else {
+					buttonMoveTile.setBackground(Color.white);
+				}
+			}
+		});
+		toolbarLeft.add(buttonMoveTile);
 	}
 }

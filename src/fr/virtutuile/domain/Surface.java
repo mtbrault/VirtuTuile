@@ -40,15 +40,22 @@ public class Surface extends Polygon {
 
     public Surface(Surface surface) {
         super(surface.getPoints(), PolygonType.SURFACE);
+        this.type = surface.getPolygonType();
         this.points = copyPoint(this.points);
         this.tiles = new ArrayList<Tile>(surface.getTiles());
-        this.holes = copyHoles(surface.getHoles()); //La fonction copyHoles doit être mis à jour
+        this.holes = copyHoles(surface.getHoles());
         this.selected = surface.isSelected();
         this.pattern = surface.getPattern();
         this.material = surface.getMaterial();
         this.jointSize = surface.getJointSize();
         this.surfaceType = surface.getSurfaceType();
         this.patternId = surface.getPatternId();
+        this.tileShift = surface.getTileShift();
+        this.vertical = surface.isVertical();
+        this.isMasked = surface.getMasked();
+        this.surfaceType = surface.getSurfaceType();
+        setColor(surface.getColor());
+        setPattern(surface.getPattern());
     }
 
     private List<Point> copyPoint(List<Point> points) {
@@ -138,11 +145,7 @@ public class Surface extends Polygon {
     }
 
     public int getHeight() {
-        if (SurfaceType.REGULAR == surfaceType) {
-            return Math.abs(points.get(0).y - points.get(3).y);
-        } else {
-            return Math.abs(points.get(0).y - points.get(1).y);
-        }
+        return Math.abs(getExtremePoint(0, 1).y - getExtremePoint(0, -1).y);
     }
 
     public int getNbBoxNeedForMaterial() {
@@ -203,16 +206,46 @@ public class Surface extends Polygon {
     }
 
     public void setHeight(int height) {
-        this.points.get(3).y = this.points.get(0).y + height;
-        this.points.get(2).y = this.points.get(0).y + height;
+        double topExtremePointY = getExtremePoint(0, -1).y;
+        double currentHeight = Math.abs(topExtremePointY - getExtremePoint(0, 1).y);
+        double diff = height - currentHeight;
+        for (Point point : points) {
+            if (point.y != topExtremePointY){
+                double add = (point.y - topExtremePointY) / currentHeight * diff;
+                point.add(new Point(0, (int)Math.round(add)));
+            }
+        }
+        for (Hole hole : holes) {
+            for (Point point : hole.getPoints()) {
+                if (point.y != topExtremePointY){
+                    double add = (point.y - topExtremePointY) / currentHeight * diff;
+                    point.add(new Point(0, (int)Math.round(add)));
+                }
+            }
+        }
     }
 
     public void setWidth(int width) {
-        this.points.get(1).x = this.points.get(0).x + width;
-        this.points.get(2).x = this.points.get(0).x + width;
+        double leftExtremePointX = getExtremePoint(-1, 0).x;
+        double currentWidth = Math.abs(leftExtremePointX - getExtremePoint(1, 0).x);
+        double diff = width - currentWidth;
+        for (Point point : points) {
+            if (point.x != leftExtremePointX) {
+                double add = (point.x - leftExtremePointX) / currentWidth * diff;
+                point.add(new Point((int)Math.round(add), 0));
+            }
+        }
+        for (Hole hole : holes) {
+            for (Point point : hole.getPoints()) {
+                if (point.x != leftExtremePointX) {
+                    double add = (point.x - leftExtremePointX) / currentWidth * diff;
+                    point.add(new Point((int)Math.round(add), 0));
+                }
+            }
+        }
     }
     public int getWidth() {
-        return Math.abs(points.get(0).x - points.get(1).x);
+        return Math.abs(getExtremePoint(-1, 0).x - getExtremePoint(1, 0).x);
     }
 
 
