@@ -20,7 +20,7 @@ public class Surface extends Polygon {
     private Material material;
     private int jointSize = 0;
     private SurfaceType surfaceType = SurfaceType.REGULAR;
-    private int patternId = 1;
+    private int patternId = 0;
     private double tileShift = 0.5;
     private boolean vertical = true;
     private boolean isMasked = true;
@@ -138,11 +138,7 @@ public class Surface extends Polygon {
     }
 
     public int getHeight() {
-        if (SurfaceType.REGULAR == surfaceType) {
-            return Math.abs(points.get(0).y - points.get(3).y);
-        } else {
-            return Math.abs(points.get(0).y - points.get(1).y);
-        }
+        return Math.abs(getExtremePoint(0, 1).y - getExtremePoint(0, -1).y);
     }
 
     public int getNbBoxNeedForMaterial() {
@@ -203,16 +199,31 @@ public class Surface extends Polygon {
     }
 
     public void setHeight(int height) {
-        this.points.get(3).y = this.points.get(0).y + height;
-        this.points.get(2).y = this.points.get(0).y + height;
+        double topExtremePointY = getExtremePoint(0, -1).y;
+        double currentHeight = Math.abs(topExtremePointY - getExtremePoint(0, 1).y);
+        double diff = height - currentHeight;
+        for (Point point : points) {
+            if (point.y != topExtremePointY){
+                System.out.println(" "+ currentHeight + " " + diff);
+                double add = (point.y - topExtremePointY) / currentHeight * diff;
+                point.add(new Point(0, (int)Math.floor(add)));
+            }
+        }
     }
 
     public void setWidth(int width) {
-        this.points.get(1).x = this.points.get(0).x + width;
-        this.points.get(2).x = this.points.get(0).x + width;
+        double leftExtremePointX = getExtremePoint(-1, 0).x;
+        double currentWidth = Math.abs(leftExtremePointX - getExtremePoint(1, 0).x);
+        double diff = width - currentWidth;
+        for (Point point : points) {
+            if (point.x != leftExtremePointX) {
+                double add = (point.x - leftExtremePointX) / currentWidth * diff;
+                point.add(new Point((int)Math.floor(add), 0));
+            }
+        }
     }
     public int getWidth() {
-        return Math.abs(points.get(0).x - points.get(1).x);
+        return Math.abs(getExtremePoint(-1, 0).x - getExtremePoint(1, 0).x);
     }
 
 
