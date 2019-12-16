@@ -49,7 +49,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		this.blockPanel = new JPanel();
 		this.tuileDirection = false;
 
-		this.btnTuileDirection = new JButton("HORIZONTAL");
+		this.btnTuileDirection = new JButton(!surface.isVertical() ? "VERTICAL" : "HORIZONTAL");
 		this.textHauteur = new JTextField("" + surface.getHeight());
 		this.textLargeur = new JTextField("" + surface.getWidth());
 		this.textEpaisseurJoin = new JTextField();
@@ -211,8 +211,10 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			blockPanel.add(labelMaterial, gridMaterial);
 
 			comboMaterial = new JComboBox(controller.getMaterials().toArray());
-			comboMaterial
-					.setSelectedIndex(controller.getSurfaceMaterialIndex(surface, controller.getMaterials().toArray()));
+			if (controller.getMaterials().size() > 1) {
+				comboMaterial.setSelectedIndex(
+						controller.getSurfaceMaterialIndex(surface, controller.getMaterials().toArray()));
+			}
 
 			comboMaterial.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -300,6 +302,14 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 
 					int result = JOptionPane.showConfirmDialog(null, myPopup, "Entrer les valeurs de x et y",
 							JOptionPane.OK_CANCEL_OPTION);
+					if (yField.getText() == "" || yField.getText().length() < 1 || yField.getText() == null) {
+						JOptionPane.showMessageDialog(null, "Valeur de y non valide.");
+						return;
+					}
+					if (xField.getText() == "" || xField.getText().length() < 1 || xField.getText() == null) {
+						JOptionPane.showMessageDialog(null, "Valeur de x non valide.");
+						return;
+					}
 					if (result == JOptionPane.OK_OPTION) {
 						controller.changeSurfaceWithSurfaceCoord(surface, Integer.parseInt(xField.getText()),
 								Integer.parseInt(yField.getText()));
