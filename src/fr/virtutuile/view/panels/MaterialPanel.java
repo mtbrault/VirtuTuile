@@ -115,6 +115,8 @@ public class MaterialPanel extends JPanel implements ColorChangedListener {
 		materialPanel.add(labelColor, colorGrid);
 
 		colorChange = new ColorChangePanel(material.getColor());
+		colorChange.setForeground(Color.BLACK);
+		colorChange.setBackground(Color.WHITE);
 		colorChange.addColorChangedListener(this);
 
 		GridBagConstraints gridColor = new GridBagConstraints();

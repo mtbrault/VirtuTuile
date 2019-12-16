@@ -110,7 +110,6 @@ public class Surface extends Polygon {
     public void changePattern(int id) {
         this.patternId = id;
     }
-    
     public int getPatternId() {
         return patternId;
     }

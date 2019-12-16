@@ -68,7 +68,7 @@ public class VirtuTuileController {
 	}
 
 	public boolean getGridSwitch() {
-		return (gridSwitch);
+		return gridSwitch;
 	}
 
 	public void addMaterial(Material material) {
