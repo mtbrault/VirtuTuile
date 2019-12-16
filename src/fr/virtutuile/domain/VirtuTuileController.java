@@ -422,11 +422,8 @@ public class VirtuTuileController {
                     Point vector = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
                     movingSurface.movePatern(vector.x, vector.y);
                     movingSurface.setPattern(movingSurface.getPattern());
-                    /*for (Tile t : movingSurface.getTiles()) {
-                        t.move(vector.x, vector.y);
-                    }*/
-                } else {
-                    //Move mouse
+                } else if (movingSurface != null) {
+                    movingSurface.setPattern(movingSurface.getPattern());
                 }
         }
         notifyObserverForSurfaces();

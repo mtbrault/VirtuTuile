@@ -132,20 +132,24 @@ public class Pattern implements java.io.Serializable {
     }
 
     private void correctOffset(int w, int h) {
-        if (offSetY < 0 && -offSetY > h * 2) {
-            offSetY += h * 2;
-        } else if (offSetY >= 0 && offSetY > h * 2) {
-            offSetY -= h * 2;
+        if (patternId == 2)
+            w = h;
+        while (offSetY < 0 && -offSetY > h) {
+            offSetY += (patternId == 2 ? 2 * h : h);
         }
-        if (offSetX < 0 && -offSetX > w * 2) {
+        while (offSetY >= 0 && offSetY > h * 2) {
+            offSetY -= h;
+        }
+        while (offSetX < 0 && -offSetX > w) {
             offSetX += w * 2;
-        } else if (offSetX >= 0 && offSetX > w * 2) {
+        }
+        while (offSetX >= 0 && offSetX > w * 2) {
             offSetX -= w * 2;
         }
         if (offSetX > 0)
-            offSetX -= (patternId == 2 ? 1 : 2) * w;
+            offSetX -= 2 * w;
         if (offSetY > 0)
-            offSetY -= (patternId == 2 ? 1 : 2) * h;
+            offSetY -= 2 * h;
     }
 
     public List<Tile> build(Material material, Surface surface) {
