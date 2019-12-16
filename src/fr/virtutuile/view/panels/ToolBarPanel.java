@@ -353,6 +353,7 @@ public class ToolBarPanel extends JPanel {
 		toolbarLeft.add(buttonMovePattern);
 
 		buttonCutSurface.setBackground(Color.WHITE);
+		buttonCutSurface.setForeground(Color.BLACK);
 		buttonCutSurface.addActionListener(new ActionListener() {
 
 			@Override
