@@ -74,6 +74,7 @@ public class SurfacesDrawer {
         java.awt.Polygon polygon = new java.awt.Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         Area awtShape = new Area(polygon);
         if (surface.getHoles().size() > 0) {
+            int test = 0;
             for (Hole hole : surface.getHoles()) {
                 List<Point> list = new ArrayList<>();
                 for (Point p : hole.getPoints()) {

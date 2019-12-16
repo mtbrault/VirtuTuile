@@ -8,7 +8,7 @@ import java.awt.Color;
 
 public class Polygon implements java.io.Serializable {
     protected List<Point> points;
-    private PolygonType type;
+    protected PolygonType type;
     private Color color = Color.white;
 
     public boolean isInside(Point p3) {
@@ -22,6 +22,10 @@ public class Polygon implements java.io.Serializable {
     public Polygon(List<Point> points, PolygonType type) {
         this.points = points;
         this.type = type;
+    }
+
+    public PolygonType getPolygonType() {
+        return type;
     }
 
     public Polygon(Polygon cp) {

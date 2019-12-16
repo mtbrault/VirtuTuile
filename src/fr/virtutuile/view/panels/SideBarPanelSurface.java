@@ -147,6 +147,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			public void actionPerformed(ActionEvent e) {
 				surface.setWidth(Integer.parseInt(textLargeur.getText()));
 				surface.onMoved();
+				controller.addHistory();
 				controller.notifyObserverForSurfaces();
 			}
 		});
@@ -173,6 +174,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			public void actionPerformed(ActionEvent e) {
 				surface.setHeight(Integer.parseInt(textHauteur.getText()));
 				surface.onMoved();
+				controller.addHistory();
 				controller.notifyObserverForSurfaces();
 			}
 		});
@@ -207,6 +209,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 				if (textEpaisseurJoin.getText() != "") {
 					surface.setJointSize(Integer.parseInt(textEpaisseurJoin.getText()));
 					surface.onMoved();
+					controller.addHistory();
 					controller.notifyObserverForSurfaces();
 				}
 			}
@@ -233,6 +236,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 				JComboBox comboBox = (JComboBox) arg0.getSource();
 				Material material = (Material) comboMaterial.getSelectedItem();
 				controller.setSurfaceMaterial(surface, material);
+				controller.addHistory();
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
@@ -264,6 +268,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 				JComboBox comboBox = (JComboBox) arg0.getSource();
 				String paternNbr = (String) comboMotif.getSelectedItem();
 				surface.changePattern(Integer.parseInt(paternNbr) - 1);
+				controller.addHistory();
 				controller.rebuildAllSurface();
 				controller.notifyObserverForSurfaces();
 			}
@@ -472,6 +477,7 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 					val = 0.1;
 				}
 				surface.setTileShift(val);
+				controller.addHistory();
 				controller.notifyObserverForSurfaces();
 				controller.rebuildAllSurface();
 			}
@@ -500,12 +506,14 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 					btnTuileDirection.setText("VERTICAL");
 					btnTuileDirection.repaint();
 					surface.setVertical();
+					controller.addHistory();
 					controller.notifyObserverForSurfaces();
 					controller.rebuildAllSurface();
 				} else if (tuileDirection == false) {
 					btnTuileDirection.setText("HORIZONTAL");
 					btnTuileDirection.repaint();
 					surface.setVertical();
+					controller.addHistory();
 					controller.notifyObserverForSurfaces();
 					controller.rebuildAllSurface();
 				}
@@ -561,5 +569,6 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 		surface.setColor(newColor);
 		controller.notifyObserverForSurfaces();
 		colorChange.repaint();
+		controller.addHistory();
 	}
 }
