@@ -6,6 +6,7 @@ import fr.virtutuile.domain.Polygon;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,11 @@ public class SurfacesDrawer {
         g2.draw(awtShape);
         if (surface.getTiles().size() != 0) {
             drawTiles(g, g2, surface.getTiles(), surface.getMaterial().getColor());
+        }
+        for (Line2D line : controller.getLines()) {
+            ((Graphics2D) g).draw(line);
+            double dis1 = Math.sqrt(Math.pow(line.getX2() - line.getX1(), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+            g.drawString(String.valueOf(controller.convertMeteringToDisplay((int)Math.round(dis1))), (int)((line.getX2() + line.getX1()) / 2), (int)((line.getY2() + line.getY1()) / 2));
         }
         for (int i = 0; i < points.size() - 1; i += 1) {
             double dis1 = Math.sqrt((points.get(i + 1).x  - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));

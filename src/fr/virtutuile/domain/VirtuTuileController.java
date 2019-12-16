@@ -4,6 +4,7 @@ import javafx.scene.shape.*;
 import javafx.scene.shape.Shape;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.io.*;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class VirtuTuileController {
 	private Hole movingHole = null;
 	private Surface movingHoleTheSurface = null;
 	private Tile movingTile = null;
+	private ArrayList<Line2D> lines = new ArrayList<Line2D>();
 
 	public VirtuTuileController() {
 		surfaces = new ArrayList<Surface>();
@@ -307,6 +309,7 @@ public class VirtuTuileController {
 			movingHole = null;
 			movingHoleTheSurface = null;
 			points.clear();
+			lines.clear();
 			addHistory();
 		} else if (state == State.MOVE_PATTERN) {
 			movingSurface = null;
@@ -418,6 +421,10 @@ public class VirtuTuileController {
 		return gridDim;
 	}
 
+	public ArrayList<Line2D> getLines() {
+		return lines;
+	}
+
 	public void onMouseMoved(Point point) {
 		if (gridSwitch)
 			point = gridMagnet(point);
@@ -453,6 +460,12 @@ public class VirtuTuileController {
 			if (movingHole != null) {
 				movingHole.move(movementVec.x, movementVec.y);
 				movingHoleTheSurface.setPattern(movingHoleTheSurface.getPattern());
+				lines.clear();
+				for (Point surfacePoint : movingHoleTheSurface.getPoints()) {
+					Point firstPoint = coordToGraphic(surfacePoint.x, surfacePoint.y);
+					Point secondPoint = coordToGraphic(movingHole.getPoints().get(0).x, movingHole.getPoints().get(0).y);
+					lines.add(new Line2D.Double(firstPoint.x, firstPoint.y, secondPoint.x, secondPoint.y));
+				}
 			}
 		} else if (state == State.MOVE_ONE_TILE) {
 			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
