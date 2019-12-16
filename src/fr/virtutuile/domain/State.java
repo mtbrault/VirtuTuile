@@ -10,5 +10,5 @@ public enum State {
     MOVE,
     CUT_SURFACE,
     CREATE_IRREGULAR_SURFACE,
-
+    MOVE_ONE_TILE,
 }

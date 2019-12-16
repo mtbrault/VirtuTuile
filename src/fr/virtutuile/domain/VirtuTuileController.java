@@ -37,6 +37,7 @@ public class VirtuTuileController {
 	private int gridTreshHold = 4;
 	private Hole movingHole = null;
 	private Surface movingHoleTheSurface = null;
+	private Tile movingTile = null;
 
 	public VirtuTuileController() {
 		surfaces = new ArrayList<Surface>();
@@ -206,7 +207,15 @@ public class VirtuTuileController {
 					surface.setSelected(false);
 			}
 			notifyObserverForSurfaces();
-		} else if (state == State.MOVE_HOLE) {
+		}  else if (state == State.MOVE_ONE_TILE) {
+			for (Surface surface : surfaces) {
+				for (Tile tile : surface.getTiles()) {
+					if (tile.isInside(point)) {
+						movingTile = tile;
+					}
+				}
+			}
+		}else if (state == State.MOVE_HOLE) {
 			points.add(point);
 			for (Surface surface : surfaces) {
 				for (Hole hole : surface.getHoles()) {
@@ -291,7 +300,9 @@ public class VirtuTuileController {
 					notifyObserverForSurfaces();
 				}
 			}
-		}  else if (state == State.MOVE_HOLE) {
+		} else if (state == State.MOVE_ONE_TILE) {
+			movingTile = null;
+		} else if (state == State.MOVE_HOLE) {
 			isBeingDragged = false;
 			movingHole = null;
 			movingHoleTheSurface = null;
@@ -442,6 +453,11 @@ public class VirtuTuileController {
 			if (movingHole != null) {
 				movingHole.move(movementVec.x, movementVec.y);
 				movingHoleTheSurface.setPattern(movingHoleTheSurface.getPattern());
+			}
+		} else if (state == State.MOVE_ONE_TILE) {
+			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
+			if (movingTile != null) {
+				movingTile.move(movementVec.x, movementVec.y);
 			}
 		} else if (state == State.CREATE_IRREGULAR_SURFACE) {
 			if (points.size() >= 1) {
