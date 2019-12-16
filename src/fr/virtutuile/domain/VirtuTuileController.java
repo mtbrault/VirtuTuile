@@ -234,6 +234,10 @@ public class VirtuTuileController {
 			} else {
 				if (!isLeft) {
 					points.clear();
+					tmpSurface.setMaterial(materials.get(0));
+					tmpSurface.onMoved();
+					this.addHistory();
+					tmpSurface = null;
 					return;
 				}
 				tmpSurface.addPoint(new Point(point));

@@ -71,11 +71,6 @@ public class SurfacesDrawer {
             xPoly.add(graphicPoint.x);
             yPoly.add(graphicPoint.y);
         }
-        for (int i = 0; i < points.size() - 2; i += 1) {
-            double dis1 = Math.sqrt((points.get(i + 1).x  - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
-            Point graphicPoint = controller.coordToGraphic(((points.get(i).x  + points.get(i + 1).x)  / 2), (points.get(i).y + points.get(i + 1).y) / 2);
-            g.drawString(String.valueOf(dis1), graphicPoint.x, graphicPoint.y);
-        }
         java.awt.Polygon polygon = new java.awt.Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
         Area awtShape = new Area(polygon);
         if (surface.getHoles().size() > 0) {
@@ -101,6 +96,11 @@ public class SurfacesDrawer {
         g2.draw(awtShape);
         if (surface.getTiles().size() != 0) {
             drawTiles(g, g2, surface.getTiles(), surface.getMaterial().getColor());
+        }
+        for (int i = 0; i < points.size() - 1; i += 1) {
+            double dis1 = Math.sqrt((points.get(i + 1).x  - points.get(i).x) * (points.get(i + 1).x - points.get(i).x) + (points.get(i + 1).y - points.get(i).y) * (points.get(i + 1).y - points.get(i).y));
+            Point graphicPoint = controller.coordToGraphic(((points.get(i).x  + points.get(i + 1).x)  / 2), (points.get(i).y + points.get(i + 1).y) / 2);
+            g.drawString(String.valueOf(Math.round(dis1)), graphicPoint.x, graphicPoint.y);
         }
     }
 
