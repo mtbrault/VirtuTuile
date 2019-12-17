@@ -31,6 +31,7 @@ public class ToolBarPanel extends JPanel {
 	private JButton buttonIrregular;
 	private JButton buttonCutSurface;
 	private JButton buttonMoveHole;
+	private JButton buttonMoveTile;
 	private JButton buttonMovePattern;
 
 	String undo = "<html>Undo</html>";
@@ -51,6 +52,7 @@ public class ToolBarPanel extends JPanel {
 	String moovePatern = "<html><center>Déplacer </br> Pattern</center></html>";
 	String addHole = "<html><center>Créer </br> Trou</center></html>";
 	String moveHole = "<html><center>Déplacer </br> Trou</center></html>";
+	String moveTile = "<html><center>Déplacer </br> Tuile</center></html>";
 
 	public ToolBarPanel(MainWindow mainWindow) {
 		this.mainWindow = mainWindow;
@@ -62,6 +64,7 @@ public class ToolBarPanel extends JPanel {
 		buttonMovePattern = new JButton(moovePatern);
 		buttonCutSurface = new JButton(createHole);
 		buttonMoveHole = new JButton(moveHole);
+		buttonMoveTile = new JButton(moveTile);
 		buildUp();
 	}
 
@@ -376,5 +379,30 @@ public class ToolBarPanel extends JPanel {
 			}
 		});
 		toolbarLeft.add(buttonMoveHole);
+		
+		buttonMoveTile.setBackground(Color.WHITE);
+		buttonMoveTile.setForeground(Color.BLACK);
+		buttonMoveTile.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				handleClick(State.MOVE_ONE_TILE);
+				if (mainWindow.controller.getState() == State.MOVE_ONE_TILE) {
+					buttonMoveTile.setBackground(Color.LIGHT_GRAY);
+					buttonMoveHole.setBackground(Color.white);
+					buttonMovePattern.setBackground(Color.white);
+					buttonIrregular.setBackground(Color.white);
+					buttonSurfaceRect.setBackground(Color.white);
+					buttonMove.setBackground(Color.white);
+					buttonSelect.setBackground(Color.white);
+					buttonMooveZone.setBackground(Color.white);
+					buttonCutSurface.setBackground(Color.white);
+				} else {
+					buttonMoveTile.setBackground(Color.white);
+				}
+			}
+		});
+		toolbarLeft.add(buttonMoveTile);
 	}
 }
