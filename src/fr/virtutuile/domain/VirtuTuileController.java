@@ -98,12 +98,13 @@ public class VirtuTuileController {
 		Object mat = surface.getMaterial();
 		int index = 0;
 		for (Object objs : obj) {
+
 			if (objs == mat) {
 				return index;
 			}
 			index++;
 		}
-		return index;
+		return 0;
 	}
 
 	public void addRectangleHole(Surface surface) {
