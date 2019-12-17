@@ -290,7 +290,7 @@ public class ToolBarPanel extends JPanel {
 				materialName.setColumns(10);
 
 				JPanel myPopup = new JPanel();
-				myPopup.add(new JLabel("Nom du matériau à crée :"));
+				myPopup.add(new JLabel("Nom du matériau à créer :"));
 				myPopup.add(materialName);
 
 				int result = JOptionPane.showConfirmDialog(null, myPopup, "Ajouter un matériau",
