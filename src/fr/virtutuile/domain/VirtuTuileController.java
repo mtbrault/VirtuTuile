@@ -32,7 +32,7 @@ public class VirtuTuileController {
 	public Point camPos;
 	private Point canvasPosition;
 	private State state = State.UNKNOWN;
-	private Metering metering = Metering.POUCE;
+	private Metering metering = Metering.CM;
 	private boolean gridSwitch = false;
 	private boolean isBeingDragged = false;
 	private int gridDim = 100;

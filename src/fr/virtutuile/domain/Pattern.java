@@ -198,6 +198,11 @@ public class Pattern implements java.io.Serializable {
             tileHeight = material.getWidth();
             tileWidth = material.getHeight();
         }
+        if (surface.getPatternId() == 3 && tileWidth < tileHeight) {
+            int tmp = tileHeight;
+            tileHeight = tileWidth;
+            tileWidth = tmp;
+        }
         int nbXTiles = Math.abs(point1.x - point2.x) / (tileWidth + surface.getJointSize()) + 4;
         int nbYTiles = Math.abs(point1.y - point4.y) / (tileHeight + surface.getJointSize()) + 4;
         if (surface.getPatternId() == 0) {
