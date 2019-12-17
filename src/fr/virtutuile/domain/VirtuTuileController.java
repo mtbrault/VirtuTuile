@@ -511,6 +511,15 @@ public class VirtuTuileController {
 		}
 		return cm;
 	}
+	
+	public void setMetering(Metering value) {
+		this.metering = value;
+	}
+	
+	public Metering getMetering() {
+		return this.metering;
+	}
+	
 	public int convertMeteringToCm(double otherMetrics) {
 		switch (this.metering) {
 			case CM:
