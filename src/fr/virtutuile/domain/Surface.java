@@ -7,6 +7,7 @@ import javafx.scene.shape.PathElement;
 
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -106,6 +107,10 @@ public class Surface extends Polygon {
         return super.isInside(p3) && !inHole;
     }
 
+    public boolean isInsideIgnoreHole(Point p3) {
+        return super.isInside(p3);
+    }
+
     public Pattern getPattern() {
         return pattern;
     }
@@ -174,7 +179,7 @@ public class Surface extends Polygon {
         Area awtB = Pattern.convertPolygonToShape(b);
         awtA.intersect(awtB);
         awtA.intersect(new Area(awtB));
-        return !awtA.isEmpty();
+        return (!awtA.isEmpty());
     }
 
     public void joinHoles(Hole toAdd) {
@@ -193,7 +198,7 @@ public class Surface extends Polygon {
     public void digHole(List<Point> list) {
         int count = 0;
         for (Point points : list) {
-            if (!isInside(points))
+            if (!isInsideIgnoreHole(points))
                 count += 1;
         }
         if (count == list.size())
@@ -204,6 +209,9 @@ public class Surface extends Polygon {
     public List<Hole> getHoles() {
         return (holes);
     }
+    public void setHoles(List<Hole> h) {
+        holes = h;
+    };
 
     public void setHeight(int height) {
         double topExtremePointY = getExtremePoint(0, -1).y;

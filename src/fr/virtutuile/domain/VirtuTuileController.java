@@ -21,6 +21,7 @@ public class VirtuTuileController {
 	private ArrayList<Material> materials;
 	private Tile selectedTile;
 	private List<Point> points;
+	private List<Hole> tmpHoleList;
 	private Surface tmpSurface = null;
 	private Surface movingSurface = null;
 	private Surface cutSurface = null;
@@ -112,7 +113,6 @@ public class VirtuTuileController {
 		Point pointD = new Point(pointA.x, pointC.y);
 		surface.digHole(new ArrayList<Point>(Arrays.asList(pointA, pointB, pointC, pointD)));
 		surface.setPattern(surface.getPattern());
-		addHistory();
 		notifyObserverForSurfaces();
 	}
 
@@ -224,6 +224,7 @@ public class VirtuTuileController {
 					if (hole.isInside(point)) {
 						movingHole = hole;
 						movingHoleTheSurface = surface;
+						tmpHoleList = movingHoleTheSurface.getHoles();
 					}
 				}
 			}
@@ -278,6 +279,7 @@ public class VirtuTuileController {
 				surfaces.remove(tmpSurface);
 				cutSurface = null;
 				points.clear();
+				addHistory();
 			} else {
 				cutSurface = isInsideAnySurface(mousePosition);
 				addTmpSurface();
@@ -459,6 +461,8 @@ public class VirtuTuileController {
 			Point movementVec = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
 			if (movingHole != null) {
 				movingHole.move(movementVec.x, movementVec.y);
+				movingHoleTheSurface.setHoles(tmpHoleList);
+				movingHoleTheSurface.digHole(movingHole.getPoints());
 				movingHoleTheSurface.setPattern(movingHoleTheSurface.getPattern());
 				lines.clear();
 				for (Point surfacePoint : movingHoleTheSurface.getPoints()) {
@@ -491,10 +495,8 @@ public class VirtuTuileController {
 			if (movingSurface.isInside(mousePosition)) {
 				Point vector = new Point(mousePosition.x - mousePosBefore.x, mousePosition.y - mousePosBefore.y);
 				movingSurface.movePatern(vector.x, vector.y);
-				movingSurface.setPattern(movingSurface.getPattern());
-			} else if (movingSurface != null) {
-				movingSurface.setPattern(movingSurface.getPattern());
 			}
+			movingSurface.setPattern(movingSurface.getPattern());
 		}
 		notifyObserverForSurfaces();
 	}
@@ -572,6 +574,10 @@ public class VirtuTuileController {
 		ArrayList<Surface> tmp = new ArrayList<Surface>();
 		for (Surface surface : surfaces)
 			tmp.add(new Surface(surface));
+		System.out.println("CALLED");
+		for (Surface s : tmp) {
+			System.out.println(s.getHoles().size());
+		}
 		history.add(0, tmp);
 	}
 

@@ -19,23 +19,6 @@ public class SurfacesDrawer {
         this.controller = controller;
     }
 
-    /*public void drawHoles(Graphics2D g2, List<Hole> list) {
-        for (fr.virtutuile.domain.Polygon hole : list) {
-            List<Integer> xPoly = new ArrayList<Integer>();
-            List<Integer> yPoly = new ArrayList<Integer>();
-            List<Point> points = hole.getPoints();
-            for (Point point : points) {
-                Point graphicPoint = controller.coordToGraphic(point.x, point.y);
-                xPoly.add(graphicPoint.x);
-                yPoly.add(graphicPoint.y);
-            }
-            Polygon polygon = new Polygon(xPoly.stream().mapToInt(i->i).toArray(), yPoly.stream().mapToInt(i->i).toArray(), xPoly.size());
-            g2.setColor(new Color(217, 217, 217));
-            g2.fill(polygon);
-            g2.draw(polygon);
-        }
-    }*/
-
     public void drawTiles(Graphics g, Graphics2D g2, List<Tile> tiles, Color color) {
         for (Tile tile : tiles) {
             List<Integer> xTilePoly = new ArrayList<Integer>();
