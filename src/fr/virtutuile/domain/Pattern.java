@@ -68,7 +68,7 @@ public class Pattern implements java.io.Serializable {
        return new Tile(newPoints);
     }
 
-    public static Area convertPolygonToShape(Polygon p) {
+    public static java.awt.Polygon convertPolygonToAwtPolygon(Polygon p) {
         int xtab[] = new int[p.getPoints().size()];
         int ytab[] = new int[p.getPoints().size()];
         int i = 0;
@@ -77,8 +77,11 @@ public class Pattern implements java.io.Serializable {
             ytab[i] = a.y;
             i += 1;
         }
-        java.awt.Polygon awtPoly = new java.awt.Polygon(xtab, ytab, p.getPoints().size());
-        return new Area(awtPoly);
+        return new java.awt.Polygon(xtab, ytab, p.getPoints().size());
+    }
+
+    public static Area convertPolygonToShape(Polygon p) {
+        return new Area(convertPolygonToAwtPolygon(p));
     }
 
     public void movePatern(int x, int y) {
@@ -109,36 +112,57 @@ public class Pattern implements java.io.Serializable {
     public List<Tile> holeManager(Surface surface, List<Tile> tiles) {
         List<Tile> newList = new ArrayList<>(tiles);
         for (Tile tile : tiles) {
+            Area awtTile = convertPolygonToShape(tile);
+            boolean isInTotaly = false;
+            newList.remove(tile);
             for (Hole hole : surface.getHoles()) {
                 int inside = 0;
                 for (Point p : tile.getPoints()) {
                     if (hole.isInside(p))
                         inside += 1;
                 }
-                if (inside == 0) {
-
-                } else if (inside < tile.getPoints().size()) {
-                    newList.remove(tile);
+                if (inside < tile.getPoints().size() && inside != 0) {
                     Area awtHole = convertPolygonToShape(hole);
-                    Area awtTile = convertPolygonToShape(tile);
                     awtTile.subtract(awtHole);
-                    newList.add((Tile)convertShapeToPolygon(awtTile, PolygonType.TILE));
-                } else if (inside == tile.getPoints().size()){
-                    newList.remove(tile);
+                } else if (inside == tile.getPoints().size()) {
+                    isInTotaly = true;
+                    break;
                 }
             }
+            if (!isInTotaly)
+                newList.add((Tile)convertShapeToPolygon(awtTile, PolygonType.TILE));
         }
         return (newList);
     }
 
     private void correctOffset(int w, int h) {
-        if (patternId == 2)
-            w = h;
+        if (patternId == 3) {
+            while (offSetY < 0 && -offSetY > h) {
+                offSetY += h;
+            }
+            while (offSetY >= 0 && offSetY > h) {
+                offSetY -= h;
+            }
+            while (offSetX < 0 && -offSetX > w) {
+                offSetX += w;
+            }
+            while (offSetX >= 0 && offSetX > w) {
+                offSetX -= w;
+            }
+            return;
+        }
+        if (patternId == 2) {
+            w = Math.max(h,w);
+            h = w;
+        } else if (patternId == 3) {
+            w += h;
+            h += w;
+        }
         while (offSetY < 0 && -offSetY > h) {
-            offSetY += (patternId == 2 ? 2 * h : h);
+            offSetY += (patternId == 2 || patternId == 0 ? 2 * h : h);
         }
         while (offSetY >= 0 && offSetY > h * 2) {
-            offSetY -= h;
+            offSetY -= h * 2;
         }
         while (offSetX < 0 && -offSetX > w) {
             offSetX += w * 2;
@@ -148,8 +172,8 @@ public class Pattern implements java.io.Serializable {
         }
         if (offSetX > 0)
             offSetX -= 2 * w;
-        if (offSetY > 0)
-            offSetY -= 2 * h;
+        if (offSetY >= 0)
+            offSetY -= (patternId == 0 || patternId == 2 ? 2 * h : h);
     }
 
     public List<Tile> build(Material material, Surface surface) {
@@ -161,11 +185,12 @@ public class Pattern implements java.io.Serializable {
         Point point4 = extremeSurface.getPoints().get(3);
         if (material == null)
             return new ArrayList<>();
-        correctOffset(material.getWidth(), material.getHeight());
+        if (surface.isVertical())
+            correctOffset(material.getHeight(), material.getWidth());
+        else
+            correctOffset(material.getWidth(), material.getHeight());
         int minPointX = point1.x + offSetX;
         int minPointY = point1.y + offSetY;
-
-
 
         int tileHeight = material.getHeight();
         int tileWidth = material.getWidth();
