@@ -68,11 +68,11 @@ public class Surface extends Polygon {
 
     private List<Hole> copyHoles(List<Hole> holes) {
         List<Hole> list = new ArrayList<>();
-        List<Point> points = new ArrayList<>();
         for (Hole poly : holes) {
-            points.clear();
-            for (Point tmp : poly.getPoints())
+            List<Point> points = new ArrayList<>();
+            for (Point tmp : poly.getPoints()) {
                 points.add(new Point(tmp.x, tmp.y));
+            }
             list.add(new Hole(points));
         }
         return list;

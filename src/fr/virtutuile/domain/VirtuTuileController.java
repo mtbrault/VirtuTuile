@@ -574,10 +574,6 @@ public class VirtuTuileController {
 		ArrayList<Surface> tmp = new ArrayList<Surface>();
 		for (Surface surface : surfaces)
 			tmp.add(new Surface(surface));
-		System.out.println("CALLED");
-		for (Surface s : tmp) {
-			System.out.println(s.getHoles().size());
-		}
 		history.add(0, tmp);
 	}
 
