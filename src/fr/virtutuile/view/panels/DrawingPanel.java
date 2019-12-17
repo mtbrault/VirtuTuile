@@ -9,7 +9,7 @@ import fr.virtutuile.view.frames.MainWindow;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
 
@@ -20,18 +20,18 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(new Point(e.getX(), e.getY()));
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                mainWindow.controller.onMouseMoved(mainWindow.controller.graphicToCoord(e.getX(), e.getY()));
+                mainWindow.controller.onMouseMoved(new Point(e.getX(), e.getY()));
             }
 
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()));
+                mainWindow.controller.onMousePressed(mainWindow.controller.graphicToCoord(me.getX(), me.getY()), SwingUtilities.isLeftMouseButton(me));
 
             }
 
@@ -77,14 +77,14 @@ public class DrawingPanel extends JPanel implements SurfacesControllerObserver {
         mainWindow.controller.setCanvasPosition(pos);
         SurfacesDrawer surfacesDrawer = new SurfacesDrawer(mainWindow.controller);
         if (mainWindow.controller.getGridSwitch()) {
-            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height);
+            GridDrawer gridDrawer = new GridDrawer(this.getSize().width, this.getSize().height, mainWindow);
             gridDrawer.draw(g);
         }
         surfacesDrawer.draw(g);
     }
 
     @Override
-    public void notifyCreatedSurface() {
+    public void notifyObserver() {
         repaint();
     }
 

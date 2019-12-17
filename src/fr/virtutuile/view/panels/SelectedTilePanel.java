@@ -1,5 +1,6 @@
 package fr.virtutuile.view.panels;
 
+import fr.virtutuile.domain.Tile;
 import fr.virtutuile.domain.VirtuTuileController;
 
 import javax.swing.*;
@@ -19,33 +20,24 @@ public class SelectedTilePanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (controller.getSelectedTile() != null) {
-            java.util.List<Integer> xPoly = new ArrayList<Integer>();
-            java.util.List<Integer> yPoly = new ArrayList<Integer>();
-            List<fr.virtutuile.domain.Point> points = controller.getSelectedTile().getPoints();
-            xPoly.add(125);
-            yPoly.add(50);
-            int facteur = 3;
-            /* Piste de code si l'on veut étendre la tile dans le panel
-            int max = 0;
+            java.util.List<Double> xPoly = new ArrayList<Double>();
+            java.util.List<Double> yPoly = new ArrayList<Double>();
+            Tile selectedTile = controller.getSelectedTile();
+            double distX = Math.abs(selectedTile.getExtremePoint(-1, 0).x - selectedTile.getExtremePoint(1, 0).x);
+            double distY = Math.abs(selectedTile.getExtremePoint(0, 1).y - selectedTile.getExtremePoint(0, -1).y);
+            double maxDist = Math.max(distX, distY);
+            List<fr.virtutuile.domain.Point> points = selectedTile.getPoints();
+            xPoly.add(125.0);
+            yPoly.add(50.0);
             for (int i = 0; i < points.size() - 1; i += 1) {
-                int val = points.get(i + 1).y - points.get(i).y;
-                if (val > max)
-                    max = val;
+                distX = (points.get(i + 1).x - points.get(i).x) / maxDist * 100;
+                distY = (points.get(i + 1).y - points.get(i).y) / maxDist * 100;
+                double dis1 = Math.sqrt(Math.pow(points.get(i + 1).x - points.get(i).x, 2) + Math.pow(points.get(i + 1).y - points.get(i).y, 2));
+                g.drawString(String.valueOf(controller.convertMeteringToDisplay((int)Math.round(dis1))), (int)(xPoly.get(i) + distX / 2), (int)(yPoly.get(i) + distY / 2));
+                xPoly.add(xPoly.get(i) + distX);
+                yPoly.add(yPoly.get(i) + distY);
             }
-            if (max != 0)
-                facteur = 350 / max;*/
-            for (int i = 0; i < points.size() - 1; i += 1) {
-                int distX;
-                int distY;
-                distX = points.get(i + 1).x - points.get(i).x;
-                distY = points.get(i + 1).y - points.get(i).y;
-
-                double dis1 = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2));
-                xPoly.add(xPoly.get(i) + distX * facteur);
-                yPoly.add(yPoly.get(i) + distY * facteur);
-                g.drawString(String.valueOf(dis1), (xPoly.get(i)  + xPoly.get(i + 1))  / 2, (yPoly.get(i) + yPoly.get(i + 1)) / 2);
-            }
-            Polygon polygon = new Polygon(xPoly.stream().mapToInt(x->x).toArray(), yPoly.stream().mapToInt(y->y).toArray(), xPoly.size());
+            Polygon polygon = new Polygon(xPoly.stream().mapToInt(x->x.intValue()).toArray(), yPoly.stream().mapToInt(y->y.intValue()).toArray(), xPoly.size());
             g.drawPolygon(polygon);
         }
     }

@@ -34,12 +34,13 @@ public class MainWindow extends JFrame implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        drawingPanel.notifyCreatedSurface();
+        drawingPanel.notifyObserver();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
     }
+
     public MainWindow () {
         addKeyListener(this);
         setFocusable(true);
