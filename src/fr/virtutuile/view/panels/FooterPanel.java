@@ -44,9 +44,9 @@ public class FooterPanel extends JPanel implements ZoomControllerObserver {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.controller.detectTile(Integer.parseInt(textFieldDetect.getText()));
-
 			}
 		});
+
 		labelZoom = new JLabel("Zoom : " + (int) (mainWindow.controller.getZoom() * 100) + "%");
 		GridBagConstraints gbc_labelZoom = new GridBagConstraints();
 		gbc_labelZoom.fill = GridBagConstraints.BOTH;

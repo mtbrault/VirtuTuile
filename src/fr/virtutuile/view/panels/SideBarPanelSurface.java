@@ -114,18 +114,20 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 
 //		if (surface.getMasked() == true) {
 //
-		JLabel lblInformation = new JLabel("Information :");
+		JLabel lblInformation = new JLabel("Boites :");
 		lblInformation.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInformation.setVerticalAlignment(SwingConstants.BOTTOM);
-		GridBagConstraints gbc_lblInformation = new GridBagConstraints();
-		gbc_lblInformation.insets = new Insets(0, 0, 5, 5);
-		gbc_lblInformation.gridx = 0;
-		gbc_lblInformation.gridy = 1;
-		blockPanel.add(lblInformation, gbc_lblInformation);
+		GridBagConstraints gbcInfo = new GridBagConstraints();
+		gbcInfo.anchor = GridBagConstraints.WEST;
+		gbcInfo.insets = new Insets(0, 0, 5, 5);
+		gbcInfo.gridx = 0;
+		gbcInfo.gridy = 1;
+		blockPanel.add(lblInformation, gbcInfo);
 
-		JLabel lblBoiteNbr = new JLabel("Nombre de boites : " + surface.getNbBoxNeedForMaterial());
+		JLabel lblBoiteNbr = new JLabel("" + surface.getNbBoxNeedForMaterial());
 		lblBoiteNbr.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblBoiteNbr = new GridBagConstraints();
+		gbc_lblBoiteNbr.anchor = GridBagConstraints.WEST;
 		gbc_lblBoiteNbr.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBoiteNbr.gridx = 1;
 		gbc_lblBoiteNbr.gridy = 1;
@@ -207,7 +209,8 @@ public class SideBarPanelSurface extends JPanel implements ColorChangedListener 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (textEpaisseurJoin.getText() != "") {
-					surface.setJointSize(controller.convertMeteringToCm(Double.parseDouble(textEpaisseurJoin.getText())));
+					surface.setJointSize(
+							controller.convertMeteringToCm(Double.parseDouble(textEpaisseurJoin.getText())));
 					surface.onMoved();
 					controller.addHistory();
 					controller.notifyObserverForSurfaces();
